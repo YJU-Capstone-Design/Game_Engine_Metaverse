@@ -10,6 +10,8 @@ Escape_Room/[Bb]uilds/
 Escape_Room/[Ll]ogs/
 Escape_Room/[Uu]ser[Ss]ettings/
 Escape_Room/[Ll]eartes[Ss]tudios/
+Escape_Room/[Aa]ssets/[Ll]eartes[Ss]tudios/
+Escape_Room/[Aa]ssets/[Ll]eartes[Ss]tudios*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
