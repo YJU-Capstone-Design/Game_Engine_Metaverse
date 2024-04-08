@@ -322,8 +322,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1598194801}
   - {fileID: 1489067152}
+  - {fileID: 1598194801}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1339741811
@@ -488,8 +488,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a549881ccbafc444595c23a0a6c8fac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNickName: Man
-  playerPrefab: {fileID: 248822274323737384, guid: 1ba9c524d7ac73244ae28448fb3169e2,
+  playerNickName: Test
+  playerPrefab: {fileID: 248822274323737384, guid: 1240681f9cf624840b5ae8911b61fafe,
     type: 3}
   playerSpawnPoint: {fileID: 1245199968}
 --- !u!1 &1598194800
@@ -540,9 +540,8 @@ MonoBehaviour:
   playerList: []
   killerPrefab: {fileID: 226475387858174092, guid: 69b42823867b3bc40bdd0fa71eaa6906,
     type: 3}
-  killerSpawnPoint: {fileID: 733368883}
+  killerSpawnPoint: {fileID: 733368884}
   isSpawn: 0
-  isCheck: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

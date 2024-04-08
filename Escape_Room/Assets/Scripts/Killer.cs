@@ -5,11 +5,15 @@ using UnityEngine.AI;
 
 public class Killer : MonoBehaviour
 {
-    public GameObject gameManager;
+    public GameManager gameManager;
     //플레이어 인식 임시작업
     public GameObject target;
 
     private NavMeshAgent nma;
+
+    private Animator animator;
+
+    private float attackRange = 2f;
 
     private bool isFind = false;
     private bool isAtk = false;
@@ -21,23 +25,30 @@ public class Killer : MonoBehaviour
 
     private void Killer_Init()
     {
-        gameManager = FindObjectOfType<GameObject>().GetComponent<GameObject>();
+        gameManager = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+
+        animator = GetComponent<Animator>();
+        animator.SetBool("isWalk", false);
+
         nma = GetComponent<NavMeshAgent>();
-        nma.enabled = false;
+        nma.speed = 10f;
+        nma.angularSpeed = 50f;
+        nma.acceleration = 1f;
+        nma.stoppingDistance = 2f;
     }
 
     private void Update()
     {
         Killer_Find();
         Killer_Move();
-        Killer_Attack();
+        //Killer_Attack();
     }
         
     private void Killer_Find()
     {
         if (!isFind)
         {
-        target = gameManager.playerList;
+        target = gameManager.playerList[0].gameObject;
         isFind = true;
         }
     }
@@ -48,6 +59,7 @@ public class Killer : MonoBehaviour
         {
             nma.enabled = true;
             nma.SetDestination(target.transform.position);
+            animator.SetBool("isWalk", true);
         } else
         {
             nma.SetDestination(transform.position);
@@ -56,6 +68,11 @@ public class Killer : MonoBehaviour
 
     private void Killer_Attack()
     {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange))
+        {
 
+            animator.SetTrigger("isAtk");
+        }
     }
 }
