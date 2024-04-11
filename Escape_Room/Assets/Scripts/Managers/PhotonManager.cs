@@ -58,6 +58,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public void CreatePlayer()
     {
         GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, playerSpawnPoint.transform.position, playerSpawnPoint.transform.rotation);
+        player.tag = "Player";
         player.AddComponent<Player_Test>();
         
     }

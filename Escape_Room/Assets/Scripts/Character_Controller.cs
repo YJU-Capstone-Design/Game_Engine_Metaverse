@@ -59,7 +59,7 @@ public class Character_Controller : MonoBehaviour
             //걷기 ON&OFF 및 캐릭터 이동
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
             {
-                Debug.Log(new Vector2(pos_x, pos_z));
+                // Debug.Log(new Vector2(pos_x, pos_z));
                 if (pos_x > 0)
                 {
                     if (pos_z > 0)

@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject Killer = Instantiate(killerPrefab, killerSpawnPoint.position, killerSpawnPoint.rotation);
         Killer.GetComponent<Killer>().gameManager = this;
-        Killer.GetComponent<NavMeshAgent>().enabled = false;
+        // Killer.GetComponent<NavMeshAgent>().enabled = false;
         isSpawn = true;
     }
 }
