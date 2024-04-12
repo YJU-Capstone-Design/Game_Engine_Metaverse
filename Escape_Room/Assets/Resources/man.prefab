@@ -325,9 +325,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4617789760407109418}
   - component: {fileID: 1837432924414645352}
+  - component: {fileID: 4199306344666745386}
   m_Layer: 0
   m_Name: Man_Bottom_pants_3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -420,6 +421,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000037252903, y: -0.42437786, z: -0.004642464}
     m_Extent: {x: 0.20032749, y: 0.6020114, z: 0.16211134}
   m_DirtyAABB: 0
+--- !u!64 &4199306344666745386
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479023337238347611}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1394684982526201563, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &529379434230076528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,9 +1108,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3602883609008070940}
   - component: {fileID: 8166152113837119272}
+  - component: {fileID: 5561555442209306656}
   m_Layer: 0
   m_Name: Man_Top_4
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1188,6 +1212,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00027525425, y: 0.36139718, z: -0.013214678}
     m_Extent: {x: 0.6344611, y: 0.3399907, z: 0.21662527}
   m_DirtyAABB: 0
+--- !u!64 &5561555442209306656
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3613581339925182601}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 169883080550830930, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &3738339002912586576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,9 +1445,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6854543703762438683}
   - component: {fileID: 5062446950132938559}
+  - component: {fileID: 2365908478870137215}
   m_Layer: 0
   m_Name: Man_Body_Head
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1480,6 +1527,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000059604645, y: 0.5588817, z: 0.050550252}
     m_Extent: {x: 0.1412734, y: 0.17632431, z: 0.17695063}
   m_DirtyAABB: 0
+--- !u!64 &2365908478870137215
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3800778462142541924}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6266694689314590672, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &3919666197091112021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,9 +1947,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3169861881451938832}
   - component: {fileID: 5120134706840501244}
+  - component: {fileID: 2329340619283573233}
   m_Layer: 0
   m_Name: Eye
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1954,6 +2024,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000333786, y: 0.09422626, z: 0.06507797}
     m_Extent: {x: 0.09918767, y: 0.044855244, z: 0.044599988}
   m_DirtyAABB: 0
+--- !u!64 &2329340619283573233
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4799875118094418815}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2943395109716765318, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &4904048999220662169
 GameObject:
   m_ObjectHideFlags: 0
@@ -2061,9 +2153,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8095122551012749855}
   - component: {fileID: 2784140168736094337}
+  - component: {fileID: 3139184459485787134}
   m_Layer: 0
   m_Name: Man_Hair_3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2141,6 +2234,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000059604645, y: 0.46379405, z: 0.0421298}
     m_Extent: {x: 0.13541557, y: 0.13698106, z: 0.18169302}
   m_DirtyAABB: 0
+--- !u!64 &3139184459485787134
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211952160519870692}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7271427446476417249, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &5262633689921618740
 GameObject:
   m_ObjectHideFlags: 0
@@ -2502,9 +2617,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2922101068821786830}
   - component: {fileID: 5999236210155727313}
+  - component: {fileID: 8990399256650420312}
   m_Layer: 0
   m_Name: Shoes_Slipper
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2589,6 +2705,28 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.08486048, y: 1.1314756, z: -0.06993131}
     m_Extent: {x: 0.19053665, y: 0.17587554, z: 0.15618183}
   m_DirtyAABB: 0
+--- !u!64 &8990399256650420312
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119833306988724365}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6061761478901710701, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &7144648723534633608
 GameObject:
   m_ObjectHideFlags: 0
@@ -2695,9 +2833,10 @@ GameObject:
   m_Component:
   - component: {fileID: 814920751101850254}
   - component: {fileID: 8648273337347227197}
+  - component: {fileID: 1759630281323223807}
   m_Layer: 0
   m_Name: Teeth
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2771,6 +2910,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000011622906, y: -0.00060111284, z: 0.09993272}
     m_Extent: {x: 0.035282973, y: 0.024715846, z: 0.03184951}
   m_DirtyAABB: 0
+--- !u!64 &1759630281323223807
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7426006096089245509}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8998915402303693396, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &7429604002195269101
 GameObject:
   m_ObjectHideFlags: 0
@@ -2876,9 +3037,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2761373357121266764}
   - component: {fileID: 9194465619495378812}
+  - component: {fileID: 2750943547455352869}
   m_Layer: 0
   m_Name: Man_Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3019,6 +3181,28 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000008046627, y: -0.24592775, z: -0.021671288}
     m_Extent: {x: 0.70346665, y: 1.0181465, z: 0.20902827}
   m_DirtyAABB: 0
+--- !u!64 &2750943547455352869
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780461956804730403}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5801496580144266544, guid: e494bc2418790354d8cfe074d191ceca, type: 3}
 --- !u!1 &7861783858880068355
 GameObject:
   m_ObjectHideFlags: 0

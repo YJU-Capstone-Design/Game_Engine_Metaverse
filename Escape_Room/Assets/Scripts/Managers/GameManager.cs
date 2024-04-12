@@ -37,20 +37,19 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("playerList[0].lifePoint = " + playerList[0].lifePoint);
 
-        if (!isSpawn)
+        if (playerList[0].lifePoint == 0)
         {
-            if (playerList[0].lifePoint == 0)
-            {
-                Killer_Spawn();
-            }
+            Killer_Spawn();
         }
     }
 
     void Killer_Spawn()
     {
-        GameObject Killer = Instantiate(killerPrefab, killerSpawnPoint.position, killerSpawnPoint.rotation);
-        Killer.GetComponent<Killer>().gameManager = this;
-        // Killer.GetComponent<NavMeshAgent>().enabled = false;
-        isSpawn = true;
+        if (!isSpawn)
+        {
+            GameObject Killer = Instantiate(killerPrefab, killerSpawnPoint.position, killerSpawnPoint.rotation);
+            Killer.GetComponent<Killer>().gameManager = this;
+            isSpawn = true;
+        }
     }
 }

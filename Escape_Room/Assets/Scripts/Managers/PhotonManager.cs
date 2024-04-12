@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
+    [Header("Player")]
     public string playerNickName;
     public GameObject playerPrefab;
     public GameObject playerSpawnPoint;

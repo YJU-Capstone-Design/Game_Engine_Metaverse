@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Character_Controller : MonoBehaviour
@@ -49,6 +50,7 @@ public class Character_Controller : MonoBehaviour
             //´Þ¸®±â ON&OFF
             if (Input.GetKey(KeyCode.LeftShift))
             {
+
                 m_Animator.SetBool("Run", true);
             }
             else
