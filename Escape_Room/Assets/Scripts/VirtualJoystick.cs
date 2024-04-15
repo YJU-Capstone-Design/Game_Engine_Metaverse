@@ -60,7 +60,6 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         // 방향 적용
         stick.anchoredPosition = clampedDir;
-        Debug.Log(stick.anchoredPosition);
 
         isInput = false;
     }
