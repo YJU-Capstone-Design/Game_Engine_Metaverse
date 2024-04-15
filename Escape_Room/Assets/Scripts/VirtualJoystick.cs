@@ -14,8 +14,9 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private float leverRange;
     Coroutine coroutine;
     Vector2 startPos;
+    Vector2 clampedDir; // 조이스틱 최종 포지션 값
 
-    private bool isInput;    // 추가
+    private bool isInput;
 
     private void Awake()
     {
@@ -51,7 +52,7 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         yield return new WaitForSeconds(0.2f);
 
         var inputDir = eventData.position - new Vector2(960, 390);
-        var clampedDir = inputDir.normalized * leverRange;
+        clampedDir = inputDir.normalized * leverRange;
 
         // 방향 세밀 조정
         if(Mathf.Abs(inputDir.x) > Mathf.Abs(inputDir.y)) {  clampedDir.y = 0; }
@@ -72,6 +73,14 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     IEnumerator SetOrigin(PointerEventData eventData)
     {
         yield return new WaitForSeconds(0.2f);
+
+        // 추후에 Debug.Log 대신 배열 추가해서 정답 확인
+        if(clampedDir.x > 35) { Debug.Log("Right"); }
+        else if(clampedDir.x < -35) { Debug.Log("Left"); }
+        else if (clampedDir.y > 35) { Debug.Log("Up"); }
+        else if (clampedDir.y < -35) { Debug.Log("Down"); }
+
+        // 원위치
         stick.anchoredPosition = Vector2.zero;
     }
 }
