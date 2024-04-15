@@ -73,11 +73,10 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         yield return new WaitForSeconds(0.2f);
 
-        // 추후에 Debug.Log 대신 배열 추가해서 정답 확인
-        if(clampedDir.x > 35) { Debug.Log("Right"); }
-        else if(clampedDir.x < -35) { Debug.Log("Left"); }
-        else if (clampedDir.y > 35) { Debug.Log("Up"); }
-        else if (clampedDir.y < -35) { Debug.Log("Down"); }
+        if (clampedDir.x > 35) { UIManager.Instance.dirLockInput.Add("Right"); }
+        else if (clampedDir.x < -35) { UIManager.Instance.dirLockInput.Add("Left"); }
+        else if (clampedDir.y > 35) { UIManager.Instance.dirLockInput.Add("Up"); }
+        else if (clampedDir.y < -35) { UIManager.Instance.dirLockInput.Add("Down"); }
 
         // 원위치
         stick.anchoredPosition = Vector2.zero;
