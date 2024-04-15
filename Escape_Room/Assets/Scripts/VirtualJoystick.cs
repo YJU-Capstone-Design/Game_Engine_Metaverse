@@ -59,6 +59,7 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         // 방향 적용
         stick.anchoredPosition = clampedDir;
+        Debug.Log(stick.anchoredPosition);
 
         isInput = false;
     }
@@ -70,7 +71,7 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     IEnumerator SetOrigin(PointerEventData eventData)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         stick.anchoredPosition = Vector2.zero;
     }
 }
