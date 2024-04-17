@@ -104,9 +104,11 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    // 지갑 애니메이션
     public void CheckIDCard(GameObject obj)
     {
         Animator anim = obj.GetComponent<Animator>();
+        obj.GetComponent<Button>().enabled = false; // 버튼 기능은 비활성화    
 
         if (anim != null)
         {
