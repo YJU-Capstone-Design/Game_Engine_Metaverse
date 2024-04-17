@@ -9,7 +9,6 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 {
     [SerializeField]
     private RectTransform stick;
-    private RectTransform rectTransform;
     [SerializeField, Range(10f, 150f)]
     private float leverRange;
     Coroutine coroutine;
@@ -18,11 +17,10 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private bool isInput;
 
-    private void Awake()
+    void OnEnable()
     {
-        rectTransform = GetComponent<RectTransform>();
+        UIManager.Instance.dirLockInput.Clear(); // 오브젝트 활성화 시, 입력값 초기화
     }
-
 
     public void OnBeginDrag(PointerEventData eventData)
     {

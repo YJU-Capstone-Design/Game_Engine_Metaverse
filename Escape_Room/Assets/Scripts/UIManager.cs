@@ -15,15 +15,17 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] Sprite[] btnSprites;
 
     [Header("# UI Boxs")]
-    [SerializeField] GameObject[] questionBox;
+    [SerializeField] List<GameObject> activeUIChildren;
 
     [Header("# Wallet")]
     [SerializeField] GameObject[] walletObjs;
 
     private void Awake()
     {
+        // 방향 자물쇠 초기화
         dirLockInput = new List<string>();
 
+        // 테스트용 정답 세팅
         dirLockAnswer = new string[4];
         dirLockAnswer[0] = "Up";
         dirLockAnswer[1] = "Down";
@@ -34,9 +36,18 @@ public class UIManager : Singleton<UIManager>
     private void Update()
     {
         // 방향 자물쇠 입력 값이 4개 일 경우 정답 확인
-        if(dirLockInput.Count == 4)
+        if (dirLockInput.Count == 4)
         {
             CheckAnswer(dirLockInput, dirLockAnswer);
+        }
+
+        // 켜져있는 오브젝트 꺼짐
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            foreach (GameObject obj in activeUIChildren)
+            {
+                if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+            }
         }
     }
 
@@ -65,16 +76,33 @@ public class UIManager : Singleton<UIManager>
         dirLockInput.Clear(); // 입력 값 초기화
     }
 
-    // 문제 UI 를 껐을 시, 모든 버튼 상태 초기화
-    void CloseQueBox()
+    // Active UI 를 껐을 시, 초기화가 필요한 오브젝트들 초기화
+    void CloseAcvtiveUI(GameObject obj)
     {
-        foreach(GameObject btn in answerBtns)
+        if(obj.name.Contains("Question"))
         {
-            Image btnImage = btn.GetComponent<Image>();
-            TextMeshProUGUI text = btn.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            foreach (GameObject btn in answerBtns)
+            {
+                Image btnImage = btn.GetComponent<Image>();
+                TextMeshProUGUI text = btn.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-            btnImage.sprite = btnSprites[0];
-            text.color = Color.white;
+                btnImage.sprite = btnSprites[0];
+                text.color = Color.white;
+            }
+        } 
+        else if(obj.name.Contains("Lock"))
+        {
+            ResetInput();
+        } 
+        else if(obj.name.Contains("Wallet"))
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                Animator animWallet = obj.transform.GetChild(i).GetComponent<Animator>();
+                animWallet.SetBool("Click", false);
+            }
+
+            obj.transform.GetChild(1).GetComponent<Button>().enabled = true; // 신분증 버튼 기능 활성화 
         }
     }
 
