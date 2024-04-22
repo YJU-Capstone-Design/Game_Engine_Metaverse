@@ -4740,11 +4740,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -4814,6 +4809,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 35.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -9972,7 +9977,6 @@ GameObject:
   - component: {fileID: 514994527}
   - component: {fileID: 514994529}
   - component: {fileID: 514994528}
-  - component: {fileID: 514994530}
   m_Layer: 5
   m_Name: Party
   m_TagString: Untagged
@@ -10039,28 +10043,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514994526}
   m_CullTransparentMesh: 1
---- !u!114 &514994530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514994526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1001 &517416264
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10349,11 +10331,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -10423,6 +10400,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 36.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -12991,11 +12978,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -13065,6 +13047,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 36.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -14283,11 +14275,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -14357,6 +14344,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -14667,11 +14664,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -14741,6 +14733,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 36.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -15051,11 +15053,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -15125,6 +15122,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 36.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -18455,7 +18462,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1667391957}
         m_TargetAssemblyTypeName: LobbyUIManager, Assembly-CSharp
-        m_MethodName: MakeRoom
+        m_MethodName: MakeRoomButton
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -32381,7 +32388,7 @@ GameObject:
   - component: {fileID: 1667391958}
   - component: {fileID: 1667391957}
   m_Layer: 0
-  m_Name: Lobby+Photon UIManager
+  m_Name: Lobby UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32399,14 +32406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b96f22633ac4e0429d3d65e42c72e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {x: -0.6, y: 6, z: 8}
-  playerPrefab: {fileID: 4956746261993668430, guid: d86cc002b1258564884ba49af0144c8a,
-    type: 3}
   activeUIBoxs:
   - {fileID: 514994526}
   - {fileID: 1397428209}
-  partyBoxPrefab: {fileID: 5536942418615512625, guid: 46a8b320cd320ce479749617ee1a9fca,
-    type: 3}
   setPeopleNum: {fileID: 1529577036}
   partyList: []
   partyListPos:
@@ -32418,6 +32420,7 @@ MonoBehaviour:
   - {fileID: 656128019}
   - {fileID: 517416265}
   - {fileID: 694501149}
+  photonManager: {fileID: 2059845988}
 --- !u!4 &1667391958
 Transform:
   m_ObjectHideFlags: 0
@@ -37636,11 +37639,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -37710,6 +37708,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 36.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -37954,7 +37962,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1667391957}
         m_TargetAssemblyTypeName: LobbyUIManager, Assembly-CSharp
-        m_MethodName: MakeRoom
+        m_MethodName: MakeRoomButton
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -40160,7 +40168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2059845988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40176,6 +40184,9 @@ MonoBehaviour:
   spawnPoint: {x: -0.6, y: 6, z: 8}
   playerPrefab: {fileID: 4956746261993668430, guid: d86cc002b1258564884ba49af0144c8a,
     type: 3}
+  partyListPrefab: {fileID: 5536942418615512625, guid: 46a8b320cd320ce479749617ee1a9fca,
+    type: 3}
+  partyListParent: {fileID: 514994527}
 --- !u!4 &2059845989
 Transform:
   m_ObjectHideFlags: 0
@@ -42162,11 +42173,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5761703928720391358, guid: 46a8b320cd320ce479749617ee1a9fca,
-        type: 3}
-      propertyPath: sceneViewId
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 6624873127859164313, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -42236,6 +42242,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSize
       value: 31.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459763070859091914, guid: 46a8b320cd320ce479749617ee1a9fca,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657835113873819041, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}

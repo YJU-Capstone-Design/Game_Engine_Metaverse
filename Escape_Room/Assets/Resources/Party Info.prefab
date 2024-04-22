@@ -487,7 +487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1882542878690820035}
   - component: {fileID: 8657835113873819041}
-  - component: {fileID: 5761703928720391358}
+  - component: {fileID: 8459763070859091914}
   m_Layer: 5
   m_Name: Party Info
   m_TagString: Untagged
@@ -533,7 +533,7 @@ MonoBehaviour:
   masterName: {fileID: 5340136494524004467}
   theme: {fileID: 8315020493020145904}
   peopleNum: {fileID: 6939748950942058390}
---- !u!114 &5761703928720391358
+--- !u!114 &8459763070859091914
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

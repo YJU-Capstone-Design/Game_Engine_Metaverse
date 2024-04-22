@@ -1,17 +1,14 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class LobbyUIManager : PhotonManager
+public class LobbyUIManager : Singleton<LobbyUIManager>
 {
     [Header("# UI Boxs")]
-    [SerializeField] GameObject[] activeUIBoxs;
-
-    [Header("# Prefab")]
-    [SerializeField] GameObject partyBoxPrefab; // 파티 목록 상자
+    public GameObject[] activeUIBoxs;
 
     [Header("# Text")]
     [SerializeField] TextMeshProUGUI setPeopleNum;
@@ -22,8 +19,8 @@ public class LobbyUIManager : PhotonManager
     int peopleNum = 1;
     [SerializeField] List<GameObject> partyList; // 생성된 리스트들 저장
     [SerializeField] RectTransform[] partyListPos; // 리스트들 Position 값
-   
 
+    public PhotonManager photonManager;
 
     private void Awake()
     {
@@ -55,10 +52,14 @@ public class LobbyUIManager : PhotonManager
             }
         }
 
-        SetListPos();
+        // 만들어진 방 list 들 position 값 조정
+        if(partyList.Count > 0)
+        {
+            SetListPos();
+        }
     }
 
-    public void MakeRoom(int index)
+    public void MakeRoomButton(int index)
     {
         if (index == 0) // 파티 매칭 창
         {
@@ -68,11 +69,11 @@ public class LobbyUIManager : PhotonManager
         else if (index == 1) // 방 만들기 창
         {
             activeUIBoxs[1].SetActive(false);
-            GameObject party = PhotonNetwork.Instantiate(partyBoxPrefab.name, transform.position, Quaternion.identity);
+            GameObject party = photonManager.MakePartyRoom();
             partyList.Add(party); // 리스트에 추가
 
             // 값 세팅
-            party.transform.SetParent(activeUIBoxs[0].transform); // 만든 파티 목록을 파티 매칭 창의 자식 오브젝트로 설정 
+            party.transform.SetParent(activeUIBoxs[0].transform); // 부모 설정
 
             PartyList partyListLogic = party.GetComponent<PartyList>();
             partyListLogic.masterName.text = masterName;
@@ -81,7 +82,7 @@ public class LobbyUIManager : PhotonManager
         }
     }
 
-    [PunRPC]
+    // 만들어진 방 list 들 위치 조정
     void SetListPos()
     {
         for(int i = 0; i < partyList.Count; i++)
@@ -98,6 +99,8 @@ public class LobbyUIManager : PhotonManager
         }
     }
 
+
+    // 방 만들때 인원 수 정하는 UI 버튼
     public void SetPeopleNum(string set)
     {
         if (set == "Up")
