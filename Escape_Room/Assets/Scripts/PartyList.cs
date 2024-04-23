@@ -32,6 +32,12 @@ public class PartyList : MonoBehaviour
         // 값 세팅
         masterName.text = LobbyUIManager.Instance.photonManager.masterName;
         theme.text = LobbyUIManager.Instance.photonManager.theme;
-        peopleNum.text = LobbyUIManager.Instance.photonManager.partyPeopleNum; // 1 은 나중에 파티 기능 생기면 변경
+        peopleNum.text = LobbyUIManager.Instance.photonManager.partyPeopleNum;
+        Debug.Log(LobbyUIManager.Instance.photonManager.partyPeopleNum);
+
+        // 파티 생성 시 설정했던 값들 초기화
+        LobbyUIManager.Instance.photonManager.peopleNum = 1; // 파티 만들때 설정한 인원 수 초기화
+        LobbyUIManager.Instance.photonManager.setPeopleNumText.text = LobbyUIManager.Instance.photonManager.peopleNum.ToString(); // 파티 만들때 설정한 파티 생성 인원 수 UI 초기화
+        LobbyUIManager.Instance.photonManager.partyPeopleNum = $"{1} / {LobbyUIManager.Instance.photonManager.peopleNum}"; // 파티 만들때 설정한 리스트 인원 수 UI 초기화
     }
 }

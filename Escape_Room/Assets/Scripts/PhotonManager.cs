@@ -21,15 +21,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public GameObject playerPrefab;
     public GameObject partyListPrefab;
 
-    [Header("# Party Info")]
+    [Header("# PartyList Info")]
     public string masterName; // 파티장 이름
     public string theme; // 테마
-    public string partyPeopleNum; // 파티 생성 시 인원 수
-    public int peopleNum = 1; // 방 만들때 설정하는 인원 수
+    public string partyPeopleNum; // 파티 생성 시 인원 수 텍스트 (리스트에 사용될 텍스트)
+
+    [Header("# MakeParty Info")]
     public List<GameObject> partyList; // 생성된 리스트들 저장
-    public TextMeshProUGUI setPeopleNumText; // 방 만들 때 인원 정하는 텍스트
+    public int peopleNum = 1; // 방 만들때 설정하는 인원 수
+    public TextMeshProUGUI setPeopleNumText; // peopleNum 이 들어갈 TextMeshPro
     public int partyPageLength = 1; // 총 파티 페이지 수 -> list / 8 + 1 의 결과값
-    public TextMeshProUGUI pageCountText; // 페이지 텍스트
+    public TextMeshProUGUI pageCountText; // partyPageLength 가 들어갈 TextMeshPro
 
     private void Awake()
     {
@@ -52,6 +54,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         // # 파티 시스템 초기화
         setPeopleNumText.text = peopleNum.ToString();
         partyList = new List<GameObject>();
+        partyPeopleNum = "1 / 1";
         // 테스트용 
         masterName = "백민지";
         theme = "복현동";
@@ -113,7 +116,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
     }
 
-    // 파티 매칭 시스템으로 방 만들기
+    // 파티 매칭 시스템으로 방(파티) 만들기
     public GameObject MakePartyRoom()
     {
         GameObject partyList = PhotonNetwork.Instantiate(partyListPrefab.name, transform.position, Quaternion.identity);
@@ -136,5 +139,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             setPeopleNumText.text = peopleNum.ToString();
         }
+
+        partyPeopleNum = $"{1} / {peopleNum}"; // 1 은 나중에 파티 기능 생기면 변경
     }
 }

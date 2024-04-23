@@ -40612,6 +40612,7 @@ MonoBehaviour:
     type: 3}
   masterName: 
   theme: 
+  partyPeopleNum: 
   peopleNum: 1
   partyList: []
   setPeopleNumText: {fileID: 1529577036}
@@ -42386,7 +42387,7 @@ PrefabInstance:
     - target: {fileID: 1882542878690820035, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.71
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 1882542878690820035, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -42406,7 +42407,7 @@ PrefabInstance:
     - target: {fileID: 1882542878690820035, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 24.740112
+      value: 20.740112
       objectReference: {fileID: 0}
     - target: {fileID: 1882542878690820035, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
@@ -42451,7 +42452,7 @@ PrefabInstance:
     - target: {fileID: 1882542878690820035, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 130.8352
+      value: 128.8352
       objectReference: {fileID: 0}
     - target: {fileID: 1882542878690820035, guid: 46a8b320cd320ce479749617ee1a9fca,
         type: 3}
