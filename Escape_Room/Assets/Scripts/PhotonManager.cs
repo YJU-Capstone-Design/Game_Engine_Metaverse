@@ -17,9 +17,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 사용자 아이디 입력
     private string userId = "Test";
 
-    // 프리팹
+    [Header("# Prefab")]
     public GameObject playerPrefab;
     public GameObject partyListPrefab;
+
+    [Header("# Player")]
+    public PhotonView myPlayer;
+
 
     [Header("# PartyList Info")]
     public string masterName; // 파티장 이름

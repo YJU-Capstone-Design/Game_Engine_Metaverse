@@ -40,6 +40,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             if (!activeUIBoxs[0].activeInHierarchy && !activeUIBoxs[1].activeInHierarchy)
             {
                 activeUIBoxs[0].SetActive(true);
+                activeUIBoxs[2].SetActive(true);
                 partyPageCount = 1;
                 SetActivePartyList(); // 1 페이지 리스트들 활성화
 
@@ -64,14 +65,41 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         }
         else if (index == 1) // 방 만들기 창
         {
-            activeUIBoxs[1].SetActive(false);
+            // 한사람당 파티는 하나만 생성 가능
+            if(photonManager.partyList.Count == 0)
+            {
+                MakeParty();
+            } 
+            else
+            {
+                for (int i = 0; i < photonManager.partyList.Count; i++)
+                {
+                    PhotonView listPV = photonManager.partyList[i].GetComponent<PhotonView>();
 
-            photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
-            SetActivePartyList(); // 리스트 활성화 세팅
+                    if (listPV.IsMine)
+                    {
+                        Debug.Log("이미 파티가 있습니다");
+                        break;
+                    }
 
-            // 페이지 수 동기화
-            CheckPartyPageLength();
+                    if (i == photonManager.partyList.Count - 1)
+                    {
+                        Debug.Log("파티 생성");
+                        MakeParty();
+                        break;
+                    }
+                }
+            }
         }
+    }
+
+    void MakeParty()
+    {
+        activeUIBoxs[1].SetActive(false);
+        photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
+        SetActivePartyList(); // 리스트 활성화 세팅
+                              // 페이지 수 동기화
+        CheckPartyPageLength();
     }
 
     // 만들어진 방 list 들 위치 조정

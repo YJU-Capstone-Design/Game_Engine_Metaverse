@@ -10116,7 +10116,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &514994527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11317,7 +11317,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.2
+  m_fontSize: 10
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -28673,7 +28673,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.35
+  m_fontSize: 8.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -31304,7 +31304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1547178791
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31322,7 +31322,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0.000015258789}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1547178792
 MonoBehaviour:
@@ -32834,6 +32834,7 @@ MonoBehaviour:
   activeUIBoxs:
   - {fileID: 514994526}
   - {fileID: 1397428209}
+  - {fileID: 1547178790}
   partyListPos:
   - {fileID: 5187536823868597262}
   - {fileID: 1948930046}
@@ -40613,8 +40614,8 @@ MonoBehaviour:
   masterName: 
   theme: 
   partyPeopleNum: 
-  peopleNum: 1
   partyList: []
+  peopleNum: 1
   setPeopleNumText: {fileID: 1529577036}
   partyPageLength: 1
   pageCountText: {fileID: 579758229}

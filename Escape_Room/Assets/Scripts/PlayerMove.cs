@@ -11,9 +11,14 @@ public class PlayerMove : MonoBehaviour
     float vAxis;
     Vector3 moveVec;
 
-    private void Start()
+    private void Awake()
     {
         pv = GetComponent<PhotonView>();
+
+        if(pv.IsMine)
+        {
+            LobbyUIManager.Instance.photonManager.myPlayer = pv;
+        }
     }
 
     
