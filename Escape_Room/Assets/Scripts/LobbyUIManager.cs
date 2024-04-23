@@ -32,17 +32,20 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         {
             foreach (GameObject obj in activeUIBoxs)
             {
-                if (obj.activeInHierarchy) { obj.SetActive(false); }
+                if (obj.activeInHierarchy) { obj.SetActive(false); partyPageCount = 1; }
             }
         }
 
         // 파티 매칭 UI 열기
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (!activeUIBoxs[0].activeInHierarchy)
+            if (!activeUIBoxs[0].activeInHierarchy && !activeUIBoxs[1].activeInHierarchy)
             {
                 activeUIBoxs[0].SetActive(true);
+                partyPageCount = 1;
                 SetActivePartyList(); // 1 페이지 리스트들 활성화
+
+                pageCountText.text = $"{partyPageCount} / {partyPageLength}";
             }
         }
 
@@ -66,6 +69,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
             SetActivePartyList(); // 리스트 활성화 세팅
             photonManager.peopleNum = 1;
+
+            partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
         }
     }
 
@@ -89,7 +94,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     // 파티 매칭 시스템 페이지 버튼
     public void PartyPageButton(string dir)
     {
-        partyPageLength = photonManager.partyList.Count / 8 + 1;
+        partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
         if (dir == "Right") { partyPageCount = (partyPageCount == partyPageLength ? partyPageLength : ++partyPageCount); }
         else if(dir == "Left") { partyPageCount = (partyPageCount == 1 ? 1 : --partyPageCount); }
 
