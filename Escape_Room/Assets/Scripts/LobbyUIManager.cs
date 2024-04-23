@@ -65,12 +65,18 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         else if (index == 1) // 방 만들기 창
         {
             activeUIBoxs[1].SetActive(false);
+
+            // 생성될 리스트의 인원수에 대입시킬 문자열
+            photonManager.partyPeopleNum = $"{1} / {photonManager.peopleNum}"; // 1 은 나중에 파티 기능 생기면 변경
+
             photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
             SetActivePartyList(); // 리스트 활성화 세팅
-            photonManager.peopleNum = 1;
 
             // 페이지 수 동기화
             CheckPartyPageLength();
+
+            photonManager.peopleNum = 1; // 방 만들때 설정한 인원 수 초기화
+            photonManager.setPeopleNumText.text = photonManager.peopleNum.ToString(); // 방 만들때 설정한 인원 수 UI 초기화
         }
     }
 
@@ -124,6 +130,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     void CheckPartyPageLength()
     {
         photonManager.partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
+        if(photonManager.partyPageLength == 0) { photonManager.partyPageLength = 1; }
         photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
     }
 }

@@ -24,9 +24,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     [Header("# Party Info")]
     public string masterName; // 파티장 이름
     public string theme; // 테마
-    public int peopleNum = 1;
+    public string partyPeopleNum; // 파티 생성 시 인원 수
+    public int peopleNum = 1; // 방 만들때 설정하는 인원 수
     public List<GameObject> partyList; // 생성된 리스트들 저장
-    [SerializeField] TextMeshProUGUI setPeopleNumText; // 인원 정하는 텍스트
+    public TextMeshProUGUI setPeopleNumText; // 방 만들 때 인원 정하는 텍스트
     public int partyPageLength = 1; // 총 파티 페이지 수 -> list / 8 + 1 의 결과값
     public TextMeshProUGUI pageCountText; // 페이지 텍스트
 

@@ -10116,7 +10116,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &514994527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32843,7 +32843,6 @@ MonoBehaviour:
   - {fileID: 656128019}
   - {fileID: 517416265}
   - {fileID: 694501149}
-  partyPageLength: 1
   partyPageCount: 1
   photonManager: {fileID: 2059845988}
 --- !u!4 &1667391958
@@ -40616,6 +40615,7 @@ MonoBehaviour:
   peopleNum: 1
   partyList: []
   setPeopleNumText: {fileID: 1529577036}
+  partyPageLength: 1
   pageCountText: {fileID: 579758229}
 --- !u!4 &2059845989
 Transform:
