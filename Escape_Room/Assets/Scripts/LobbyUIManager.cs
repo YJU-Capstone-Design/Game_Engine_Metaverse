@@ -4,32 +4,25 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using System.ComponentModel;
 
 public class LobbyUIManager : Singleton<LobbyUIManager>
 {
     [Header("# UI Boxs")]
     public GameObject[] activeUIBoxs;
+    [SerializeField] RectTransform[] partyListPos; // 파티 리스트들 Position 값
 
-    [Header("# Text")]
-    [SerializeField] TextMeshProUGUI setPeopleNum;
-
-    [Header("# Value")]
-    string masterName; // 파티장 이름
-    string theme; // 테마
-    int peopleNum = 1;
-    [SerializeField] List<GameObject> partyList; // 생성된 리스트들 저장
-    [SerializeField] RectTransform[] partyListPos; // 리스트들 Position 값
+    [Header("# Party System")]
+    [SerializeField] TextMeshProUGUI pageCountText;
+    int partyPageLength = 1; // 총 파티 페이지 수 -> list / 8 + 1 의 결과값
+    int partyPageCount = 1; // 현재 페이지 위치
 
     public PhotonManager photonManager;
 
     private void Awake()
     {
-        setPeopleNum.text = peopleNum.ToString();
-        partyList = new List<GameObject>();
-
-        // 테스트용 
-        masterName = "백민지";
-        theme = "복현동";
+        // 파티 UI 페이지 수 초기화
+        pageCountText.text = $"{partyPageCount} / {partyPageLength}";
     }
 
     private void Update()
@@ -49,11 +42,12 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             if (!activeUIBoxs[0].activeInHierarchy)
             {
                 activeUIBoxs[0].SetActive(true);
+                SetActivePartyList(); // 1 페이지 리스트들 활성화
             }
         }
 
         // 만들어진 방 list 들 position 값 조정
-        if(partyList.Count > 0)
+        if (photonManager.partyList.Count > 0)
         {
             SetListPos();
         }
@@ -69,27 +63,20 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         else if (index == 1) // 방 만들기 창
         {
             activeUIBoxs[1].SetActive(false);
-            GameObject party = photonManager.MakePartyRoom();
-            partyList.Add(party); // 리스트에 추가
-
-            // 값 세팅
-            party.transform.SetParent(activeUIBoxs[0].transform); // 부모 설정
-
-            PartyList partyListLogic = party.GetComponent<PartyList>();
-            partyListLogic.masterName.text = masterName;
-            partyListLogic.theme.text = theme;
-            partyListLogic.peopleNum.text = peopleNum.ToString();
+            photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
+            SetActivePartyList(); // 리스트 활성화 세팅
+            photonManager.peopleNum = 1;
         }
     }
 
     // 만들어진 방 list 들 위치 조정
     void SetListPos()
     {
-        for(int i = 0; i < partyList.Count; i++)
+        for(int i = 0; i < photonManager.partyList.Count; i++)
         {
             int index = i % 8;
 
-            RectTransform partyRectPos = partyList[i].GetComponent<RectTransform>();
+            RectTransform partyRectPos = photonManager.partyList[i].GetComponent<RectTransform>();
 
             partyRectPos.anchorMin = partyListPos[index].anchorMin;
             partyRectPos.anchorMax = partyListPos[index].anchorMax;
@@ -99,35 +86,32 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         }
     }
 
-
-    // 방 만들때 인원 수 정하는 UI 버튼
-    public void SetPeopleNum(string set)
+    // 파티 매칭 시스템 페이지 버튼
+    public void PartyPageButton(string dir)
     {
-        if (set == "Up")
+        partyPageLength = photonManager.partyList.Count / 8 + 1;
+        if (dir == "Right") { partyPageCount = (partyPageCount == partyPageLength ? partyPageLength : ++partyPageCount); }
+        else if(dir == "Left") { partyPageCount = (partyPageCount == 1 ? 1 : --partyPageCount); }
+
+        pageCountText.text = $"{partyPageCount} / {partyPageLength}";
+
+        // 페이지에 맞게 리스트 활성화
+        SetActivePartyList();
+    }
+
+    // 페이지에 맞게 리스트를 활성화 함수
+    void SetActivePartyList()
+    {
+        for (int i = 0; i < photonManager.partyList.Count; i++)
         {
-            if (peopleNum == 5)
+            if (i >= (partyPageCount - 1) * 8 && i < partyPageCount * 8)
             {
-                peopleNum = 1;
+                photonManager.partyList[i].SetActive(true);
             }
             else
             {
-                peopleNum++;
+                photonManager.partyList[i].SetActive(false);
             }
-
-            setPeopleNum.text = peopleNum.ToString();
-        }
-        else if (set == "Down")
-        {
-            if (peopleNum == 1)
-            {
-                peopleNum = 5;
-            }
-            else
-            {
-                peopleNum--;
-            }
-
-            setPeopleNum.text = peopleNum.ToString();
         }
     }
 }

@@ -2,6 +2,8 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,12 +21,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public GameObject playerPrefab;
     public GameObject partyListPrefab;
 
+    [Header("# Party Info")]
+    public string masterName; // 파티장 이름
+    public string theme; // 테마
+    public int peopleNum = 1;
+    public List<GameObject> partyList; // 생성된 리스트들 저장
+    [SerializeField] TextMeshProUGUI setPeopleNumText; // 인원 정하는 텍스트
+
     private void Awake()
     {
-        //DefaultPool pool = new DefaultPool();
-        //pool.ResourceCache.Clear();
-        //pool.ResourceCache.Add(playerPrefab.name, playerPrefab);
-
         // 같은 룸의 유저들에게 자동으로 씬을 로딩
         PhotonNetwork.AutomaticallySyncScene = true;
 
@@ -39,6 +44,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // 서버 접속
         PhotonNetwork.ConnectUsingSettings();
+
+
+        // # 파티 시스템 초기화
+        setPeopleNumText.text = peopleNum.ToString();
+        partyList = new List<GameObject>();
+        // 테스트용 
+        masterName = "백민지";
+        theme = "복현동";
     }
 
     // 포톤 서버에 접속 후 호출되는 콜백 함수
@@ -100,8 +113,25 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 파티 매칭 시스템으로 방 만들기
     public GameObject MakePartyRoom()
     {
-        GameObject partyList = PhotonNetwork.Instantiate(partyListPrefab.name, transform.position, Quaternion.identity); ;
+        GameObject partyList = PhotonNetwork.Instantiate(partyListPrefab.name, transform.position, Quaternion.identity);
 
         return partyList;
+    }
+
+    // 방 만들때 인원 수 정하는 UI 버튼
+    public void SetPeopleNum(string set)
+    {
+        if (set == "Up")
+        {
+            peopleNum = (peopleNum == 5 ? 1 : ++peopleNum);
+
+            setPeopleNumText.text = peopleNum.ToString();
+        }
+        else if (set == "Down")
+        {
+            peopleNum = (peopleNum == 1 ? 5 : --peopleNum);
+
+            setPeopleNumText.text = peopleNum.ToString();
+        }
     }
 }
