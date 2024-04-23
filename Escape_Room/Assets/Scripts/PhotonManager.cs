@@ -27,6 +27,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public int peopleNum = 1;
     public List<GameObject> partyList; // 생성된 리스트들 저장
     [SerializeField] TextMeshProUGUI setPeopleNumText; // 인원 정하는 텍스트
+    public int partyPageLength = 1; // 총 파티 페이지 수 -> list / 8 + 1 의 결과값
+    public TextMeshProUGUI pageCountText; // 페이지 텍스트
 
     private void Awake()
     {

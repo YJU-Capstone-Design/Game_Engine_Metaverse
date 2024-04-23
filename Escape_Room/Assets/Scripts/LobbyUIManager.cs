@@ -13,16 +13,14 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     [SerializeField] RectTransform[] partyListPos; // 파티 리스트들 Position 값
 
     [Header("# Party System")]
-    [SerializeField] TextMeshProUGUI pageCountText;
-    int partyPageLength = 1; // 총 파티 페이지 수 -> list / 8 + 1 의 결과값
-    int partyPageCount = 1; // 현재 페이지 위치
+    public int partyPageCount = 1; // 현재 페이지 위치
 
     public PhotonManager photonManager;
 
     private void Awake()
     {
         // 파티 UI 페이지 수 초기화
-        pageCountText.text = $"{partyPageCount} / {partyPageLength}";
+        photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
     }
 
     private void Update()
@@ -45,7 +43,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                 partyPageCount = 1;
                 SetActivePartyList(); // 1 페이지 리스트들 활성화
 
-                pageCountText.text = $"{partyPageCount} / {partyPageLength}";
+                photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
             }
         }
 
@@ -70,7 +68,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             SetActivePartyList(); // 리스트 활성화 세팅
             photonManager.peopleNum = 1;
 
-            partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
+            photonManager.partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
+            photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
         }
     }
 
@@ -94,11 +93,11 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     // 파티 매칭 시스템 페이지 버튼
     public void PartyPageButton(string dir)
     {
-        partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
-        if (dir == "Right") { partyPageCount = (partyPageCount == partyPageLength ? partyPageLength : ++partyPageCount); }
+        photonManager.partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
+        if (dir == "Right") { partyPageCount = (partyPageCount == photonManager.partyPageLength ? photonManager.partyPageLength : ++partyPageCount); }
         else if(dir == "Left") { partyPageCount = (partyPageCount == 1 ? 1 : --partyPageCount); }
 
-        pageCountText.text = $"{partyPageCount} / {partyPageLength}";
+        photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
 
         // 페이지에 맞게 리스트 활성화
         SetActivePartyList();

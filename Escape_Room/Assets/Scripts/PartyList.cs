@@ -19,6 +19,10 @@ public class PartyList : MonoBehaviour
         if(!LobbyUIManager.Instance.photonManager.partyList.Contains(this.gameObject))
         {
             LobbyUIManager.Instance.photonManager.partyList.Add(this.gameObject);
+
+            // 페이지 수 및 텍스트 변경
+            LobbyUIManager.Instance.photonManager.partyPageLength = (LobbyUIManager.Instance.photonManager.partyList.Count % 8 == 0 ? LobbyUIManager.Instance.photonManager.partyList.Count / 8 : LobbyUIManager.Instance.photonManager.partyList.Count / 8 + 1);
+            LobbyUIManager.Instance.photonManager.pageCountText.text = $"{LobbyUIManager.Instance.partyPageCount} / {LobbyUIManager.Instance.photonManager.partyPageLength}";
         }
 
         // 값 세팅

@@ -32843,7 +32843,8 @@ MonoBehaviour:
   - {fileID: 656128019}
   - {fileID: 517416265}
   - {fileID: 694501149}
-  pageCountText: {fileID: 579758229}
+  partyPageLength: 1
+  partyPageCount: 1
   photonManager: {fileID: 2059845988}
 --- !u!4 &1667391958
 Transform:
@@ -40615,6 +40616,7 @@ MonoBehaviour:
   peopleNum: 1
   partyList: []
   setPeopleNumText: {fileID: 1529577036}
+  pageCountText: {fileID: 579758229}
 --- !u!4 &2059845989
 Transform:
   m_ObjectHideFlags: 0
