@@ -20,6 +20,10 @@ public class PartyList : MonoBehaviour
     public List<int> partyPlayerIDList;
     public int partyPlayerCountMax;
 
+    // 들어갈 리스트의 최대 인원 수 저장
+    string currentPeopleText;
+    string currentMaxPeopleNumText;
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -28,6 +32,13 @@ public class PartyList : MonoBehaviour
 
         if (pv.IsMine) 
         {
+            // 리스트 최대 인원 수 저장
+            currentPeopleText = photonManager.partyPeopleNum;
+            currentPeopleText = currentPeopleText.Replace(" ", "");
+            char[] currentPeopleTextArray = currentPeopleText.ToCharArray();
+            currentMaxPeopleNumText = currentPeopleTextArray[2].ToString();
+
+            // 리스트 세팅
             pv.RPC("SetList", RpcTarget.AllBuffered, photonManager.masterName, photonManager.theme, photonManager.partyPeopleNum, photonManager.peopleNum, photonManager.myPlayer.ViewID);
         }
     }
@@ -66,16 +77,15 @@ public class PartyList : MonoBehaviour
 
 
     // 파티 참가 버튼
-    [PunRPC]
-    public void JoinParty()
+    public void JoinParty(PartyList mainObj)
     {
         bool joined = false;
 
-        foreach(GameObject list in photonManager.partyList)
+        foreach (GameObject list in photonManager.partyList)
         {
             PartyList partyLogic = list.GetComponent<PartyList>();
 
-            foreach(int id in partyLogic.partyPlayerIDList)
+            foreach (int id in partyLogic.partyPlayerIDList)
             {
                 if (id == photonManager.myPlayer.ViewID) // 여기서 photonManager.myPlayer 는 버튼을 누른 사람의 플레이어
                 {
@@ -89,11 +99,7 @@ public class PartyList : MonoBehaviour
         if (joined)
             return;
 
-        if(!pv.IsMine && partyPlayerIDList.Count < partyPlayerCountMax)
-        {
-            partyPlayerIDList.Add(photonManager.myPlayer.ViewID); // 여기서 photonManager.myPlayer 는 버튼을 누른 사람의 플레이어
-        }
-        else if(partyPlayerIDList.Count >= partyPlayerCountMax)
+        if(partyPlayerIDList.Count >= partyPlayerCountMax)
         {
             Debug.Log("이미 파티가 다 찼습니다.");
         }
@@ -101,5 +107,19 @@ public class PartyList : MonoBehaviour
         {
             Debug.Log("당신은 이 파티의 주인입니다.");
         }
+        else if (!pv.IsMine && partyPlayerIDList.Count < partyPlayerCountMax)
+        {
+            partyPlayerIDList.Add(photonManager.myPlayer.ViewID); // 여기서 photonManager.myPlayer 는 버튼을 누른 사람의 플레이어
+
+            Debug.Log(mainObj.currentMaxPeopleNumText);
+            pv.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, partyPlayerIDList.Count, mainObj.currentMaxPeopleNumText);
+        }
+    }
+
+    // 리스트 인원수 실시간 동기화 함수
+    [PunRPC]
+    void SynchronizationPeopleNum(int nowPeopleNum, string maxPeoPleNum)
+    {
+        peopleNum.text = $"{nowPeopleNum} / {maxPeoPleNum}";
     }
 }
