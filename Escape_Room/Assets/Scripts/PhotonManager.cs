@@ -15,6 +15,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     [Header("# Prefab")]
     public GameObject playerPrefab;
     public GameObject partyListPrefab;
+    PhotonView pv;
 
     [Header("# Player")]
     public string masterName = "Test"; // 사용자 이름
@@ -38,6 +39,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         // 테스트용 
         masterName = "백민지";
         theme = "복현동";
+        pv = GetComponent<PhotonView>();
 
         // 같은 룸의 유저들에게 자동으로 씬을 로딩
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -119,9 +121,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
     }
 
-    public override void OnLeftRoom()
+    // 포톤 Lobby 퇴장 시 실행되는 콜백함수
+    public override void OnLeftLobby()
     {
-        myPlayer.RPC("LeftRoom", RpcTarget.AllBuffered, myPlayer.ViewID);
+        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID);
     }
 
 
@@ -153,17 +156,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         partyPeopleNum = $"{1} / {maxPeopleNum}"; // 생성될 list 에 대입시켜줄 값을 저장하는 문자열 -> 1 은 기본값
     }
 
+
     // Room 을 떠날 때 실행될 함수
     [PunRPC]
-    public void LeftRoom(int id)
+    public void LeftPhoton(int id)
     {
-        foreach(GameObject player in partyList)
+        foreach(GameObject player in playerList)
         {
+            Debug.Log(player.GetComponent<PhotonView>().ViewID);
             PhotonView playerPV = player.GetComponent<PhotonView>();
 
             if(playerPV.ViewID == id)
             {
-                partyList.Remove(player.gameObject);
+                playerList.Remove(player.gameObject);
             }
         }
     }
