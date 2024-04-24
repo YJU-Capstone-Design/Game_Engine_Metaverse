@@ -127,6 +127,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID);
     }
 
+    public void DisconnectedPhoton()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
+    // 포톤 연결 종료 시 실행되는 함수
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID);
+    }
+
 
 
 

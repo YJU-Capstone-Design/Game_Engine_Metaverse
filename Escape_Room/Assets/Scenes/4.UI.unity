@@ -32888,7 +32888,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2059845988}
         m_TargetAssemblyTypeName: PhotonManager, Assembly-CSharp
-        m_MethodName: OnLeftLobby
+        m_MethodName: DisconnectedPhoton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
