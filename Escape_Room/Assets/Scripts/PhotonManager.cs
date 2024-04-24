@@ -9,21 +9,18 @@ using UnityEngine.UI;
 
 public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 CallBack 함수를 쓸 수 있음.
 {
-    [SerializeField] Vector3 spawnPoint;
-
     // 버전
     private readonly string version = "1.0f";
-
-    // 사용자 아이디 입력
-    private string userId = "Test";
 
     [Header("# Prefab")]
     public GameObject playerPrefab;
     public GameObject partyListPrefab;
 
     [Header("# Player")]
+    private string userId = "Test"; // 사용자 아이디
+    [SerializeField] Vector3 spawnPoint;
     public PhotonView myPlayer;
-
+    public List<GameObject> playerList;
 
     [Header("# PartyList Info")]
     public string masterName; // 파티장 이름
@@ -54,6 +51,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         // 서버 접속
         PhotonNetwork.ConnectUsingSettings();
 
+        // 플레이어 리스트 초기화
+        playerList = new List<GameObject>();
 
         // # 파티 시스템 초기화
         setPeopleNumText.text = peopleNum.ToString();

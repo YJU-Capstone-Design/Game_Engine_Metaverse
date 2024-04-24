@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -21,7 +22,15 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    
+    private void OnEnable()
+    {
+        if (!LobbyUIManager.Instance.photonManager.playerList.Contains(this.gameObject))
+        {
+            pv.RPC("AddMeToLIst", RpcTarget.AllBuffered);
+        }
+    }
+
+
     void Update()
     {
         if(pv.IsMine)
@@ -37,5 +46,14 @@ public class PlayerMove : MonoBehaviour
     {
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
         transform.position += moveVec * 1 * Time.deltaTime; // 1 은 스피드
+    }
+
+    [PunRPC]
+    void AddMeToLIst()
+    {
+        if (!LobbyUIManager.Instance.photonManager.playerList.Contains(this.gameObject))
+        {
+            LobbyUIManager.Instance.photonManager.playerList.Add(this.gameObject);
+        }
     }
 }

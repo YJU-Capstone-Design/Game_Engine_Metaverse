@@ -72,15 +72,23 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             } 
             else
             {
+                bool joinedParty = false;
                 for (int i = 0; i < photonManager.partyList.Count; i++)
                 {
                     PhotonView listPV = photonManager.partyList[i].GetComponent<PhotonView>();
 
-                    if (listPV.IsMine)
+                    foreach (int id in photonManager.partyList[i].GetComponent<PartyList>().partyPlayerIDList)
                     {
-                        Debug.Log("이미 파티가 있습니다");
-                        break;
+                        if (id == photonManager.myPlayer.ViewID) // 여기서 photonManager.myPlayer 는 버튼을 누른 사람의 플레이어
+                        {
+                            Debug.Log("당신은 이미 파티에 가입되어 있습니다.");
+                            joinedParty = true;
+                            break;
+                        }
                     }
+
+                    if (joinedParty)
+                        break;
 
                     if (i == photonManager.partyList.Count - 1)
                     {
