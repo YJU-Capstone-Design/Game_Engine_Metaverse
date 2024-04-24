@@ -18,8 +18,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     [Header("# Player")]
     public string masterName = "Test"; // 사용자 이름
-    [SerializeField] Vector3 spawnPoint;
     public PhotonView myPlayer;
+    [SerializeField] Vector3 spawnPoint;
     public List<GameObject> playerList;
 
     [Header("# PartyList Info")]
@@ -119,6 +119,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
     }
 
+    public override void OnLeftRoom()
+    {
+        myPlayer.RPC("LeftRoom", RpcTarget.AllBuffered, myPlayer.ViewID);
+    }
+
+
+
+
+    // # 인게임 함수
+
     // 파티 매칭 시스템으로 방(파티) 만들기
     public GameObject MakePartyRoom()
     {
@@ -141,5 +151,20 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         maxPeopleNumText.text = maxPeopleNum.ToString(); // 파티 인원 수를 설정할 때 보이는 UI
         partyPeopleNum = $"{1} / {maxPeopleNum}"; // 생성될 list 에 대입시켜줄 값을 저장하는 문자열 -> 1 은 기본값
+    }
+
+    // Room 을 떠날 때 실행될 함수
+    [PunRPC]
+    public void LeftRoom(int id)
+    {
+        foreach(GameObject player in partyList)
+        {
+            PhotonView playerPV = player.GetComponent<PhotonView>();
+
+            if(playerPV.ViewID == id)
+            {
+                partyList.Remove(player.gameObject);
+            }
+        }
     }
 }

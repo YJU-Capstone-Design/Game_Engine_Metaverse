@@ -40611,8 +40611,8 @@ MonoBehaviour:
   partyListPrefab: {fileID: 5536942418615512625, guid: 46a8b320cd320ce479749617ee1a9fca,
     type: 3}
   masterName: 
-  spawnPoint: {x: -0.6, y: 6, z: 8}
   myPlayer: {fileID: 0}
+  spawnPoint: {x: -0.6, y: 6, z: 8}
   playerList: []
   theme: 
   partyPeopleNum: 
