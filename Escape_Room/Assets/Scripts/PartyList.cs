@@ -66,7 +66,8 @@ public class PartyList : MonoBehaviour
 
 
     // 파티 참가 버튼
-    public void JoinParty(PartyList owner)
+    [PunRPC]
+    public void JoinParty()
     {
         bool joined = false;
 
@@ -88,15 +89,15 @@ public class PartyList : MonoBehaviour
         if (joined)
             return;
 
-        if(!owner.pv.IsMine && owner.partyPlayerIDList.Count < partyPlayerCountMax)
+        if(!pv.IsMine && partyPlayerIDList.Count < partyPlayerCountMax)
         {
-            owner.partyPlayerIDList.Add(photonManager.myPlayer.ViewID); // 여기서 photonManager.myPlayer 는 버튼을 누른 사람의 플레이어
+            partyPlayerIDList.Add(photonManager.myPlayer.ViewID); // 여기서 photonManager.myPlayer 는 버튼을 누른 사람의 플레이어
         }
-        else if(owner.partyPlayerIDList.Count >= partyPlayerCountMax)
+        else if(partyPlayerIDList.Count >= partyPlayerCountMax)
         {
             Debug.Log("이미 파티가 다 찼습니다.");
         }
-        else if(owner.pv.IsMine)
+        else if(pv.IsMine)
         {
             Debug.Log("당신은 이 파티의 주인입니다.");
         }

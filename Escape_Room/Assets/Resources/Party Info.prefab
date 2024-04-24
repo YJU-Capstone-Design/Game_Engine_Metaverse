@@ -717,10 +717,10 @@ MonoBehaviour:
       - m_Target: {fileID: 8657835113873819041}
         m_TargetAssemblyTypeName: PartyList, Assembly-CSharp
         m_MethodName: JoinParty
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8657835113873819041}
-          m_ObjectArgumentAssemblyTypeName: PartyList, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
