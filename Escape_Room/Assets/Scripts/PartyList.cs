@@ -9,20 +9,17 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class PartyList : MonoBehaviour
 {
-    public TextMeshProUGUI masterName;
-    public TextMeshProUGUI theme;
-    public TextMeshProUGUI peopleNum;
+    [Header("# List Info")]
+    public TextMeshProUGUI listMasterNameText; // 리스트 주인을 담을 UI
+    public TextMeshProUGUI listThemeText;      // 리스트 게임 테마를 담을 UI
+    public TextMeshProUGUI listPeopleNumText;  // 리스트 현재 파티 인원 수 정보를 담을 UI
+    public int maxPeopleNum; // 파티 생성 시 설정한 최대 인원수
+    public List<int> partyPlayerIDList; // 현재 파티에 있는 플레이어 ViewID 를 담을 리스트
 
+    [Header("# Components")]
     PhotonView pv;
     LobbyUIManager lobbyUIManager;
     PhotonManager photonManager;
-
-    public List<int> partyPlayerIDList;
-    public int partyPlayerCountMax;
-
-    // 들어갈 리스트의 최대 인원 수 저장
-    string currentPeopleText;
-    string currentMaxPeopleNumText;
 
     private void Awake()
     {
@@ -32,14 +29,8 @@ public class PartyList : MonoBehaviour
 
         if (pv.IsMine) 
         {
-            // 리스트 최대 인원 수 저장
-            currentPeopleText = photonManager.partyPeopleNum;
-            currentPeopleText = currentPeopleText.Replace(" ", "");
-            char[] currentPeopleTextArray = currentPeopleText.ToCharArray();
-            currentMaxPeopleNumText = currentPeopleTextArray[2].ToString();
-
             // 리스트 세팅
-            pv.RPC("SetList", RpcTarget.AllBuffered, photonManager.masterName, photonManager.theme, photonManager.partyPeopleNum, photonManager.peopleNum, photonManager.myPlayer.ViewID);
+            pv.RPC("SetList", RpcTarget.AllBuffered, photonManager.masterName, photonManager.theme, photonManager.partyPeopleNum, photonManager.maxPeopleNum, photonManager.myPlayer.ViewID);
         }
     }
 
@@ -58,21 +49,21 @@ public class PartyList : MonoBehaviour
     }
 
     [PunRPC]
-    void SetList(string nameText, string themeText, string peopleNumText, int setPeopleNum, int playerId)
+    void SetList(string nameText, string themeText, string peopleNumText, int maxPeopleNum, int playerId)
     {
         // 옵션 세팅
-        masterName.text = nameText;
-        theme.text = themeText;
-        peopleNum.text = peopleNumText;
+        listMasterNameText.text = nameText;
+        listThemeText.text = themeText;
+        listPeopleNumText.text = peopleNumText;
 
         // 생성된 파티 옵션 세팅
-        partyPlayerCountMax = setPeopleNum;
+        this.maxPeopleNum = maxPeopleNum;
         partyPlayerIDList.Add(playerId);
 
         // 파티 생성 시 설정했던 값들 초기화
-        photonManager.peopleNum = 1; // 파티 만들때 설정한 인원 수 초기화
-        photonManager.setPeopleNumText.text = photonManager.peopleNum.ToString(); // 파티 만들때 설정한 파티 생성 인원 수 UI 초기화
-        photonManager.partyPeopleNum = $"{1} / {photonManager.peopleNum}"; // 파티 만들때 설정한 리스트 인원 수 UI 초기화
+        photonManager.maxPeopleNum = 1; // 파티 만들때 설정한 인원 수 초기화
+        photonManager.maxPeopleNumText.text = "1";
+        photonManager.partyPeopleNum = $"{1} / {photonManager.maxPeopleNum}"; // 파티 만들때 설정한 리스트 인원 수 UI 초기화
     }
 
 
@@ -99,7 +90,7 @@ public class PartyList : MonoBehaviour
         if (joined)
             return;
 
-        if(partyPlayerIDList.Count >= partyPlayerCountMax)
+        if(partyPlayerIDList.Count >= maxPeopleNum)
         {
             Debug.Log("이미 파티가 다 찼습니다.");
         }
@@ -107,19 +98,18 @@ public class PartyList : MonoBehaviour
         {
             Debug.Log("당신은 이 파티의 주인입니다.");
         }
-        else if (!pv.IsMine && partyPlayerIDList.Count < partyPlayerCountMax)
+        else if (!pv.IsMine && partyPlayerIDList.Count < maxPeopleNum)
         {
             partyPlayerIDList.Add(photonManager.myPlayer.ViewID); // 여기서 photonManager.myPlayer 는 버튼을 누른 사람의 플레이어
 
-            Debug.Log(mainObj.currentMaxPeopleNumText);
-            pv.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, partyPlayerIDList.Count, mainObj.currentMaxPeopleNumText);
+            pv.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, partyPlayerIDList.Count, mainObj.maxPeopleNum);
         }
     }
 
     // 리스트 인원수 실시간 동기화 함수
     [PunRPC]
-    void SynchronizationPeopleNum(int nowPeopleNum, string maxPeoPleNum)
+    void SynchronizationPeopleNum(int nowPeopleNum, int maxPeoPleNum)
     {
-        peopleNum.text = $"{nowPeopleNum} / {maxPeoPleNum}";
+        listPeopleNumText.text = $"{nowPeopleNum} / {maxPeoPleNum}";
     }
 }

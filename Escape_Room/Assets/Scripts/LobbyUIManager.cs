@@ -31,6 +31,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             foreach (GameObject obj in activeUIBoxs)
             {
                 if (obj.activeInHierarchy) { obj.SetActive(false); partyPageCount = 1; }
+                photonManager.maxPeopleNum = 1;
+                photonManager.maxPeopleNumText.text = "1";
             }
         }
 

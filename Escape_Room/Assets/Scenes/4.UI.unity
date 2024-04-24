@@ -40606,18 +40606,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe467a522bfab3d47a27c8be0a6cc716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {x: -0.6, y: 6, z: 8}
   playerPrefab: {fileID: 4956746261993668430, guid: d86cc002b1258564884ba49af0144c8a,
     type: 3}
   partyListPrefab: {fileID: 5536942418615512625, guid: 46a8b320cd320ce479749617ee1a9fca,
     type: 3}
   masterName: 
+  spawnPoint: {x: -0.6, y: 6, z: 8}
+  myPlayer: {fileID: 0}
+  playerList: []
   theme: 
   partyPeopleNum: 
   partyList: []
-  peopleNum: 1
-  setPeopleNumText: {fileID: 1529577036}
+  maxPeopleNum: 1
   partyPageLength: 1
+  maxPeopleNumText: {fileID: 1529577036}
   pageCountText: {fileID: 579758229}
 --- !u!4 &2059845989
 Transform:
