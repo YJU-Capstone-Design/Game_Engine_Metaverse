@@ -92,7 +92,7 @@ PlayerSettings:
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
-  resizableWindow: 1
+  resizableWindow: 0
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
   gpuSkinning: 1
@@ -910,13 +910,7 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled:
-    Build: 0
-    Game Performance: 0
-    Legacy Analytics: 0
-    Purchasing: 0
-    UDP: 0
-    Unity Ads: 0
+  cloudServicesEnabled: {}
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -934,13 +928,13 @@ PlayerSettings:
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 2
+  activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: bec73fd2-6c73-4f2c-9cf6-d7606cfb413c
+  cloudProjectId: 60b928c8-ba1b-4510-a466-d550277d6d0d
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Escape_Room
-  organizationId: uic3883
+  projectName: Escape_Room 2024-04-02_23-27-57
+  organizationId: als0512123
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
