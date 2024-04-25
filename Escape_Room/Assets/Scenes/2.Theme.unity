@@ -8365,7 +8365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2e575b2c020c640bb7cfba7650f24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  talkText: {fileID: 0}
+  talkText: {fileID: 28623753}
   scanObject: {fileID: 0}
 --- !u!4 &520099303
 Transform:
