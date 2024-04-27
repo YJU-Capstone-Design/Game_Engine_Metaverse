@@ -109,7 +109,6 @@ public class PartyList : MonoBehaviour
     void SynchronizationPeopleNum(int id, int nowPeopleNum, int maxPeoPleNum)
     {
         partyPlayerIDList.Add(id);
-        nowPeopleNum++;
         listPeopleNumText.text = $"{nowPeopleNum} / {maxPeoPleNum}";
     }
 }

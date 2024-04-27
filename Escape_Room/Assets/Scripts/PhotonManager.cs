@@ -121,11 +121,23 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
     }
 
-    // 포톤 퇴장 시 실행되는 콜백함수
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    // 포톤 Lobby 퇴장 시 실행되는 콜백함수
+    public override void OnLeftLobby()
     {
-        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID); // 본인과 관련된 데이터들 삭제
+        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID);
     }
+
+    public void DisconnectedPhoton()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
+    // 포톤 연결 종료 시 실행되는 함수
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID);
+    }
+
 
 
 
@@ -156,35 +168,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     }
 
 
-    // 포톤 연결 종료 시 실행될 함수
+    // Room 을 떠날 때 실행될 함수
     [PunRPC]
     public void LeftPhoton(int id)
     {
-        // 나가는 사람 확인
-        for (int i = 0; i < playerList.Count; i++)
+        foreach(GameObject player in playerList)
         {
-            PhotonView playerPV = playerList[i].GetComponent<PhotonView>();
+            Debug.Log(player.GetComponent<PhotonView>().ViewID);
+            PhotonView playerPV = player.GetComponent<PhotonView>();
 
-            if (playerPV.ViewID == id)
+            if(playerPV.ViewID == id)
             {
-                // 플레이어 리스트에서 본인 제거
-                playerList.Remove(playerPV.gameObject);
-
-                // 파티 리스트
-                for(int j = 0; j < partyList.Count; j++)
-                {
-                    PartyList partyLogic = partyList[i].GetComponent<PartyList>();
-
-                    // 리스트에서 본인이 만든 파티 제거
-                    if (playerPV.IsMine)
-                    {
-                        partyList.Remove(partyLogic.gameObject);
-                    }
-                    else if (partyLogic.partyPlayerIDList.Contains(id)) // 자신이 속해 있는 파티에서 본인 제거
-                    {
-                        partyLogic.partyPlayerIDList.Remove(id);
-                    }
-                }
+                playerList.Remove(player.gameObject);
             }
         }
     }
