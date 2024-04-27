@@ -100,15 +100,25 @@ public class PartyList : MonoBehaviour
         }
         else if (!pv.IsMine && partyPlayerIDList.Count < maxPeopleNum)
         {
-            pv.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, photonManager.myPlayer.ViewID, partyPlayerIDList.Count, mainObj.maxPeopleNum);
+            pv.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, photonManager.myPlayer.ViewID, partyPlayerIDList.Count, mainObj.maxPeopleNum, true);
         }
     }
 
     // 리스트의 파티 멤버 및 인원 수 실시간 동기화 함수
     [PunRPC]
-    void SynchronizationPeopleNum(int id, int nowPeopleNum, int maxPeoPleNum)
+    void SynchronizationPeopleNum(int id, int nowPeopleNum, int maxPeoPleNum, bool add)
     {
-        partyPlayerIDList.Add(id);
-        listPeopleNumText.text = $"{nowPeopleNum} / {maxPeoPleNum}";
+        if(add)
+        {
+            partyPlayerIDList.Add(id);
+            nowPeopleNum++;
+            listPeopleNumText.text = $"{nowPeopleNum} / {maxPeoPleNum}";
+        } 
+        else if(!add)
+        {
+            partyPlayerIDList.Remove(id);
+            nowPeopleNum--;
+            listPeopleNumText.text = $"{nowPeopleNum} / {maxPeoPleNum}";
+        }
     }
 }

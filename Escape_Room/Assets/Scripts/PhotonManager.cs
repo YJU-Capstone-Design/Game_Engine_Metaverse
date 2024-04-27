@@ -1,4 +1,6 @@
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
 using System.Collections;
@@ -124,7 +126,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 포톤 퇴장 시 실행되는 콜백함수
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID); // 본인과 관련된 데이터들 삭제
+        pv.RPC("LeftPhoton", RpcTarget.All, otherPlayer.ActorNumber); // 본인과 관련된 데이터들 삭제
     }
 
 
@@ -158,32 +160,36 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     // 포톤 연결 종료 시 실행될 함수
     [PunRPC]
-    public void LeftPhoton(int id)
+    public void LeftPhoton(int ActorNum)
     {
         // 나가는 사람 확인
         for (int i = 0; i < playerList.Count; i++)
         {
             PhotonView playerPV = playerList[i].GetComponent<PhotonView>();
 
-            if (playerPV.ViewID == id)
+            if (playerPV.ViewID / 1000 == ActorNum)
             {
-                // 플레이어 리스트에서 본인 제거
+                // 플레이어 리스트와 Scene에서 본인 제거
                 playerList.Remove(playerPV.gameObject);
+                Destroy(playerPV.gameObject);
+            }
 
-                // 파티 리스트
-                for(int j = 0; j < partyList.Count; j++)
+            // 파티 리스트
+            for (int j = 0; j < partyList.Count; j++)
+            {
+                PartyList partyLogic = partyList[j].GetComponent<PartyList>();
+
+                if (partyLogic.partyPlayerIDList.Contains(playerPV.ViewID) && playerPV.ViewID / 1000 == ActorNum) // 자신이 속해 있는 파티에서 본인 제거
                 {
-                    PartyList partyLogic = partyList[i].GetComponent<PartyList>();
+                    // 인원 UI 실시간 적용
+                    partyLogic.GetComponent<PhotonView>().RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, playerPV.ViewID, partyLogic.partyPlayerIDList.Count, partyLogic.maxPeopleNum, false);
+                }
 
-                    // 리스트에서 본인이 만든 파티 제거
-                    if (playerPV.IsMine)
-                    {
-                        partyList.Remove(partyLogic.gameObject);
-                    }
-                    else if (partyLogic.partyPlayerIDList.Contains(id)) // 자신이 속해 있는 파티에서 본인 제거
-                    {
-                        partyLogic.partyPlayerIDList.Remove(id);
-                    }
+                if (partyLogic.GetComponent<PhotonView>().ViewID/1000 == ActorNum)
+                {
+                    // 리스트와 Scene 에서 본인이 만든 파티 제거
+                    partyList.Remove(partyLogic.gameObject);
+                    Destroy(partyLogic.gameObject);
                 }
             }
         }
