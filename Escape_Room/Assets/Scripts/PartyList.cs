@@ -52,14 +52,6 @@ public class PartyList : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        // 파티 생성 시 설정했던 값들 초기화
-        photonManager.maxPeopleNum = 1; // 파티 만들때 설정한 인원 수 초기화
-        photonManager.maxPeopleNumText.text = "1";
-        photonManager.partyPeopleNum = $"{1} / {photonManager.maxPeopleNum}"; // 파티 만들때 설정한 리스트 인원 수 UI 초기화
-    }
-
     [PunRPC]
     void SetList(string nameText, string themeText, string peopleNumText, int maxPeopleNum, int playerId)
     {
@@ -71,6 +63,11 @@ public class PartyList : MonoBehaviour
         // 생성된 파티 옵션 세팅
         this.maxPeopleNum = maxPeopleNum;
         partyPlayerIDList.Add(playerId);
+
+        // 파티 생성 시 설정했던 값들 초기화
+        photonManager.maxPeopleNum = 1; // 파티 만들때 설정한 인원 수 초기화
+        photonManager.maxPeopleNumText.text = "1";
+        photonManager.partyPeopleNum = $"{1} / {photonManager.maxPeopleNum}"; // 파티 만들때 설정한 리스트 인원 수 UI 초기화
     }
 
 

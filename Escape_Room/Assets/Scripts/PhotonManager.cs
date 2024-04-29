@@ -127,7 +127,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 포톤 퇴장 시 실행되는 콜백함수
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        pv.RPC("LeftPhoton", RpcTarget.All, otherPlayer.ActorNumber); // 본인과 관련된 데이터들 삭제
+        pv.RPC("LeftPhoton", RpcTarget.All, otherPlayer.ActorNumber, true); // 본인과 관련된 데이터들 삭제
     }
 
 
@@ -158,19 +158,28 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         partyPeopleNum = $"{1} / {maxPeopleNum}"; // 생성될 list 에 대입시켜줄 값을 저장하는 문자열 -> 1 은 기본값
     }
 
+    // 파티 탈퇴 버튼
+    public void LeftParty()
+    {
+        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID/1000, false); // 본인과 관련된 데이터들 삭제
+
+        // 본인  mini 파티 UI 비활성화
+        LobbyUIManager.Instance.miniPartyUI.SetActive(false);
+    }
+
 
     // 포톤 연결 종료 시 실행될 함수
     [PunRPC]
-    public void LeftPhoton(int ActorNum)
+    public void LeftPhoton(int ActorNum, bool leftPhoton)
     {
         // 나가는 사람 확인
         for (int i = 0; i < playerList.Count; i++)
         {
             PhotonView playerPV = playerList[i].GetComponent<PhotonView>();
 
-            if (playerPV.ViewID / 1000 == ActorNum)
+            // 포톤 서버 종료 시, 플레이어 리스트와 Scene에서 본인 제거
+            if (playerPV.ViewID / 1000 == ActorNum && leftPhoton)
             {
-                // 플레이어 리스트와 Scene에서 본인 제거
                 playerList.Remove(playerPV.gameObject);
                 Destroy(playerPV.gameObject);
             }
@@ -196,6 +205,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                 {
                     // 리스트와 Scene 에서 본인이 만든 파티 제거
                     partyList.Remove(partyLogic.gameObject);
+                    Destroy(partyLogic.gameObject);
 
                     // 팀원들 및 본인 mini 파티 UI 비활성화 및 리스트 초기화
                     partyLogic.lobbyUIManager.miniPartyUI.SetActive(false);
@@ -205,6 +215,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                         if (partyLogic.lobbyUIManager.partyPlayerList[k] != null)
                         {
                             Destroy(partyLogic.lobbyUIManager.partyPlayerList[k]);
+                        }
+
+                        if(partyLogic.lobbyUIManager.partyPlayerList.Count - 1 == k)
+                        {
+                            partyLogic.lobbyUIManager.partyPlayerList.Clear();
                         }
                     }
                 }
