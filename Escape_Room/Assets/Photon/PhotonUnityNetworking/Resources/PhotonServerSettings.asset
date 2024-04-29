@@ -54,6 +54,11 @@ MonoBehaviour:
   - LeftRoom
   - LeftPhoton
   - AddSynchronizationPeopleNum
+  - PartyPageButton
+  - AddMyNickName
+  - AddOwnerNickName
+  - AddNickName
+  - AddMyName
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

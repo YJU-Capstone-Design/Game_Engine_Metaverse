@@ -535,6 +535,7 @@ MonoBehaviour:
   listPeopleNumText: {fileID: 6939748950942058390}
   maxPeopleNum: 0
   partyPlayerIDList: 
+  lobbyUIManager: {fileID: 0}
 --- !u!114 &8459763070859091914
 MonoBehaviour:
   m_ObjectHideFlags: 0

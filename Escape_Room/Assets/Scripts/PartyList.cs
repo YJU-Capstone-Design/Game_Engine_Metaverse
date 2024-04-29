@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Unity.VisualScripting;
 using static UnityEngine.UI.GridLayoutGroup;
+using WebSocketSharp;
 
 public class PartyList : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class PartyList : MonoBehaviour
 
     [Header("# Components")]
     PhotonView pv;
-    LobbyUIManager lobbyUIManager;
+    public LobbyUIManager lobbyUIManager;
     PhotonManager photonManager;
 
     private void Awake()
@@ -90,17 +91,23 @@ public class PartyList : MonoBehaviour
         if (joined)
             return;
 
-        if(partyPlayerIDList.Count >= maxPeopleNum)
+        if(pv.IsMine)
         {
             Debug.Log("이미 파티가 다 찼습니다.");
         }
-        else if(pv.IsMine)
+        else if(partyPlayerIDList.Count >= maxPeopleNum)
         {
             Debug.Log("당신은 이 파티의 주인입니다.");
         }
         else if (!pv.IsMine && partyPlayerIDList.Count < maxPeopleNum)
         {
             pv.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, photonManager.myPlayer.ViewID, partyPlayerIDList.Count, mainObj.maxPeopleNum, true);
+
+            // mini 파티 UI 활성화
+            lobbyUIManager.miniPartyUI.SetActive(true);
+
+            // mini 파티 UI 에 들어갈 Player Name Box 생성
+            PhotonNetwork.Instantiate(photonManager.playerNameBoxPrefab.name, transform.position, Quaternion.identity);
         }
     }
 

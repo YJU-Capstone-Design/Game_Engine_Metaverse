@@ -17,6 +17,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     [Header("# Prefab")]
     public GameObject playerPrefab;
     public GameObject partyListPrefab;
+    public GameObject playerNameBoxPrefab;
     PhotonView pv;
 
     [Header("# Player")]
@@ -190,6 +191,23 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                     // 리스트와 Scene 에서 본인이 만든 파티 제거
                     partyList.Remove(partyLogic.gameObject);
                     Destroy(partyLogic.gameObject);
+                }
+
+                // 본인이 파티 장이면 팀원들 및 본인 Mini 파티 UI 비활성화
+                if (playerPV.IsMine)
+                {
+                    // 팀원들 및 본인 Mini 파티 UI 비활성화 및 리스트 초기화
+                    partyLogic.lobbyUIManager.miniPartyUI.SetActive(false);
+
+                    for(int k = 0; k < partyLogic.lobbyUIManager.partyPlayerList.Count; k++)
+                    {
+                        if (partyLogic.lobbyUIManager.partyPlayerList[k] != null)
+                        {
+                            Destroy(partyLogic.lobbyUIManager.partyPlayerList[k]);
+                        }
+                    }
+
+                    partyLogic.lobbyUIManager.partyPlayerList.Clear();
                 }
             }
         }

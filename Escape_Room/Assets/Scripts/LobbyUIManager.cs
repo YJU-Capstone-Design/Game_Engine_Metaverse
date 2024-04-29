@@ -5,20 +5,31 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System.ComponentModel;
+using Photon.Realtime;
 
 public class LobbyUIManager : Singleton<LobbyUIManager>
 {
     [Header("# UI Boxs")]
     public GameObject[] activeUIBoxs;
     [SerializeField] RectTransform[] partyListPos; // 파티 리스트들 Position 값
+    public GameObject miniPartyUI; // 파티 생성/참여 후 화면에 표시될 mini 파티 UI
+    public TextMeshProUGUI miniPartyUITitle;
+    public GameObject partyPlayerListParent;
+    public List<GameObject> partyPlayerList;
+    public RectTransform[] partyPlayerListPos; // 현재 파티의 플레이어 이름이 들어갈 빈 Text 들
 
     [Header("# Party System")]
     public int partyPageCount = 1; // 현재 페이지 위치
 
     public PhotonManager photonManager;
+    PhotonView pv;
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
+
+        partyPlayerList = new List<GameObject>();
+
         // 페이지 수 동기화
         CheckPartyPageLength();
     }
@@ -55,6 +66,12 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         if (photonManager.partyList.Count > 0)
         {
             SetListPos();
+        }
+
+        // 생성된 PartyPlayerList Position 값 조정
+        if(partyPlayerList.Count > 0)
+        {
+            SetPlayerListPos();
         }
     }
 
@@ -108,8 +125,15 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         activeUIBoxs[1].SetActive(false);
         photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
         SetActivePartyList(); // 리스트 활성화 세팅
-                              // 페이지 수 동기화
+        
+        // 페이지 수 동기화
         CheckPartyPageLength();
+
+        // mini 파티 UI 활성화
+        miniPartyUI.SetActive(true);
+
+        // mini 파티 UI 에 들어갈 Player Name Box 생성
+        PhotonNetwork.Instantiate(photonManager.playerNameBoxPrefab.name, transform.position, Quaternion.identity);
     }
 
     // 만들어진 방 list 들 위치 조정
@@ -128,6 +152,22 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             partyRectPos.offsetMax = Vector2.zero;
         }
     }
+
+    // 생성된 mini 파티 UI 의 partyPlayerList 들 위치 조정
+    public void SetPlayerListPos()
+    {
+        for (int i = 0; i < partyPlayerList.Count; i++)
+        {
+            RectTransform partyRectPos = partyPlayerList[i].GetComponent<RectTransform>();
+
+            partyRectPos.anchorMin = partyPlayerListPos[i].anchorMin;
+            partyRectPos.anchorMax = partyPlayerListPos[i].anchorMax;
+
+            partyRectPos.offsetMin = Vector2.zero;
+            partyRectPos.offsetMax = Vector2.zero;
+        }
+    }
+
 
     // 파티 매칭 시스템 페이지 버튼
     public void PartyPageButton(string dir)
