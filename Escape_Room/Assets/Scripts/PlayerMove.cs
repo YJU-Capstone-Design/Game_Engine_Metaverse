@@ -29,6 +29,8 @@ public class PlayerMove : MonoBehaviour
         {
             pv.RPC("AddMeToLIst", RpcTarget.AllBuffered);
         }
+
+        this.gameObject.name = LobbyUIManager.Instance.photonManager.masterName;
     }
 
 
