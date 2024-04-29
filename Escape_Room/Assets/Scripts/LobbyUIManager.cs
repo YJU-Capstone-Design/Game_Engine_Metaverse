@@ -13,9 +13,9 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     public GameObject[] activeUIBoxs;
     [SerializeField] RectTransform[] partyListPos; // 파티 리스트들 Position 값
     public GameObject miniPartyUI; // 파티 생성/참여 후 화면에 표시될 mini 파티 UI
-    public TextMeshProUGUI miniPartyUITitle;
+    public TextMeshProUGUI miniPartyUITitle; // mini 파티 UI 타이틀 텍스트
     public GameObject partyPlayerListParent;
-    public List<GameObject> partyPlayerList;
+    public List<GameObject> partyPlayerList; // 생성된 파티 플레이어 NameBox 가 담길 List
     public RectTransform[] partyPlayerListPos; // 현재 파티의 플레이어 이름이 들어갈 빈 Text 들
 
     [Header("# Party System")]

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerNameBox : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class PlayerNameBox : MonoBehaviour
         }
     }
 
+    // mini 파티 UI 플레이어 List 에 추가 및 타이틀 인원 실시간 변경
     [PunRPC]
     void AddMyName(string name)
     {

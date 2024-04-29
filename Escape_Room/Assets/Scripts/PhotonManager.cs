@@ -181,17 +181,21 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                 PartyList partyLogic = partyList[j].GetComponent<PartyList>();
                 PhotonView partyPV = partyList[j].GetComponent<PhotonView>();
 
-                if (partyLogic.partyPlayerIDList.Contains(playerPV.ViewID) && playerPV.ViewID / 1000 == ActorNum) // 자신이 속해 있는 파티에서 본인 제거
+                // 자신이 속해 있는 파티에서 본인 제거
+                if (partyLogic.partyPlayerIDList.Contains(playerPV.ViewID) && playerPV.ViewID / 1000 == ActorNum) 
                 {
                     // 인원 UI 실시간 적용
                     partyPV.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, playerPV.ViewID, partyLogic.partyPlayerIDList.Count, partyLogic.maxPeopleNum, false);
+
+                    // mini 파티 UI Title 세팅
+                    partyPV.RPC("SynchronizationPartyPeopleNum", RpcTarget.AllBuffered, partyLogic.listPeopleNumText.text);
                 }
 
+                // 본인이 파티장일때
                 if (partyPV.ViewID/1000 == ActorNum)
                 {
                     // 리스트와 Scene 에서 본인이 만든 파티 제거
                     partyList.Remove(partyLogic.gameObject);
-                    Destroy(partyLogic.gameObject);
 
                     // 팀원들 및 본인 mini 파티 UI 비활성화 및 리스트 초기화
                     partyLogic.lobbyUIManager.miniPartyUI.SetActive(false);
@@ -204,9 +208,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                         }
                     }
                 }
-                else
+                else // 본인이 파티장이 아닐때
                 {
-                    // 팀원들 mini 파티 UI 에서 본인 리스트 삭제
+                    // 팀원들 mini 파티 UI 에서 본인 PlayerNameBox 삭제
                     for (int k = 0; k < partyLogic.lobbyUIManager.partyPlayerList.Count; k++)
                     {
                         PhotonView partyPlayerPV = partyLogic.lobbyUIManager.partyPlayerList[k].GetComponent<PhotonView>();
