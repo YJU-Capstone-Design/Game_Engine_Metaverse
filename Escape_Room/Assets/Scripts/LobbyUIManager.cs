@@ -32,6 +32,12 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
         // 페이지 수 동기화
         CheckPartyPageLength();
+
+        foreach(GameObject obj in activeUIBoxs)
+        {
+            obj.SetActive(false);
+        }
+        miniPartyUI.SetActive(false);
     }
 
     private void Update()

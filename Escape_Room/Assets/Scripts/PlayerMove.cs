@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     PhotonView pv;
+    public PhotonManager photonManager;
 
     float hAxis;
     float vAxis;
@@ -16,8 +17,9 @@ public class PlayerMove : MonoBehaviour
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+        photonManager = LobbyUIManager.Instance.photonManager;
 
-        if(pv.IsMine)
+        if (pv.IsMine)
         {
             LobbyUIManager.Instance.photonManager.myPlayer = pv;
         }

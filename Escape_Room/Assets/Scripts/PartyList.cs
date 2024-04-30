@@ -35,6 +35,9 @@ public class PartyList : MonoBehaviour
 
             // mini 파티 UI Title 세팅
             pv.RPC("SynchronizationPartyPeopleNum", RpcTarget.AllBuffered, listPeopleNumText.text);
+
+            // Photon Manager 에 저장
+            photonManager.myParty = this.GetComponent<PartyList>();
         }
     }
 

@@ -5,14 +5,16 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 CallBack 함수를 쓸 수 있음.
 {
-    // 버전
-    private readonly string version = "1.0f";
+    [Header("# Photon")]
+    private readonly string version = "1.0f"; // 버전
+    string roomName;
 
     [Header("# Prefab")]
     public GameObject playerPrefab;
@@ -22,13 +24,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     [Header("# Player")]
     public string masterName = "Test"; // 사용자 이름
-    public PhotonView myPlayer;
+    public PhotonView myPlayer; // 생성된 본인 캐릭터
+    public PartyList myParty; // 생성된 본인 파티 리스트
     [SerializeField] Vector3 spawnPoint;
     public List<GameObject> playerList;
 
     [Header("# PartyList Info")]
     public string theme; // 테마
     public string partyPeopleNum; // 파티 생성 시 인원 수 텍스트 (리스트에 사용될 텍스트) -> "현재 인원수 / 최대 인원수" 형식
+    public int myPartyMaxPeople; // 생성된 파티의 최대 인원 수 -> 게임 시작 시 새로 만들 Room 의 옵션에 필요
 
     [Header("# MakeParty Info")]
     public List<GameObject> partyList; // 생성된 리스트들 저장
@@ -43,6 +47,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         masterName = "백민지";
         theme = "복현동";
         pv = GetComponent<PhotonView>();
+
+        // Room 기본값 세팅
+        roomName = "My Room";
+        myPartyMaxPeople = 20;
 
         // 같은 룸의 유저들에게 자동으로 씬을 로딩
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -83,29 +91,52 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}"); // 로비 접속 여부 true , false 출력 -> 접속 후라서 true
 
-        PhotonNetwork.JoinRandomRoom(); // 랜덤 매치메이킹 기능 제공
-    }
-
-    // 랜덤한 룸 입장이 실패했을 경우 호출되는 콜백 함수
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        Debug.Log($"JoinRandom Failed {returnCode}:{message}");
-
         // 룸의 속성 정의
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 20;              // 최대 접속자 수 : 20명
+        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 : 20명
         roomOptions.IsOpen = true;                // 룸의 오픈 여부
         roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
 
         // 룸 생성
-        PhotonNetwork.CreateRoom("My Room", roomOptions);
+        PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, null);
+
+        //PhotonNetwork.JoinRandomRoom(); // 랜덤 매치메이킹 기능 제공
     }
+
+    // 랜덤한 룸 입장이 실패했을 경우 호출되는 콜백 함수
+    //public override void OnJoinRandomFailed(short returnCode, string message)
+    //{
+    //    Debug.Log($"JoinRandom Failed {returnCode}:{message}");
+
+    //    // 룸의 속성 정의
+    //    RoomOptions roomOptions = new RoomOptions();
+    //    roomOptions.MaxPlayers = 20;              // 최대 접속자 수 : 20명
+    //    roomOptions.IsOpen = true;                // 룸의 오픈 여부
+    //    roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
+
+    //    // 룸 생성
+    //    PhotonNetwork.CreateRoom(roomName, roomOptions);
+    //}
 
     // 룸 생성이 완료된 후 호출되는 콜백 함수
     public override void OnCreatedRoom()
     {
         Debug.Log("Created Room");
         Debug.Log($"Room Name = {PhotonNetwork.CurrentRoom.Name}");
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.Log($"JoinRandom Failed {returnCode}:{message}");
+
+        // 룸의 속성 정의
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 : 20명
+        roomOptions.IsOpen = true;                // 룸의 오픈 여부
+        roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
+
+        // 룸 생성
+        PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
     // 룸에 입장한 후 호출되는 콜백 함수
@@ -138,6 +169,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public GameObject MakePartyRoom()
     {
         GameObject partyList = PhotonNetwork.Instantiate(partyListPrefab.name, transform.position, Quaternion.identity);
+        myPartyMaxPeople = maxPeopleNum;
 
         return partyList;
     }
@@ -167,8 +199,41 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         LobbyUIManager.Instance.miniPartyUI.SetActive(false);
     }
 
+    public void GameStartButton()
+    {
+        roomName = myPlayer.ViewID.ToString(); // 새로 만들 Room 이름 설정
 
-    // 포톤 연결 종료 시 실행될 함수
+        // 파티에 포함된 플레이어들은 새로운 방으로 입장
+        for (int i = myParty.partyPlayerIDList.Count - 1; i >= 0; i--)
+        {
+            for (int j = 0; j < playerList.Count; j++)
+            {
+                PhotonView playerPV = playerList[j].GetComponent<PhotonView>();
+
+                if (playerPV.ViewID == myParty.partyPlayerIDList[i])
+                {
+                    playerList[j].GetComponent<PlayerMove>().photonManager.pv.RPC("GameStart", RpcTarget.All, roomName);
+                    //playerList[j].GetComponent<PlayerMove>().photonManager.GameStart(roomName);
+                    Debug.Log(j);
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    // 게임 시작 버튼
+    public void GameStart(string roomName)
+    {
+        this.roomName = roomName; // 참가할 Room 이름 설정
+
+        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
+
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+
+    // 포톤 연결 종료 또는 파티 탈퇴 시 실행될 함수
     [PunRPC]
     public void LeftPhoton(int ActorNum, bool leftPhoton)
     {
@@ -177,7 +242,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             PhotonView playerPV = playerList[i].GetComponent<PhotonView>();
 
-            // 포톤 서버 종료 시, 플레이어 리스트와 Scene에서 본인 제거
+            // 포톤 서버 종료 시에만 플레이어 리스트와 Scene에서 본인 제거
             if (playerPV.ViewID / 1000 == ActorNum && leftPhoton)
             {
                 playerList.Remove(playerPV.gameObject);

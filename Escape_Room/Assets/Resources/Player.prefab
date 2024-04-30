@@ -159,3 +159,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6295696437c4311478ede47145a57014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonManager: {fileID: 0}
