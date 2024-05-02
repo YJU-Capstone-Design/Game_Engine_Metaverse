@@ -93,7 +93,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // 룸의 속성 정의
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 : 20명
+        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 -> 초기값은 20
         roomOptions.IsOpen = true;                // 룸의 오픈 여부
         roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
 
@@ -163,6 +163,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
 
 
+    // -----------------------------------------------------------------------------------
+
+
+
     // # 인게임 함수
 
     // 파티 매칭 시스템으로 방(파티) 만들기
@@ -204,7 +208,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         roomName = myPlayer.ViewID.ToString(); // 새로 만들 Room 이름 설정
 
         // 파티에 포함된 플레이어들은 새로운 방으로 입장
-        for (int i = myParty.partyPlayerIDList.Count - 1; i >= 0; i--)
+        for (int i = myParty.partyPlayerIDList.Count - 1; i > -1; i--)
         {
             for (int j = 0; j < playerList.Count; j++)
             {
@@ -213,8 +217,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                 if (playerPV.ViewID == myParty.partyPlayerIDList[i])
                 {
                     playerList[j].GetComponent<PlayerMove>().photonManager.pv.RPC("GameStart", RpcTarget.All, roomName);
-                    //playerList[j].GetComponent<PlayerMove>().photonManager.GameStart(roomName);
-                    Debug.Log(j);
+                    break;
                 }
             }
         }
@@ -229,7 +232,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
 
         PhotonNetwork.LeaveRoom();
-        PhotonNetwork.ConnectUsingSettings();
+
+        // 룸의 속성 정의
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 : 20명
+        roomOptions.IsOpen = true;                // 룸의 오픈 여부
+        roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
+
+        PhotonNetwork.JoinOrCreateRoom(this.roomName, roomOptions, null);
     }
 
 
@@ -268,10 +278,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                 // 본인이 파티장일때
                 if (partyPV.ViewID/1000 == ActorNum)
                 {
-                    // 리스트와 Scene 에서 본인이 만든 파티 제거
-                    partyList.Remove(partyLogic.gameObject);
-                    Destroy(partyLogic.gameObject);
-
                     // 팀원들 및 본인 mini 파티 UI 비활성화 및 리스트 초기화
                     partyLogic.lobbyUIManager.miniPartyUI.SetActive(false);
 
@@ -282,11 +288,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                             Destroy(partyLogic.lobbyUIManager.partyPlayerList[k]);
                         }
 
-                        if(partyLogic.lobbyUIManager.partyPlayerList.Count - 1 == k)
+                        if (partyLogic.lobbyUIManager.partyPlayerList.Count - 1 == k)
                         {
                             partyLogic.lobbyUIManager.partyPlayerList.Clear();
                         }
                     }
+
+                    // 리스트와 Scene 에서 본인이 만든 파티 제거
+                    partyList.Remove(partyLogic.gameObject);
+                    Destroy(partyLogic.gameObject);
                 }
                 else // 본인이 파티장이 아닐때
                 {

@@ -12,11 +12,14 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     [Header("# UI Boxs")]
     public GameObject[] activeUIBoxs;
     [SerializeField] RectTransform[] partyListPos; // 파티 리스트들 Position 값
+
+    [Header("# mini Party UI")]
     public GameObject miniPartyUI; // 파티 생성/참여 후 화면에 표시될 mini 파티 UI
     public TextMeshProUGUI miniPartyUITitle; // mini 파티 UI 타이틀 텍스트
-    public GameObject partyPlayerListParent;
-    public List<GameObject> partyPlayerList; // 생성된 파티 플레이어 NameBox 가 담길 List
-    public RectTransform[] partyPlayerListPos; // 현재 파티의 플레이어 이름이 들어갈 빈 Text 들
+    public GameObject partyPlayerListParent; // mini 파티 UI 플레이어 이름 부모 오브젝트
+    public List<GameObject> partyPlayerList; // mini 파티 UI에 생성된 파티 플레이어 NameBox 가 담길 List
+    public RectTransform[] partyPlayerListPos; // mini 파티 UI의 현재 파티의 플레이어 이름이 가질 설정된 RectTransform 값
+    public GameObject gameStartButton; // mini 파티 UI의 게임 시작 버튼
 
     [Header("# Party System")]
     public int partyPageCount = 1; // 현재 페이지 위치
@@ -135,8 +138,9 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         // 페이지 수 동기화
         CheckPartyPageLength();
 
-        // mini 파티 UI 활성화
+        // mini 파티 UI 및 게임 시작 버튼 활성화
         miniPartyUI.SetActive(true);
+        gameStartButton.SetActive(true);
 
         // mini 파티 UI 에 들어갈 Player Name Box 생성
         PhotonNetwork.Instantiate(photonManager.playerNameBoxPrefab.name, transform.position, Quaternion.identity);

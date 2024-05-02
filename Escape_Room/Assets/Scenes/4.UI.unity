@@ -3108,7 +3108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &150755444
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34128,7 +34128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1649065496
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34490,6 +34490,7 @@ MonoBehaviour:
   - {fileID: 178549358}
   - {fileID: 512611298}
   - {fileID: 801734377}
+  gameStartButton: {fileID: 150755443}
   partyPageCount: 1
   photonManager: {fileID: 2059845988}
 --- !u!4 &1667391958
