@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using System.ComponentModel;
 using Photon.Realtime;
+using System.Linq;
 
 public class LobbyUIManager : Singleton<LobbyUIManager>
 {
@@ -80,7 +81,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             SetListPos();
         }
 
-        // 생성된 PartyPlayerList Position 값 조정
+        // 생성된 mini 파티 UI 의 PartyPlayerList Position 값 조정
         if(partyPlayerList.Count > 0)
         {
             SetPlayerListPos();
@@ -150,6 +151,21 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         // mini 파티 UI 및 게임 시작 버튼 활성화
         miniPartyUI.SetActive(true);
         gameStartButton.SetActive(true);
+
+        // Player NameBox 를 mini 파티 UI 로 가져오기
+        for(int i = 0; i < playerNameBoxList.Count; i++)
+        {
+            PhotonView playerNameBoxPV = playerNameBoxList[i].GetComponent<PhotonView>();
+
+            if (playerNameBoxPV.IsMine)
+            {
+                playerNameBoxPV.gameObject.SetActive(true);
+
+                partyPlayerList.Add(playerNameBoxPV.gameObject);
+
+                playerNameBoxPV.transform.SetParent(partyPlayerListParent.transform);
+            }
+        }
     }
 
     // mini 파티 UI Title 플레이어 인원 수 실시간 동기화 함수

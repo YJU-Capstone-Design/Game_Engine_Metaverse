@@ -109,6 +109,26 @@ public class PartyList : MonoBehaviour
             // mini 파티 UI 활성화
             lobbyUIManager.miniPartyUI.SetActive(true);
 
+            // mini 파티 UI 에 PlayerNameBox 추가
+            for(int i = 0; i < partyPlayerIDList.Count; i++)
+            {
+                foreach(GameObject playerName in lobbyUIManager.playerNameBoxList)
+                {
+                    PhotonView playerNamePV = playerName.GetComponent<PhotonView>();
+
+                    if(playerNamePV.ViewID/1000 == partyPlayerIDList[i]/1000)
+                    {
+                        if(!lobbyUIManager.partyPlayerList.Contains(playerNamePV.gameObject)) 
+                        {
+                            lobbyUIManager.partyPlayerList.Add(playerNamePV.gameObject);
+                        }
+
+                        playerNamePV.transform.SetParent(lobbyUIManager.partyPlayerListParent.transform);
+                        playerNamePV.gameObject.SetActive(true);
+                    }
+                }
+            }
+
             // Photon Manager 에 가입한 파티 최신화
             photonManager.myParty = mainObj;
         }

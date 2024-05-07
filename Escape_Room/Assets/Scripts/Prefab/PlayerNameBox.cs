@@ -19,9 +19,10 @@ public class PlayerNameBox : MonoBehaviour
         playerNameText = GetComponent<TextMeshProUGUI>();
         lobbyUIManager = LobbyUIManager.Instance;
         photonManager = LobbyUIManager.Instance.photonManager;
+
     }
 
-    private void OnEnable()
+    private void Start()
     {
         this.transform.SetParent(lobbyUIManager.playerNameBoxParent);
 
@@ -29,6 +30,8 @@ public class PlayerNameBox : MonoBehaviour
         {
             pv.RPC("AddMyName", RpcTarget.AllBuffered, photonManager.masterName);
         }
+
+        this.gameObject.SetActive(false);
     }
 
     // 플레이어 NameBox List 에 추가
