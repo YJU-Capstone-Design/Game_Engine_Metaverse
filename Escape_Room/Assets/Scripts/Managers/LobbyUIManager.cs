@@ -12,6 +12,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     [Header("# UI Boxs")]
     public GameObject[] activeUIBoxs;
     [SerializeField] RectTransform[] partyListPos; // 파티 리스트들 Position 값
+    public List<GameObject> playerNameBoxList;
+    public Transform playerNameBoxParent;
 
     [Header("# mini Party UI")]
     public GameObject miniPartyUI; // 파티 생성/참여 후 화면에 표시될 mini 파티 UI
@@ -32,6 +34,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         pv = GetComponent<PhotonView>();
 
         partyPlayerList = new List<GameObject>();
+        playerNameBoxList = new List<GameObject>();
 
         // 페이지 수 동기화
         CheckPartyPageLength();
@@ -81,6 +84,12 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         if(partyPlayerList.Count > 0)
         {
             SetPlayerListPos();
+        }
+
+        // mini 파티 UI 인원 수 실시간 최신화
+        if(photonManager.myParty != null)
+        {
+            SynchronizationPartyPeopleNum(photonManager.myParty.listPeopleNumText.text);
         }
     }
 
@@ -141,9 +150,12 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         // mini 파티 UI 및 게임 시작 버튼 활성화
         miniPartyUI.SetActive(true);
         gameStartButton.SetActive(true);
+    }
 
-        // mini 파티 UI 에 들어갈 Player Name Box 생성
-        PhotonNetwork.Instantiate(photonManager.playerNameBoxPrefab.name, transform.position, Quaternion.identity);
+    // mini 파티 UI Title 플레이어 인원 수 실시간 동기화 함수
+    void SynchronizationPartyPeopleNum(string peopleNum)
+    {
+        miniPartyUITitle.text = $"파티 모집 중... {peopleNum}";
     }
 
     // 만들어진 방 list 들 위치 조정

@@ -33,9 +33,6 @@ public class PartyList : MonoBehaviour
             // 리스트 세팅
             pv.RPC("SetList", RpcTarget.AllBuffered, photonManager.masterName, photonManager.theme, photonManager.partyPeopleNum, photonManager.maxPeopleNum, photonManager.myPlayer.ViewID);
 
-            // mini 파티 UI Title 세팅
-            pv.RPC("SynchronizationPartyPeopleNum", RpcTarget.AllBuffered, listPeopleNumText.text);
-
             // Photon Manager 에 저장
             photonManager.myParty = this.GetComponent<PartyList>();
         }
@@ -112,11 +109,8 @@ public class PartyList : MonoBehaviour
             // mini 파티 UI 활성화
             lobbyUIManager.miniPartyUI.SetActive(true);
 
-            // mini 파티 UI 에 들어갈 Player Name Box 생성
-            PhotonNetwork.Instantiate(photonManager.playerNameBoxPrefab.name, transform.position, Quaternion.identity);
-
-            // mini 파티 UI Title 세팅
-            pv.RPC("SynchronizationPartyPeopleNum", RpcTarget.AllBuffered, listPeopleNumText.text);
+            // Photon Manager 에 가입한 파티 최신화
+            photonManager.myParty = mainObj;
         }
     }
 
@@ -136,12 +130,5 @@ public class PartyList : MonoBehaviour
             nowPeopleNum--;
             listPeopleNumText.text = $"{nowPeopleNum} / {maxPeoPleNum}";
         }
-    }
-
-    // mini 파티 UI Title 플레이어 인원 수 실시간 동기화 함수
-    [PunRPC]
-    void SynchronizationPartyPeopleNum(string peopleNum)
-    {
-        lobbyUIManager.miniPartyUITitle.text = $"파티 모집 중... {peopleNum}";
     }
 }

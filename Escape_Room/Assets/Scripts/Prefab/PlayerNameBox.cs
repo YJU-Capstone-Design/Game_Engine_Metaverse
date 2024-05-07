@@ -23,7 +23,7 @@ public class PlayerNameBox : MonoBehaviour
 
     private void OnEnable()
     {
-        this.transform.SetParent(lobbyUIManager.partyPlayerListParent.transform);
+        this.transform.SetParent(lobbyUIManager.playerNameBoxParent);
 
         if (pv.IsMine)
         {
@@ -31,15 +31,15 @@ public class PlayerNameBox : MonoBehaviour
         }
     }
 
-    // mini 파티 UI 플레이어 List 에 추가 및 타이틀 인원 실시간 변경
+    // 플레이어 NameBox List 에 추가
     [PunRPC]
     void AddMyName(string name)
     {
         playerNameText.text = name;
 
-        if (!lobbyUIManager.partyPlayerList.Contains(this.gameObject))
+        if (!lobbyUIManager.playerNameBoxList.Contains(this.gameObject))
         {
-            lobbyUIManager.partyPlayerList.Add(this.gameObject);
+            lobbyUIManager.playerNameBoxList.Add(this.gameObject);
         }
     }
 }
