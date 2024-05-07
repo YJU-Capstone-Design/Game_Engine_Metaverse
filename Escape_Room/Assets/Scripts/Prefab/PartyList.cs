@@ -106,6 +106,9 @@ public class PartyList : MonoBehaviour
         {
             pv.RPC("SynchronizationPeopleNum", RpcTarget.AllBuffered, photonManager.myPlayer.ViewID, partyPlayerIDList.Count, mainObj.maxPeopleNum, true);
 
+            // Photon Manager 에 가입한 파티 최신화
+            photonManager.myParty = mainObj;
+
             // mini 파티 UI 활성화
             lobbyUIManager.miniPartyUI.SetActive(true);
 
@@ -128,9 +131,6 @@ public class PartyList : MonoBehaviour
                     }
                 }
             }
-
-            // Photon Manager 에 가입한 파티 최신화
-            photonManager.myParty = mainObj;
         }
     }
 
