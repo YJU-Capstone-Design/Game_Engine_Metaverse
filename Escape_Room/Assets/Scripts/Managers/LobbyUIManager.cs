@@ -93,30 +93,10 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             SynchronizationPartyPeopleNum(photonManager.myParty.listPeopleNumText.text);
         }
 
-        if (!photonManager.myParty) 
-            return;
-
-        for(int i = 0; i < photonManager.myParty.partyPlayerIDList.Count; i++)
+        // mini 파티 UI 멤버 실시간 최신화
+        if (photonManager.myParty)
         {
-            // mini 파티 UI 에 PlayerNameBox 추가
-            for (int j = 0; j < photonManager.myParty.partyPlayerIDList.Count; j++)
-            {
-                foreach (GameObject playerName in playerNameBoxList)
-                {
-                    PhotonView playerNamePV = playerName.GetComponent<PhotonView>();
-
-                    if (playerNamePV.ViewID / 1000 == photonManager.myParty.partyPlayerIDList[j] / 1000)
-                    {
-                        if (!partyPlayerList.Contains(playerNamePV.gameObject))
-                        {
-                            partyPlayerList.Add(playerNamePV.gameObject);
-                        }
-
-                        playerNamePV.transform.SetParent(partyPlayerListParent.transform);
-                        playerNamePV.gameObject.SetActive(true);
-                    }
-                }
-            }
+            SetMiniPartyPlayers();
         }
     }
 
@@ -229,6 +209,33 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
             partyRectPos.offsetMin = Vector2.zero;
             partyRectPos.offsetMax = Vector2.zero;
+        }
+    }
+
+    // mini 파티 UI 멤버 실시간 최신화 함수
+    void SetMiniPartyPlayers()
+    {
+        for (int i = 0; i < photonManager.myParty.partyPlayerIDList.Count; i++)
+        {
+            // mini 파티 UI 에 PlayerNameBox 추가
+            for (int j = 0; j < photonManager.myParty.partyPlayerIDList.Count; j++)
+            {
+                foreach (GameObject playerName in playerNameBoxList)
+                {
+                    PhotonView playerNamePV = playerName.GetComponent<PhotonView>();
+
+                    if (playerNamePV.ViewID / 1000 == photonManager.myParty.partyPlayerIDList[j] / 1000)
+                    {
+                        if (!partyPlayerList.Contains(playerNamePV.gameObject))
+                        {
+                            partyPlayerList.Add(playerNamePV.gameObject);
+                        }
+
+                        playerNamePV.transform.SetParent(partyPlayerListParent.transform);
+                        playerNamePV.gameObject.SetActive(true);
+                    }
+                }
+            }
         }
     }
 
