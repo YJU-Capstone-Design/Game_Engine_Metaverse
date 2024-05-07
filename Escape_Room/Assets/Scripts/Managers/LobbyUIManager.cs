@@ -224,6 +224,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                 {
                     PhotonView playerNamePV = playerName.GetComponent<PhotonView>();
 
+                    // 파티에 포함될 경우
                     if (playerNamePV.ViewID / 1000 == photonManager.myParty.partyPlayerIDList[j] / 1000)
                     {
                         if (!partyPlayerList.Contains(playerNamePV.gameObject))
@@ -233,6 +234,16 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
                         playerNamePV.transform.SetParent(partyPlayerListParent.transform);
                         playerNamePV.gameObject.SetActive(true);
+                    }
+                    else // 파티에 포함되지 않을 경우
+                    {
+                        if (partyPlayerList.Contains(playerNamePV.gameObject))
+                        {
+                            partyPlayerList.Remove(playerNamePV.gameObject);
+                        }
+
+                        playerNamePV.transform.SetParent(playerNameBoxParent.transform);
+                        playerNamePV.gameObject.SetActive(false);
                     }
                 }
             }
