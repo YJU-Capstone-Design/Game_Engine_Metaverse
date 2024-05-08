@@ -27,6 +27,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public string masterName = "Test"; // 사용자 이름
     public PhotonView myPlayer; // 생성된 본인 캐릭터
     public PartyList myParty; // 본인이 생성/가입한 파티
+    public PlayerNameBox myPlayerName; // 생성된 본인 이름 Box
     [SerializeField] Vector3 spawnPoint; // 생성된 Player(Character) 가 Spawn 되는 위치
     public List<GameObject> playerList; // 생성된 Player(Character) 가 저장되는 List
 
@@ -296,6 +297,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
                                 // 파티원들 및 본인 mini 파티 UI 비활성화
                                 playerNameBoxLogic.lobbyUIManager.miniPartyUI.SetActive(false);
+
+                                // Player Name Box 비활성화
+                                playerNameBoxLogic.gameObject.SetActive(false); 
                             }
 
                             // 리스트 초기화
@@ -321,6 +325,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                                 // Player Name Box 원위치
                                 partyPlayerNameBoxPV.transform.SetParent(LobbyUIManager.Instance.playerNameBoxParent);
                                 partyPlayerNameBoxPV.GetComponent<RectTransform>().localPosition = Vector2.zero;
+                                partyPlayerNameBoxPV.gameObject.SetActive(false);
 
                                 // partyPlayerList 에서 Player Name Box 의 index 제거
                                 partyLogic.lobbyUIManager.partyPlayerList.Remove(partyLogic.lobbyUIManager.partyPlayerList[k]);

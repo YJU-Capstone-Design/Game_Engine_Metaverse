@@ -97,7 +97,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         if (photonManager.myParty)
         {
             SetMiniPartyPlayers();
-        }
+        } 
     }
 
     public void MakeRoomButton(int index)
@@ -224,11 +224,12 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                 {
                     PhotonView playerNamePV = playerName.GetComponent<PhotonView>();
 
-                    // 파티에 포함될 경우
+                    // partyPlayerIDList 에 정보가 있을 경우
                     if (playerNamePV.ViewID / 1000 == photonManager.myParty.partyPlayerIDList[j] / 1000)
                     {
                         if (!partyPlayerList.Contains(playerNamePV.gameObject))
                         {
+                            Debug.Log(playerNamePV.ViewID / 1000);
                             partyPlayerList.Add(playerNamePV.gameObject);
                         }
 
