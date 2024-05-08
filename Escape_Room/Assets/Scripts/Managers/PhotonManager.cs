@@ -225,7 +225,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                 if (playerPV.ViewID == myParty.partyPlayerIDList[i])
                 {
                     playerList[j].GetComponent<PlayerMove>().photonManager.pv.RPC("GameStart", RpcTarget.All, roomName);
-                    break;
                 }
             }
         }
@@ -236,6 +235,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public void GameStart(string roomName)
     {
         this.roomName = roomName; // 참가할 Room 이름 설정
+        Debug.Log("aaa");
 
         pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
 

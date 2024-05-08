@@ -97,7 +97,20 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         if (photonManager.myParty)
         {
             SetMiniPartyPlayers();
-        } 
+        }
+        else // 파티에 포함되지 않을 경우
+        {
+            if(partyPlayerList.Count > 0)
+            {
+                foreach (GameObject playerName in partyPlayerList)
+                {
+                    playerName.transform.SetParent(playerNameBoxParent.transform);
+                    playerName.gameObject.SetActive(false);
+                }
+            }
+
+            partyPlayerList.Clear();
+        }
     }
 
     public void MakeRoomButton(int index)
@@ -235,16 +248,6 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
                         playerNamePV.transform.SetParent(partyPlayerListParent.transform);
                         playerNamePV.gameObject.SetActive(true);
-                    }
-                    else // 파티에 포함되지 않을 경우
-                    {
-                        if (partyPlayerList.Contains(playerNamePV.gameObject))
-                        {
-                            partyPlayerList.Remove(playerNamePV.gameObject);
-                        }
-
-                        playerNamePV.transform.SetParent(playerNameBoxParent.transform);
-                        playerNamePV.gameObject.SetActive(false);
                     }
                 }
             }
