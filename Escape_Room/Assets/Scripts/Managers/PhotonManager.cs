@@ -242,8 +242,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             PhotonNetwork.LeaveRoom();
 
-            //PhotonNetwork.JoinLobby();
-
             foreach (GameObject lobbyUI in LobbyUIManager.Instance.activeUIBoxs)
             {
                 if (lobbyUI.activeInHierarchy)
@@ -274,8 +272,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // 포톤 서버 종료 시에만 플레이어 리스트와 Scene에서 본인 Character 제거
             if (playerPV.ViewID / 1000 == ActorNum && leftPhoton)
             {
-                LobbyUIManager.Instance.playerNameBoxList.Remove(myPlayerName.gameObject);
+                // Player Name Box 를 List 에서 삭제
+                for(int j = 0; j < LobbyUIManager.Instance.playerNameBoxList.Count; j++)
+                {
+                    PhotonView playerNamePV = LobbyUIManager.Instance.playerNameBoxList[j].GetComponent<PhotonView>();
 
+                    if(playerNamePV.ViewID / 1000 == ActorNum)
+                    {
+                        LobbyUIManager.Instance.playerNameBoxList.Remove(LobbyUIManager.Instance.playerNameBoxList[j]);
+                    }
+                }
+                
                 playerList.Remove(playerPV.gameObject);
                 Destroy(playerPV.gameObject);
             }
@@ -295,30 +302,27 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                     // 본인이 파티장일 때에는 팀원 및 본인에게서 모든 데이터 제거
                     if (partyPV.ViewID / 1000 == ActorNum)
                     {
-                        for (int k = 0; k < partyLogic.lobbyUIManager.partyPlayerList.Count; k++)
+                        for (int k = partyLogic.partyPlayerIDList.Count - 1; k > -1; k--)
                         {
-                            if (partyLogic.lobbyUIManager.partyPlayerList[k] != null)
+                            for(int l = 0; l < LobbyUIManager.Instance.playerNameBoxList.Count; l++)
                             {
-                                PlayerNameBox playerNameBoxLogic = partyLogic.lobbyUIManager.partyPlayerList[k].GetComponent<PlayerNameBox>();
+                                PhotonView playerNamePV = LobbyUIManager.Instance.playerNameBoxList[l].GetComponent<PhotonView>();
 
-                                // 파티원들 및 본인 Player Name Box 원위치
-                                playerNameBoxLogic.transform.SetParent(LobbyUIManager.Instance.playerNameBoxParent);
-                                playerNameBoxLogic.GetComponent<RectTransform>().localPosition = Vector2.zero;
+                                if(playerNamePV.ViewID/1000 == partyLogic.partyPlayerIDList[k]/1000 && playerNamePV.IsMine)
+                                {
+                                    // 파티원들 및 본인 Player Name Box 원위치
+                                    playerNamePV.transform.SetParent(LobbyUIManager.Instance.playerNameBoxParent);
+                                    playerNamePV.GetComponent<RectTransform>().localPosition = Vector2.zero;
 
-                                // 파티원들 및 본인 Photon Manager 의 myParty 초기화
-                                playerNameBoxLogic.lobbyUIManager.photonManager.myParty = null;
+                                    // 파티원들 및 본인 Photon Manager 의 myParty 초기화
+                                    playerNamePV.GetComponent<PlayerNameBox>().lobbyUIManager.photonManager.myParty = null;
 
-                                // 파티원들 및 본인 mini 파티 UI 비활성화
-                                playerNameBoxLogic.lobbyUIManager.miniPartyUI.SetActive(false);
+                                    // 파티원들 및 본인 mini 파티 UI 비활성화
+                                    playerNamePV.GetComponent<PlayerNameBox>().lobbyUIManager.miniPartyUI.SetActive(false);
 
-                                // Player Name Box 비활성화
-                                playerNameBoxLogic.gameObject.SetActive(false); 
-                            }
-
-                            // 리스트 초기화
-                            if (partyLogic.lobbyUIManager.partyPlayerList.Count - 1 == k)
-                            {
-                                partyLogic.lobbyUIManager.partyPlayerList.Clear();
+                                    // Player Name Box 비활성화
+                                    playerNamePV.gameObject.SetActive(false);
+                                }
                             }
                         }
 
@@ -339,9 +343,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                                 partyPlayerNameBoxPV.transform.SetParent(LobbyUIManager.Instance.playerNameBoxParent);
                                 partyPlayerNameBoxPV.GetComponent<RectTransform>().localPosition = Vector2.zero;
                                 partyPlayerNameBoxPV.gameObject.SetActive(false);
-
-                                // partyPlayerList 에서 Player Name Box 의 index 제거
-                                partyLogic.lobbyUIManager.partyPlayerList.Remove(partyLogic.lobbyUIManager.partyPlayerList[k]);
                             }
                         }
                     }
