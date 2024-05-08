@@ -160,7 +160,14 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
     void MakeParty()
     {
-        activeUIBoxs[1].SetActive(false);
+        foreach(GameObject lobbyUI in activeUIBoxs)
+        {
+            if(lobbyUI.activeInHierarchy)
+            {
+                lobbyUI.SetActive(false);
+            }
+        }
+
         photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
         SetActivePartyList(); // 리스트 활성화 세팅
         
@@ -242,7 +249,6 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                     {
                         if (!partyPlayerList.Contains(playerNamePV.gameObject))
                         {
-                            Debug.Log(playerNamePV.ViewID / 1000);
                             partyPlayerList.Add(playerNamePV.gameObject);
                         }
 

@@ -93,14 +93,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}"); // 로비 접속 여부 true , false 출력 -> 접속 후라서 true
 
-        // 룸의 속성 정의
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 -> 초기값은 20
-        roomOptions.IsOpen = true;                // 룸의 오픈 여부
-        roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
+        Debug.Log(roomName);
 
-        // 룸 생성
-        PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, null);
+        // 룸 참가
+        PhotonNetwork.JoinRoom(roomName);
 
         //PhotonNetwork.JoinRandomRoom(); // 랜덤 매치메이킹 기능 제공
     }
@@ -129,16 +125,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log($"JoinRandom Failed {returnCode}:{message}");
+        Debug.Log($"CreateRoom Failed {returnCode}:{message}");
 
-        // 룸의 속성 정의
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 : 20명
-        roomOptions.IsOpen = true;                // 룸의 오픈 여부
-        roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
-
-        // 룸 생성
-        PhotonNetwork.CreateRoom(roomName, roomOptions);
+        // 룸 참가
+        PhotonNetwork.JoinRoom(roomName);
     }
 
     // 룸에 입장한 후 호출되는 콜백 함수
@@ -158,6 +148,25 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // Player Name Box 생성
         PhotonNetwork.Instantiate(playerNameBoxPrefab.name, LobbyUIManager.Instance.playerNameBoxParent.transform.position, Quaternion.identity);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.Log($"JoinRoom Failed {returnCode}:{message}");
+
+        // 룸의 속성 정의
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 20;              // 최대 접속자 수 : 20
+        roomOptions.IsOpen = true;                // 룸의 오픈 여부
+        roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
+
+        PhotonNetwork.CreateRoom(roomName, roomOptions, null);
+    }
+
+    // Room 을 떠났을 때 실행되는 콜백함수
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.JoinLobby();
     }
 
     // 포톤 퇴장 시 실행되는 콜백함수
@@ -215,39 +224,41 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         roomName = myPlayer.ViewID.ToString(); // 새로 만들 Room 이름 설정
 
-        // 파티에 포함된 플레이어들은 새로운 방으로 입장
-        for (int i = myParty.partyPlayerIDList.Count - 1; i > -1; i--)
-        {
-            for (int j = 0; j < playerList.Count; j++)
-            {
-                PhotonView playerPV = playerList[j].GetComponent<PhotonView>();
-
-                if (playerPV.ViewID == myParty.partyPlayerIDList[i])
-                {
-                    playerList[j].GetComponent<PlayerMove>().photonManager.pv.RPC("GameStart", RpcTarget.All, roomName);
-                }
-            }
-        }
+        pv.RPC("GameStart", RpcTarget.All, this.roomName);
     }
 
     [PunRPC]
     // 게임 시작 버튼
     public void GameStart(string roomName)
     {
-        this.roomName = roomName; // 참가할 Room 이름 설정
-        Debug.Log("aaa");
+        // 자신의 파티에 게임을 시작한 사람이 있을 경우에만 작동
+        if (myParty.partyPlayerIDList.Contains(int.Parse(roomName)))
+        {
+            Debug.Log("Aaa");
 
-        pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
+            this.roomName = roomName; // 참가할 Room 이름 설정
 
-        PhotonNetwork.LeaveRoom();
+            pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
 
-        // 룸의 속성 정의
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = myPartyMaxPeople;              // 최대 접속자 수 : 20명
-        roomOptions.IsOpen = true;                // 룸의 오픈 여부
-        roomOptions.IsVisible = true;             // 로비에서 룸 목록에 노출 시킬지 여부
+            PhotonNetwork.LeaveRoom();
 
-        PhotonNetwork.JoinOrCreateRoom(this.roomName, roomOptions, null);
+            //PhotonNetwork.JoinLobby();
+
+            foreach (GameObject lobbyUI in LobbyUIManager.Instance.activeUIBoxs)
+            {
+                if (lobbyUI.activeInHierarchy)
+                {
+                    lobbyUI.SetActive(false);
+                }
+            }
+
+            // 본인 mini 파티 UI 비활성화
+            LobbyUIManager.Instance.miniPartyUI.SetActive(false);
+
+            // List 들 초기화
+            LobbyUIManager.Instance.partyPlayerList.Clear();
+            partyList.Clear();
+        }
     }
 
 
@@ -263,6 +274,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // 포톤 서버 종료 시에만 플레이어 리스트와 Scene에서 본인 Character 제거
             if (playerPV.ViewID / 1000 == ActorNum && leftPhoton)
             {
+                LobbyUIManager.Instance.playerNameBoxList.Remove(myPlayerName.gameObject);
+
                 playerList.Remove(playerPV.gameObject);
                 Destroy(playerPV.gameObject);
             }

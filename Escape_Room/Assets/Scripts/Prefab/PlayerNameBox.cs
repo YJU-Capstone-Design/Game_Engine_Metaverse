@@ -24,13 +24,12 @@ public class PlayerNameBox : MonoBehaviour
 
     private void Start()
     {
-        photonManager.myPlayerName = GetComponent<PlayerNameBox>();
-
         this.transform.SetParent(lobbyUIManager.playerNameBoxParent);
 
         if (pv.IsMine)
         {
             pv.RPC("AddMyName", RpcTarget.AllBuffered, photonManager.masterName);
+            photonManager.myPlayerName = GetComponent<PlayerNameBox>();
         }
 
         this.gameObject.SetActive(false);
