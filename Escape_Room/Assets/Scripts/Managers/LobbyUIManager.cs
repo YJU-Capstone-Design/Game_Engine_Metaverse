@@ -45,6 +45,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             obj.SetActive(false);
         }
         miniPartyUI.SetActive(false);
+        gameStartButton.SetActive(false);
     }
 
     private void Update()

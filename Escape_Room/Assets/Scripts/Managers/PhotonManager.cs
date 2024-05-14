@@ -272,6 +272,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // 본인  mini 파티 UI 비활성화
         LobbyUIManager.Instance.miniPartyUI.SetActive(false);
+        LobbyUIManager.Instance.gameStartButton.SetActive(false);
 
         // myParty 초기화
         myParty = null;
@@ -310,6 +311,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             // 본인 mini 파티 UI 비활성화
             LobbyUIManager.Instance.miniPartyUI.SetActive(false);
+            LobbyUIManager.Instance.gameStartButton.SetActive(false);
 
             // List 들 초기화
             LobbyUIManager.Instance.partyPlayerList.Clear();
