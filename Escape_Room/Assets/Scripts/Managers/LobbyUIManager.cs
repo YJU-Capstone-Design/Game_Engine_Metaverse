@@ -297,10 +297,4 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         if(photonManager.partyPageLength == 0) { photonManager.partyPageLength = 1; }
         photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
     }
-
-    // 게임 종료 버튼
-    public void ExitGameButton()
-    {
-        Application.Quit();
-    }
 }

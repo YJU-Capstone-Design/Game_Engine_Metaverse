@@ -10,6 +10,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using WebSocketSharp;
 
 public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 CallBack 함수를 쓸 수 있음.
 {
@@ -43,6 +44,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public TextMeshProUGUI maxPeopleNumText; // 파티 생성 시 maxPeopleNum 을 담을 UI
     public TextMeshProUGUI pageCountText; // partyPageLength 가 들어갈 TextMeshPro
 
+    [Header("# Start UI")]
+    public GameObject startCanvas;
+    public TMP_InputField userIDInput;
+
     [Header("# Common UI")]
     public GameObject lobbyCanvas;
     public GameObject inGameCanvas;
@@ -51,42 +56,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     private void Awake()
     {
-        // 테스트용 
-        masterName = "백민지";
-        theme = "복현동";
-        pv = GetComponent<PhotonView>();
-
-        // 로딩 화면 활성화
-        StartCoroutine("Loading", true);
-
-        // Room 기본값 세팅
-        roomName = "Lobby";
-        myPartyMaxPeople = 20;
-
-        // 같은 룸의 유저들에게 자동으로 씬을 로딩
-        PhotonNetwork.AutomaticallySyncScene = true;
-
-        // 같은 버전의 유저끼리 접속 허용
-        PhotonNetwork.GameVersion = version;
-
-        // 유저 아이디 할당
-        PhotonNetwork.NickName = masterName;
-
-        // 포톤 서버와 통신 횟수 설정 -> 기본값은 초당 30회
-        Debug.Log(PhotonNetwork.SendRate);
-
-        // 서버 접속
-        PhotonNetwork.ConnectUsingSettings();
-
-        // # 플레이어 리스트 초기화
-        playerList = new List<GameObject>();
-
-        // # 파티 시스템 초기화
-        partyList = new List<GameObject>();
-        partyPeopleNum = "1 / 1";
-        maxPeopleNumText.text = "1";
+        startCanvas.SetActive(true);
+        lobbyCanvas.SetActive(false);
+        inGameCanvas.SetActive(false);
+        loadingUI.SetActive(false);
+        loadingFadeAnim.gameObject.SetActive(false);
     }
 
+   
     // 포톤 서버에 접속 후 호출되는 콜백 함수
     public override void OnConnectedToMaster()
     {
@@ -206,6 +183,62 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
 
     // # 인게임 함수
+
+    // 게임 시작 버튼
+    public void JoinGameButton()
+    {
+        if (userIDInput.text.IsNullOrEmpty())
+        {
+            Debug.Log("아이디를 입력해주세요.");
+        }
+        else
+        {
+            JoinGame();
+        }
+    }
+
+    // 게임 시작 함수
+    private void JoinGame()
+    {
+        // 테스트용 
+        masterName = userIDInput.text;
+        theme = "복현동";
+        pv = GetComponent<PhotonView>();
+
+        // 게임 시작 화면 비활성화 및 InputField 초기화
+        startCanvas.SetActive(false);
+        userIDInput.text = "";
+
+        // 로딩 화면 활성화
+        StartCoroutine("Loading", true);
+
+        // Room 기본값 세팅
+        roomName = "Lobby";
+        myPartyMaxPeople = 20;
+
+        // 같은 룸의 유저들에게 자동으로 씬을 로딩
+        PhotonNetwork.AutomaticallySyncScene = true;
+
+        // 같은 버전의 유저끼리 접속 허용
+        PhotonNetwork.GameVersion = version;
+
+        // 유저 아이디 할당
+        PhotonNetwork.NickName = masterName;
+
+        // 포톤 서버와 통신 횟수 설정 -> 기본값은 초당 30회
+        Debug.Log(PhotonNetwork.SendRate);
+
+        // 서버 접속
+        PhotonNetwork.ConnectUsingSettings();
+
+        // # 플레이어 리스트 초기화
+        playerList = new List<GameObject>();
+
+        // # 파티 시스템 초기화
+        partyList = new List<GameObject>();
+        partyPeopleNum = "1 / 1";
+        maxPeopleNumText.text = "1";
+    }
 
     // 파티 매칭 시스템으로 방(파티) 만들기
     public GameObject MakePartyRoom()
@@ -403,5 +436,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // Fade 화면 비활성화
             loadingFadeAnim.gameObject.SetActive(false);
         }
+    }
+
+    // 게임 종료 버튼
+    public void ExitGameButton()
+    {
+        Application.Quit();
     }
 }
