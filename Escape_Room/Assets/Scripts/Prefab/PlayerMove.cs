@@ -22,6 +22,8 @@ public class PlayerMove : MonoBehaviour
         if (pv.IsMine)
         {
             LobbyUIManager.Instance.photonManager.myPlayer = pv;
+
+            pv.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
         }
     }
 
@@ -31,8 +33,6 @@ public class PlayerMove : MonoBehaviour
         {
             pv.RPC("AddMeToLIst", RpcTarget.AllBuffered);
         }
-
-        this.gameObject.name = LobbyUIManager.Instance.photonManager.masterName;
     }
 
 
@@ -60,5 +60,11 @@ public class PlayerMove : MonoBehaviour
         {
             LobbyUIManager.Instance.photonManager.playerList.Add(this.gameObject);
         }
+    }
+
+    [PunRPC]
+    void SetName(string name)
+    {
+        gameObject.name = name;
     }
 }

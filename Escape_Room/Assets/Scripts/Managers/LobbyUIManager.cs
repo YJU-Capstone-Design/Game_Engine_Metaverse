@@ -19,8 +19,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     [Header("# mini Party UI")]
     public GameObject miniPartyUI; // 파티 생성/참여 후 화면에 표시될 mini 파티 UI
     public TextMeshProUGUI miniPartyUITitle; // mini 파티 UI 타이틀 텍스트
-    public GameObject partyPlayerListParent; // mini 파티 UI 플레이어 이름 부모 오브젝트
-    public List<GameObject> partyPlayerList; // mini 파티 UI에 생성된 파티 플레이어 NameBox 가 담길 List
+    public GameObject partyPlayerListParent; // mini 파티 UI Player Name 부모 오브젝트
+    public List<GameObject> partyPlayerList; // mini 파티 UI에 생성된 파티 Player NameBox 가 담길 List
     public RectTransform[] partyPlayerListPos; // mini 파티 UI의 현재 파티의 플레이어 이름이 가질 설정된 RectTransform 값
     public GameObject gameStartButton; // mini 파티 UI의 게임 시작 버튼
 

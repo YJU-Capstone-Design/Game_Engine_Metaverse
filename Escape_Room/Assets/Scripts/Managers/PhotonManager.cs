@@ -400,6 +400,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
                             if (partyPlayerNameBoxPV.ViewID / 1000 == ActorNum)
                             {
+                                // partyPlayerList 에서 본인 제거
+                                partyLogic.lobbyUIManager.partyPlayerList.Remove(partyLogic.lobbyUIManager.partyPlayerList[k]);
+
                                 // Player Name Box 원위치
                                 partyPlayerNameBoxPV.transform.SetParent(LobbyUIManager.Instance.playerNameBoxParent);
                                 partyPlayerNameBoxPV.GetComponent<RectTransform>().localPosition = Vector2.zero;

@@ -61,6 +61,7 @@ MonoBehaviour:
   - AddMyName
   - SynchronizationPartyPeopleNum
   - GameStart
+  - SetName
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
