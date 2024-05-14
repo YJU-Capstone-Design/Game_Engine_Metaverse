@@ -43,12 +43,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public TextMeshProUGUI maxPeopleNumText; // 파티 생성 시 maxPeopleNum 을 담을 UI
     public TextMeshProUGUI pageCountText; // partyPageLength 가 들어갈 TextMeshPro
 
+    [Header("# Common UI")]
+    public GameObject loadingUI;
+
     private void Awake()
     {
         // 테스트용 
         masterName = "백민지";
         theme = "복현동";
         pv = GetComponent<PhotonView>();
+
+        // 로딩 화면 활성화
+        loadingUI.SetActive(true);
 
         // Room 기본값 세팅
         roomName = "My Room";
@@ -148,6 +154,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // Player Name Box 생성
         PhotonNetwork.Instantiate(playerNameBoxPrefab.name, LobbyUIManager.Instance.playerNameBoxParent.transform.position, Quaternion.identity);
+
+        // 로딩 화면 비활성화
+        loadingUI.SetActive(false);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -241,6 +250,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
 
             PhotonNetwork.LeaveRoom();
+
+            // 로딩 화면 활성화
+            loadingUI.SetActive(true);
 
             foreach (GameObject lobbyUI in LobbyUIManager.Instance.activeUIBoxs)
             {
