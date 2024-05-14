@@ -2830,7 +2830,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &130509256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42682,6 +42682,8 @@ MonoBehaviour:
   partyPageLength: 1
   maxPeopleNumText: {fileID: 1529577036}
   pageCountText: {fileID: 579758229}
+  lobbyCanvas: {fileID: 1628897428}
+  inGameCanvas: {fileID: 691149442}
   loadingUI: {fileID: 2122594342}
   loadingFadeAnim: {fileID: 660009389}
 --- !u!4 &2059845989

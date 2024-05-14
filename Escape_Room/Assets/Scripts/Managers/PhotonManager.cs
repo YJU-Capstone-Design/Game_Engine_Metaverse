@@ -44,6 +44,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public TextMeshProUGUI pageCountText; // partyPageLength 가 들어갈 TextMeshPro
 
     [Header("# Common UI")]
+    public GameObject lobbyCanvas;
+    public GameObject inGameCanvas;
     public GameObject loadingUI;
     public Animator loadingFadeAnim;
 
@@ -55,12 +57,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         pv = GetComponent<PhotonView>();
 
         // 로딩 화면 활성화
-        loadingFadeAnim.gameObject.SetActive(true);
-        loadingFadeAnim.SetBool("FadeOut", false);
-        loadingUI.SetActive(true);
+        StartCoroutine("Loading", true);
 
         // Room 기본값 세팅
-        roomName = "My Room";
+        roomName = "Lobby";
         myPartyMaxPeople = 20;
 
         // 같은 룸의 유저들에게 자동으로 씬을 로딩
@@ -159,8 +159,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         PhotonNetwork.Instantiate(playerNameBoxPrefab.name, LobbyUIManager.Instance.playerNameBoxParent.transform.position, Quaternion.identity);
 
         // 로딩 화면 비활성화
-        loadingUI.SetActive(false);
-        loadingFadeAnim.SetBool("FadeOut", true);
+        StartCoroutine("Loading", false);
+
+        // 상황에 맞게 Canvas 활성화
+        if (roomName == "Lobby")
+        {
+            // Lobby UI 활성화
+            lobbyCanvas.SetActive(true);
+        } 
+        else
+        {
+            // InGameCanvas UI 활성화
+            inGameCanvas.SetActive(true);
+        }
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -247,8 +258,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         // 자신의 파티에 게임을 시작한 사람이 있을 경우에만 작동
         if (myParty.partyPlayerIDList.Contains(int.Parse(roomName)))
         {
-            Debug.Log("Aaa");
-
             this.roomName = roomName; // 참가할 Room 이름 설정
 
             pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
@@ -256,8 +265,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             PhotonNetwork.LeaveRoom();
 
             // 로딩 화면 활성화
-            loadingFadeAnim.SetBool("FadeOut", false);
-            loadingUI.SetActive(true);
+            StartCoroutine("Loading", true);
 
             foreach (GameObject lobbyUI in LobbyUIManager.Instance.activeUIBoxs)
             {
@@ -273,6 +281,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // List 들 초기화
             LobbyUIManager.Instance.partyPlayerList.Clear();
             partyList.Clear();
+
+            // LobbyCanvas 비활성화
+            lobbyCanvas.SetActive(false);
         }
     }
 
@@ -365,6 +376,32 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                     }
                 }
             }
+        }
+    }
+
+    IEnumerator Loading(bool startLoading)
+    {
+        if(startLoading) 
+        {
+            // Fade 화면 활성화
+            loadingFadeAnim.gameObject.SetActive(true);
+            loadingFadeAnim.SetBool("FadeOut", false);
+
+            yield return new WaitForSeconds(0.15f);
+
+            // 로딩 화면 활성화
+            loadingUI.SetActive(true);
+        }
+        else
+        {
+            // 로딩 화면 비활성화
+            loadingUI.SetActive(false);
+            loadingFadeAnim.SetBool("FadeOut", true);
+
+            yield return new WaitForSeconds(0.15f);
+
+            // Fade 화면 비활성화
+            loadingFadeAnim.gameObject.SetActive(false);
         }
     }
 }
