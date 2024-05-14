@@ -45,6 +45,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     [Header("# Common UI")]
     public GameObject loadingUI;
+    public Animator loadingFadeAnim;
 
     private void Awake()
     {
@@ -54,6 +55,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         pv = GetComponent<PhotonView>();
 
         // 로딩 화면 활성화
+        loadingFadeAnim.gameObject.SetActive(true);
+        loadingFadeAnim.SetBool("FadeOut", false);
         loadingUI.SetActive(true);
 
         // Room 기본값 세팅
@@ -157,6 +160,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // 로딩 화면 비활성화
         loadingUI.SetActive(false);
+        loadingFadeAnim.SetBool("FadeOut", true);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -252,6 +256,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             PhotonNetwork.LeaveRoom();
 
             // 로딩 화면 활성화
+            loadingFadeAnim.SetBool("FadeOut", false);
             loadingUI.SetActive(true);
 
             foreach (GameObject lobbyUI in LobbyUIManager.Instance.activeUIBoxs)
