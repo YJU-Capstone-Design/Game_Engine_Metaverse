@@ -530,11 +530,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219d2a7a46fb5e241b4a0a84e2b330cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterName: {fileID: 5340136494524004467}
-  theme: {fileID: 8315020493020145904}
-  peopleNum: {fileID: 6939748950942058390}
+  listMasterNameText: {fileID: 5340136494524004467}
+  listThemeText: {fileID: 8315020493020145904}
+  listPeopleNumText: {fileID: 6939748950942058390}
+  maxPeopleNum: 0
   partyPlayerIDList: 
-  partyPlayerCountMax: 0
+  lobbyUIManager: {fileID: 0}
 --- !u!114 &8459763070859091914
 MonoBehaviour:
   m_ObjectHideFlags: 0

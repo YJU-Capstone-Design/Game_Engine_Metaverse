@@ -48,6 +48,20 @@ MonoBehaviour:
   - JoinParty
   - SetPlayer
   - SetPlayerId
+  - AddMeToList
+  - AddMeToLIst
+  - SynchronizationPeopleNum
+  - LeftRoom
+  - LeftPhoton
+  - AddSynchronizationPeopleNum
+  - PartyPageButton
+  - AddMyNickName
+  - AddOwnerNickName
+  - AddNickName
+  - AddMyName
+  - SynchronizationPartyPeopleNum
+  - GameStart
+  - SetName
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
