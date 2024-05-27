@@ -1,144 +1,193 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Character_Controller : MonoBehaviour
 {
-    public Animator m_Animator;
+    /* -------------------------------------------------- */
 
-    [Range(0, 10f)]
-    public float f_MoveSpeed;
+    [Header("Component")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private PhotonManager photonManager;
+    [SerializeField] private PhotonView photonView;
 
-    [Range(0, 10f)]
-    public float f_RunSpeed;
+    [Header("Parts")]
+    // Insert "Body" Object
+    public GameObject player_Body;
+    // Camera (1st or 3rd)
+    public GameObject camera_First, camera_Third;
+    // Insert "Rotate_Horizontal" Object
+    public Transform camera_Rotation;
 
-    [Range(0, 100f)]
-    public float f_RotateSpeed;
+    [Header("Speed")]
+    public float speed_Walk = 10f;
+    public float speed_Run = 15f;
+    public float speed_Rotate = 1f;
 
-    public GameObject obj_Rotate_Horizontal;
-    public GameObject obj_Rotate_Vertical;
-    public GameObject obj_Body;
-    public GameObject obj_Cam_First, obj_Cam_Quarter;
+    // Concealed variable
+    // Player Position
+    private float pos_X, pos_Z;
+    // Camera Rotation
+    private float rot_X, rot_Y;
 
-    // Start is called before the first frame update
-    private void Start()
+    /* -------------------------------------------------- */
+
+    private void Awake()
     {
-        if (GetComponent<PhotonView>().IsMine)
+        Player_Init();
+    }
+
+    private void Player_Init()
+    {
+        photonManager = LobbyUIManager.Instance.photonManager;
+        photonView = GetComponent<PhotonView>();
+
+        if (photonView.IsMine)
         {
-            obj_Cam_First.SetActive(false);
-            obj_Cam_Quarter.SetActive(true);
-            this.gameObject.name += "(LocalPlayer)";
-        }
-        else
-        {
-            obj_Cam_First.SetActive(false);
-            obj_Cam_Quarter.SetActive(false);
-            this.gameObject.name += "(OtherPlayer)";
+            LobbyUIManager.Instance.photonManager.myPlayer = photonView;
+            photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
         }
     }
 
-    // Update is called once per frame
-    private void LateUpdate()
+    [PunRPC]
+    void SetName(string name)
     {
-        if (GetComponent<PhotonView>().IsMine)
+        gameObject.name = name;
+    }
+
+    /* -------------------------------------------------- */
+
+    private void OnEnable()
+    {
+        if (!LobbyUIManager.Instance.photonManager.playerList.Contains(this.gameObject))
         {
-            float pos_x = Input.GetAxis("Horizontal");
-            float pos_z = Input.GetAxis("Vertical");
+            photonView.RPC("AddMeToList", RpcTarget.AllBuffered);
+        }
+    }
 
-            //달리기 ON&OFF
-            if (Input.GetKey(KeyCode.LeftShift))
+    [PunRPC]
+    void AddMeToLIst()
+    {
+        if (!LobbyUIManager.Instance.photonManager.playerList.Contains(this.gameObject))
+        {
+            LobbyUIManager.Instance.photonManager.playerList.Add(this.gameObject);
+        }
+    }
+
+    /* -------------------------------------------------- */
+
+    private void Start()
+    {
+        Camera_Setting();
+        Player_Setting();
+    }
+
+    private void Player_Setting()
+    {
+        animator = GetComponent<Animator>();
+
+        if (photonView.IsMine)
+        {
+            this.gameObject.name += "(Local Player)";
+        } else
+        {
+            this.gameObject.name += "(Other Player)";
+        }
+    }
+
+    private void Camera_Setting()
+    {
+        if (photonView.IsMine)
+        {
+            // Enable and setting local player's third camera 
+            camera_First.SetActive(false);
+            camera_Third.SetActive(true);
+        } else
+        {
+            // Disable other player's camera
+            camera_First.SetActive(false);
+            camera_Third.SetActive(false);
+        }
+    }
+
+    /* -------------------------------------------------- */
+
+    private void Update()
+    {
+        if (photonView.IsMine)
+        {
+            // Player code
+            Player_Move();
+
+            // Camera code
+            Camera_Move();
+            Camera_Change();
+        }
+    }
+
+    private void Player_Move()
+    {
+        pos_X = Input.GetAxis("Horizontal");
+        pos_Z = Input.GetAxis("Vertical");
+
+        if (pos_X != 0 || pos_Z != 0) // isMove
+        {
+            // Direction vector of the camera
+            Vector3 moveDir_Vector3 = (camera_Rotation.localRotation * Vector3.forward).normalized;
+            Vector3 moveDir_Forward = moveDir_Vector3 * pos_Z;
+            Vector3 moveDir_Right = Quaternion.Euler(0, 90, 0) * moveDir_Vector3 * pos_X;
+
+            // Player move direction
+            Vector3 moveDir = moveDir_Forward + moveDir_Right;
+
+            // Player rotate
+            player_Body.transform.localRotation = Quaternion.Slerp(player_Body.transform.rotation, Quaternion.LookRotation(moveDir.normalized), speed_Rotate);
+
+            animator.SetBool("Walk", true);
+
+            if (Input.GetKey(KeyCode.LeftShift)) // isRun
             {
-
-                m_Animator.SetBool("Run", true);
+                // Run State
+                animator.SetBool("Run", true);
+                transform.Translate(moveDir.normalized * speed_Run * Time.deltaTime);
+            } else // !isRun
+            {
+                // Walk State
+                animator.SetBool("Run", false);
+                transform.Translate(moveDir.normalized * speed_Walk * Time.deltaTime);
             }
-            else
-            {
-                m_Animator.SetBool("Run", false);
-            }
+        } else // !isMove
+        {
+            // Idle State
+            animator.SetBool("Walk", false);
+        }
+    }
 
-            //걷기 ON&OFF 및 캐릭터 이동
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-            {
-                // Debug.Log(new Vector2(pos_x, pos_z));
-                if (pos_x > 0)
-                {
-                    if (pos_z > 0)
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, 45f, 0f);
-                        //transform.Rotate(new Vector3(0f, 45f, 0f));
-                    }
-                    else if (pos_z < 0)
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, 135f, 0f);
-                        //transform.Rotate(new Vector3(0f, 135f, 0f));
-                    }
-                    else
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, 90f, 0f);
-                        //transform.Rotate(new Vector3(0f, 90f, 0f));
-                    }
-                }
-                else if (pos_x < 0)
-                {
-                    if (pos_z > 0)
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, -45f, 0f);
-                        //transform.Rotate(new Vector3(0f, -45f, 0f));
-                    }
-                    else if (pos_z < 0)
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, -135f, 0f);
-                        //transform.Rotate(new Vector3(0f, -135f, 0f));
-                    }
-                    else
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, 270f, 0f);
-                        //transform.Rotate(new Vector3(0f, 270f, 0f));
-                    }
-                }
-                else
-                {
-                    if (pos_z > 0)
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-                        //transform.Rotate(new Vector3(0f, 0f, 0f));
-                    }
-                    else if (pos_z < 0)
-                    {
-                        obj_Body.transform.localEulerAngles = new Vector3(0f, 180f, 0f);
-                        //transform.Rotate(new Vector3(0f, 45f, 0f));
-                    }
-                }
+    private void Camera_Move()
+    {
+        rot_X = Input.GetAxis("Mouse Y"); // Up and down
+        rot_Y = Input.GetAxis("Mouse X"); // Left and right
 
-                m_Animator.SetBool("Walk", true);
-                if (m_Animator.GetBool("Run"))
-                {
-                    transform.Translate(new Vector3(pos_x, 0, pos_z) * Time.deltaTime * f_MoveSpeed * f_RunSpeed);
-                }
-                else
-                {
-                    //transform.position += new Vector3(pos_x, 0, pos_z) * Time.deltaTime * f_MoveSpeed;
-                    transform.Translate(new Vector3(pos_x, 0, pos_z) * Time.deltaTime * f_MoveSpeed);
-                }
-            }
-            else
-            {
-                m_Animator.SetBool("Walk", false);
-            }
+        if (rot_Y != 0)
+        {
+            camera_Rotation.localEulerAngles += new Vector3(0, rot_Y, 0) * speed_Rotate;
+        }
+    }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+    private void Camera_Change()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            if (camera_Third.activeSelf == true)
             {
-                m_Animator.SetTrigger("Jump");
-            }
-
-            if (Input.GetMouseButton(1))
+                camera_First.SetActive(true);
+                camera_Third.SetActive(false);
+            } else
             {
-                float rot_x = Input.GetAxis("Mouse Y");
-                float rot_y = Input.GetAxis("Mouse X");
-                //obj_Rotate_Horizontal.transform.eulerAngles += new Vector3(0, rot_y, 0) * f_RotateSpeed;
-                transform.eulerAngles += new Vector3(0, rot_y, 0) * f_RotateSpeed;
+                camera_First.SetActive(false);
+                camera_Third.SetActive(true);
             }
         }
     }

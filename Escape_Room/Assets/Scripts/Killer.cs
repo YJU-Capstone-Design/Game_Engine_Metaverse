@@ -12,7 +12,7 @@ public class Killer : MonoBehaviour
     [SerializeField] private NavMeshAgent nma;
 
     [Header("Setting")]
-    [SerializeField] private GameObject Weapon;
+    [SerializeField] private GameObject weapon;
     [SerializeField] private float attackRange = 5f;
 
     [Header("Target")]
@@ -40,6 +40,8 @@ public class Killer : MonoBehaviour
         nma.angularSpeed = 120f;
         nma.acceleration = 8f;
         nma.stoppingDistance = 2f;
+
+        weapon = GetComponentInChildren<Weapon>().gameObject;
     }
 
     private void Update()
@@ -69,7 +71,7 @@ public class Killer : MonoBehaviour
         Quaternion rightRot = Quaternion.Euler(0, findRange * 0.5f, 0); // 오른쪽 각도 최댓값
         Vector3 rightDir = rightRot * rayDir;
         float rightRad = Mathf.Acos(Vector3.Dot(rayDir, rightDir));
-        float rightDeg = -(Mathf.Rad2Deg * rightRad);
+        float rightDeg = Mathf.Rad2Deg * rightRad;
 
         // Debug.DrawRay
         Debug.DrawRay(rayStart, rayDir * sphereRadius, Color.red);
@@ -83,10 +85,10 @@ public class Killer : MonoBehaviour
         {
             Debug.Log(hit.transform.gameObject);
             // 특정 Player가 Killer의 인식 범위 안에 들어올 경우
-            if (hit.transform.parent.CompareTag("Player"))
+            if (hit.transform.CompareTag("Player"))
             {
                 Debug.Log("CompareTag Player");
-                GameObject hitPlayer = hit.transform.parent.gameObject;
+                GameObject hitPlayer = hit.transform.gameObject;
                 // 해당 Player의 방향벡터값 계산
                 Vector3 hitDir = (hitPlayer.transform.position - rayStart).normalized;
                 float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
