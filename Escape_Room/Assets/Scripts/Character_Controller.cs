@@ -12,6 +12,7 @@ public class Character_Controller : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private PhotonManager photonManager;
     [SerializeField] private PhotonView photonView;
+    [SerializeField] private PhotonTransformView photonTransformView;
 
     [Header("Parts")]
     // Insert "Body" Object
@@ -43,6 +44,7 @@ public class Character_Controller : MonoBehaviour
     {
         photonManager = LobbyUIManager.Instance.photonManager;
         photonView = GetComponent<PhotonView>();
+        photonTransformView = GetComponent<PhotonTransformView>();
 
         if (photonView.IsMine)
         {
