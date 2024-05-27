@@ -150,21 +150,12 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 9
-    SynchronizeType: 1
-    Name: Jump
   - Type: 4
     SynchronizeType: 1
     Name: Walk
   - Type: 4
     SynchronizeType: 1
     Name: Run
-  - Type: 4
-    SynchronizeType: 1
-    Name: Sit
-  - Type: 4
-    SynchronizeType: 0
-    Name: Dance
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -205,14 +196,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   photonManager: {fileID: 0}
-  camera_Rotation: {fileID: 6263693633168431974}
+  photonView: {fileID: 0}
+  player_Body: {fileID: 2374430763718696840}
   camera_First: {fileID: 3738339002912586576}
   camera_Third: {fileID: 8337538511887817034}
-  player_Body: {fileID: 2374430763718696840}
+  camera_Rotation: {fileID: 6263693633168431974}
   speed_Walk: 10
   speed_Run: 15
-  speed_cameraRotate: 1
-  speed_playerRotate: 0.1
+  speed_Rotate: 1
 --- !u!114 &1530840900654459803
 MonoBehaviour:
   m_ObjectHideFlags: 0

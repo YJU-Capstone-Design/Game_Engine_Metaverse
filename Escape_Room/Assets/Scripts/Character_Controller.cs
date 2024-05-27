@@ -91,7 +91,8 @@ public class Character_Controller : MonoBehaviour
         if (photonView.IsMine)
         {
             this.gameObject.name += "(Local Player)";
-        } else
+        }
+        else
         {
             this.gameObject.name += "(Other Player)";
         }
@@ -104,7 +105,8 @@ public class Character_Controller : MonoBehaviour
             // Enable and setting local player's third camera 
             camera_First.SetActive(false);
             camera_Third.SetActive(true);
-        } else
+        }
+        else
         {
             // Disable other player's camera
             camera_First.SetActive(false);
@@ -152,13 +154,15 @@ public class Character_Controller : MonoBehaviour
                 // Run State
                 animator.SetBool("Run", true);
                 transform.Translate(moveDir.normalized * speed_Run * Time.deltaTime);
-            } else // !isRun
+            }
+            else // !isRun
             {
                 // Walk State
                 animator.SetBool("Run", false);
                 transform.Translate(moveDir.normalized * speed_Walk * Time.deltaTime);
             }
-        } else // !isMove
+        }
+        else // !isMove
         {
             // Idle State
             animator.SetBool("Walk", false);
@@ -184,7 +188,8 @@ public class Character_Controller : MonoBehaviour
             {
                 camera_First.SetActive(true);
                 camera_Third.SetActive(false);
-            } else
+            }
+            else
             {
                 camera_First.SetActive(false);
                 camera_Third.SetActive(true);
