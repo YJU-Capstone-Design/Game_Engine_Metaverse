@@ -38,6 +38,8 @@ public class Character_Controller : MonoBehaviour
     private void Awake()
     {
         Player_Init();
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Player_Init()
