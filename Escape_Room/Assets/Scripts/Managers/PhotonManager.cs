@@ -129,12 +129,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             Debug.Log($"{player.Value.NickName},{player.Value.ActorNumber}"); // 이름과 고유값 출력
         }
 
-        // 캐릭터 생성
-        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
-
-        // Player Name Box 생성
-        PhotonNetwork.Instantiate(playerNameBoxPrefab.name, LobbyUIManager.Instance.playerNameBoxParent.transform.position, Quaternion.identity);
-
         // 로딩 화면 비활성화
         StartCoroutine("Loading", false);
 
@@ -148,7 +142,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             // InGameCanvas UI 활성화
             inGameCanvas.SetActive(true);
+
+            PhotonNetwork.LoadLevel("2.Theme");
         }
+
+        // 캐릭터 생성
+        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
+
+        // Player Name Box 생성
+        PhotonNetwork.Instantiate(playerNameBoxPrefab.name, LobbyUIManager.Instance.playerNameBoxParent.transform.position, Quaternion.identity);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
