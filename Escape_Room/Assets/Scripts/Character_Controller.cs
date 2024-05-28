@@ -38,8 +38,6 @@ public class Character_Controller : MonoBehaviour
     private void Awake()
     {
         Player_Init();
-
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Player_Init()
@@ -72,7 +70,7 @@ public class Character_Controller : MonoBehaviour
     }
 
     [PunRPC]
-    void AddMeToLIst()
+    void AddMeToList()
     {
         if (!LobbyUIManager.Instance.photonManager.playerList.Contains(this.gameObject))
         {

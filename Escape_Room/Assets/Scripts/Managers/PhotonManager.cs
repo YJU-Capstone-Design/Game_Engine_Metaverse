@@ -61,8 +61,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         inGameCanvas.SetActive(false);
         loadingUI.SetActive(false);
         loadingFadeAnim.gameObject.SetActive(false);
-
-        DontDestroyOnLoad(gameObject);
     }
 
    
@@ -144,8 +142,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             // InGameCanvas UI 활성화
             inGameCanvas.SetActive(true);
-
-            PhotonNetwork.LoadLevel("4.UI 1");
         }
 
         // 캐릭터 생성
