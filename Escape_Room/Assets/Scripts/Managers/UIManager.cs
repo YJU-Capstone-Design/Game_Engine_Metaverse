@@ -20,6 +20,11 @@ public class UIManager : Singleton<UIManager>
     [Header("# Wallet")]
     [SerializeField] GameObject[] walletObjs;
 
+    [Header("Narration")]
+    Narration narration;
+    [SerializeField] GameObject narrationBox;
+    [SerializeField] TextMeshProUGUI narrationText;
+
     private void Awake()
     {
         // 방향 자물쇠 초기화
@@ -31,6 +36,8 @@ public class UIManager : Singleton<UIManager>
         dirLockAnswer[1] = "Down";
         dirLockAnswer[2] = "Right";
         dirLockAnswer[3] = "Left";
+
+        narration = GetComponent<Narration>();
     }
 
     private void Update()
@@ -48,6 +55,67 @@ public class UIManager : Singleton<UIManager>
             {
                 if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.bed;
+        } 
+        else if(Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.deadBody;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.chair;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.laptop;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.document;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad5))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.playerBag;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad6))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.deadBodyBag;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad7))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.IDcard;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.wallClock;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad9))
+        {
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+            narrationText.text = narration.kitchenKnife;
         }
     }
 
