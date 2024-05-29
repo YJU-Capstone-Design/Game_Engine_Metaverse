@@ -14,10 +14,15 @@ public class UIManager : Singleton<UIManager>
     [Header("# Button Lock")]
     public List<int> btnLockInput;
     int[] btnLockAnswer; // 버튼 자물쇠 정답
-    [SerializeField] RectTransform btnLockCheckButton;
-    [SerializeField] ButtonLock[] btnLockButtons;
+    [SerializeField] RectTransform btnLockCheckButton; // 확인 버튼 -> 애니메이션 용도
+    [SerializeField] ButtonLock[] btnLockButtons; // 클릭 가능한 버튼들
 
-    [Header("# Button")]
+    [Header("# Dial Lock")]
+    public List<int> dialLockInput;
+    int[] dialLockAnswer;
+    [SerializeField] DialLock[] dialLockTexts; // Dial Lock 숫자 칸
+
+    [Header("# Question Button")]
     [SerializeField] GameObject[] answerBtns;
     [SerializeField] Sprite[] btnSprites;
 
@@ -38,6 +43,7 @@ public class UIManager : Singleton<UIManager>
 
         DirectionLockSetting();
         ButtonLockSetting();
+        DialLockSetting();
     }
 
     private void Update()
@@ -105,22 +111,21 @@ public class UIManager : Singleton<UIManager>
         dirLockInput = new List<string>();
 
         // 방향 자물쇠 정답 세팅 상7, 우3, 하2 로 변경해야 됨.
-        dirLockAnswer = new string[4];
-        dirLockAnswer[0] = "Up";
-        dirLockAnswer[1] = "Down";
-        dirLockAnswer[2] = "Right";
-        dirLockAnswer[3] = "Left";
+        dirLockAnswer = new string[4] { "Up", "Down", "Right" , "Left" };
     }
 
     void ButtonLockSetting()
     {
         btnLockInput = new List<int>();
 
-        btnLockAnswer = new int[4];
-        btnLockAnswer[0] = 1;
-        btnLockAnswer[1] = 2;
-        btnLockAnswer[2] = 4;
-        btnLockAnswer[3] = 5;
+        btnLockAnswer = new int[4] { 1, 2, 4, 5};
+    }
+
+    void DialLockSetting()
+    {
+        dialLockInput = new List<int> { 0, 0, 0};
+
+        dialLockAnswer = new int[3] { 7, 3, 2};
     }
 
     // 자물쇠 정답 확인
@@ -197,6 +202,31 @@ public class UIManager : Singleton<UIManager>
                 btn.downButton.SetActive(false);
             }
         }
+        else if(name == "Dial")
+        {
+            for (int i = 0; i < dialLockInput.Count; i++)
+            {
+                if (dialLockInput[i] != dialLockAnswer[i] || dialLockInput[i] == null)
+                {
+                    Debug.Log("실패");
+                    dialLockInput.Clear(); // 입력 값 초기화
+                    break;
+                }
+                else if (dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
+                {
+                    Debug.Log("성공");
+                    dialLockInput.Clear();
+
+                    // UI 종료
+                    foreach (GameObject obj in activeUIChildren)
+                    {
+                        if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+                    }
+
+                    // 성공 시 상호작용 로직 필요
+                }
+            }
+        }
     }
 
     // 방자물쇠 값 초기화
@@ -209,6 +239,23 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "Button":
                 btnLockInput.Clear();
+
+                // 버튼 초기화
+                foreach (ButtonLock btn in btnLockButtons)
+                {
+                    btn.upButton.SetActive(true);
+                    btn.downButton.SetActive(false);
+                }
+
+                break;
+            case "Dial":
+                dialLockInput.Clear();
+
+                foreach(DialLock num in dialLockTexts)
+                {
+                    num.SetInitialValue();
+                }
+
                 break;
         }
     }
