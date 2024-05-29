@@ -17,7 +17,18 @@ public class DialLock : MonoBehaviour
     {
         SetInitialValue();
     }
-    
+
+    private void OnDisable()
+    {
+        SetInitialValue();
+
+        leftNumText.text = leftNum.ToString();
+        middleNumText.text = middleNum.ToString();
+        rightNumText.text = rightNum.ToString();
+
+        UIManager.Instance.dialLockInput = new List<int> { 0, 0, 0 };
+    }
+
     public void SetInitialValue()
     {
         leftNumText.text = "9";

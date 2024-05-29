@@ -102,6 +102,11 @@ public class UIManager : Singleton<UIManager>
                 narrationBox.SetActive(false);
                 activeUIChildren[10].SetActive(true);
             }
+            else if(narrationText.text == narration.dialLock)
+            {
+                narrationBox.SetActive(false);
+                activeUIChildren[11].SetActive(true);
+            }
         }
     }
 
@@ -206,16 +211,16 @@ public class UIManager : Singleton<UIManager>
         {
             for (int i = 0; i < dialLockInput.Count; i++)
             {
-                if (dialLockInput[i] != dialLockAnswer[i] || dialLockInput[i] == null)
+                if (dialLockInput[i] != dialLockAnswer[i])
                 {
                     Debug.Log("실패");
-                    dialLockInput.Clear(); // 입력 값 초기화
+                    DialLockSetting(); // 입력 값 초기화
                     break;
                 }
                 else if (dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
                 {
                     Debug.Log("성공");
-                    dialLockInput.Clear();
+                    DialLockSetting();
 
                     // UI 종료
                     foreach (GameObject obj in activeUIChildren)
@@ -249,9 +254,9 @@ public class UIManager : Singleton<UIManager>
 
                 break;
             case "Dial":
-                dialLockInput.Clear();
+                DialLockSetting(); // List 에 0,0,0 값이 그대로 있어야 하기에 Clear 를 사용하면 안됨.
 
-                foreach(DialLock num in dialLockTexts)
+                foreach (DialLock num in dialLockTexts)
                 {
                     num.SetInitialValue();
                 }
