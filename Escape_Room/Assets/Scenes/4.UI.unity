@@ -545,6 +545,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 1030975081, guid: abc00000000017051921371168737397, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38125,7 +38129,7 @@ MonoBehaviour:
   myPlayer: {fileID: 0}
   myParty: {fileID: 0}
   myPlayerName: {fileID: 0}
-  spawnPoint: {x: -0.6, y: 4, z: 8}
+  spawnPoint: {x: 0, y: 4.82, z: 0}
   playerList: []
   theme: 
   partyPeopleNum: 

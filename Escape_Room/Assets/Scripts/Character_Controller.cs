@@ -1,9 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Character_Controller : MonoBehaviour
 {
@@ -135,8 +133,8 @@ public class Character_Controller : MonoBehaviour
 
     private void Player_Move()
     {
-        pos_X = Input.GetAxis("Horizontal");
-        pos_Z = Input.GetAxis("Vertical");
+        pos_X = Input.GetAxisRaw("Horizontal");
+        pos_Z = Input.GetAxisRaw("Vertical");
 
         if (pos_X != 0 || pos_Z != 0) // isMove
         {
@@ -160,8 +158,7 @@ public class Character_Controller : MonoBehaviour
 
                 if (player_Body.activeSelf == true)
                 {
-                    Vector3 force = moveDir.normalized * speed_Run * Time.deltaTime;
-                    rigidbody.AddForce(force, ForceMode.VelocityChange);
+                    rigidbody.velocity = moveDir.normalized * speed_Run;
                 }
                 else
                 {
@@ -175,9 +172,9 @@ public class Character_Controller : MonoBehaviour
 
                 if (player_Body.activeSelf == true)
                 {
-                    Vector3 force = moveDir.normalized * speed_Walk * Time.deltaTime;
-                    rigidbody.AddForce(force, ForceMode.VelocityChange);
-                } else
+                    rigidbody.velocity = moveDir.normalized * speed_Walk;
+                }
+                else
                 {
                     transform.Translate(moveDir.normalized * speed_Walk * Time.deltaTime);
                 }
@@ -187,6 +184,7 @@ public class Character_Controller : MonoBehaviour
         {
             // Idle State
             animator.SetBool("Walk", false);
+            rigidbody.velocity = Vector3.zero;
         }
     }
 
