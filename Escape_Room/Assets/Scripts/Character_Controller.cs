@@ -9,7 +9,7 @@ public class Character_Controller : MonoBehaviour
 
     [Header("Component")]
     [SerializeField] private Animator animator;
-    [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private PhotonManager photonManager;
     [SerializeField] private PhotonView photonView;
     [SerializeField] private PhotonTransformView photonTransformView;
@@ -95,7 +95,7 @@ public class Character_Controller : MonoBehaviour
     private void Player_Setting()
     {
         animator = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Camera_Setting()
@@ -158,7 +158,7 @@ public class Character_Controller : MonoBehaviour
 
                 if (player_Body.activeSelf == true)
                 {
-                    rigidbody.velocity = moveDir.normalized * speed_Run;
+                    rb.velocity = moveDir.normalized * speed_Run;
                 }
                 else
                 {
@@ -172,7 +172,7 @@ public class Character_Controller : MonoBehaviour
 
                 if (player_Body.activeSelf == true)
                 {
-                    rigidbody.velocity = moveDir.normalized * speed_Walk;
+                    rb.velocity = moveDir.normalized * speed_Walk;
                 }
                 else
                 {
@@ -184,7 +184,7 @@ public class Character_Controller : MonoBehaviour
         {
             // Idle State
             animator.SetBool("Walk", false);
-            rigidbody.velocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
         }
     }
 
