@@ -207,7 +207,7 @@ public class Character_Controller : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.CompareTag("Interact")) // 상호작용 가능 오브젝트 태그 임시작성, 변경 필요성 O
+            if (hit.transform.CompareTag("Interact")) // Temp tag
             {
                 GameObject hitObj = hit.transform.gameObject;
 
@@ -244,7 +244,7 @@ public class Character_Controller : MonoBehaviour
             {
                 /*if (!isUse || !isClear)
                 {
-                    // 상호작용 진행
+                    // Continue interact
                 }*/
             }
         }
