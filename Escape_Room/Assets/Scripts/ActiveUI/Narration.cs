@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
@@ -22,6 +23,7 @@ public class Narration : MonoBehaviour
     public string buttonLock;    // 버튼 자물쇠
     public string key;           // 열쇠
     public string storageCloset; // 수납장
+    public string hint; // 힌트
 
 
     private void Awake()
@@ -34,14 +36,15 @@ public class Narration : MonoBehaviour
         playerBag = "샤프, 펜, 지우개, 자, 가위 등 평범한 학용품이 들어있다.(힌트 사용 시 수납 가능)";
         deadBodyBag = "신분증이 들어 있는 지갑이 들어있다.";
         IDcard = "신분증을 보니 피해자는 25살인 거 같다. 생일은 1999.03.25이다.";
-        wallClock = "현재 시각은 19:32이다.";
+        wallClock = "건전지가 다 닳은 거 같다. 시각은 7:32을 가리키고 있다.";
         kitchenKnife = "피가 묻은 식칼이다. 중요한 증거품이 될 거 같다.";
         WallTV = "복현동에서 일어나는 연쇄살인 사건을 보도 하고 있다. 지금까지 피해자는 27명인 거 같다.";
-        keyLock = "열쇠가 필요한 자물쇠다.";
-        directionLock = "방향형 자물쇠다.";
-        dialLock = "3가지 숫자를 입력하는 번호 자물쇠다.";
-        buttonLock = "4가지 숫자를 입력하는 버튼 자물쇠다.";
+        keyLock = "열쇠가 필요한 자물쇠다.\n열쇠를 사용하시길 원하시면 Enter를 눌러주십시오...";
+        directionLock = "방향형 자물쇠다.\n입력을 원하시면 Enter를 눌러주십시오...";
+        dialLock = "3가지 숫자를 입력하는 번호 자물쇠다.\n입력을 원하시면 Enter를 눌러주십시오...";
+        buttonLock = "4가지 숫자를 입력하는 버튼 자물쇠다.\n입력을 원하시면 Enter를 눌러주십시오...";
         key = "이걸로 열쇠형 자물쇠를 열 수 있을 거 같다.";
-        storageCloset = "평범한 수납장인 거 같다";
+        storageCloset = "평범한 수납장인 거 같다.";
+        hint = $"현재 힌트 사용 가능 횟수는 총 {2} 번 남았습니다. \n사용을 원하시면 Enter를 눌러주십시오...";
     }
 }

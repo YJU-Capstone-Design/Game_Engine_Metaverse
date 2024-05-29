@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,17 +28,9 @@ public class UIManager : Singleton<UIManager>
 
     private void Awake()
     {
-        // 방향 자물쇠 초기화
-        dirLockInput = new List<string>();
-
-        // 테스트용 정답 세팅
-        dirLockAnswer = new string[4];
-        dirLockAnswer[0] = "Up";
-        dirLockAnswer[1] = "Down";
-        dirLockAnswer[2] = "Right";
-        dirLockAnswer[3] = "Left";
-
         narration = GetComponent<Narration>();
+
+        DirectionLock();
     }
 
     private void Update()
@@ -57,66 +50,54 @@ public class UIManager : Singleton<UIManager>
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Keypad0))
+        // 테스트 용 나레이션 오픈 로직
+        if(Input.GetKeyDown(KeyCode.Keypad1))
         {
             narrationBox.SetActive(true);
             activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.bed;
-        } 
-        else if(Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.deadBody;
+            narrationText.text = narration.keyLock;
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
             narrationBox.SetActive(true);
             activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.chair;
+            narrationText.text = narration.directionLock;
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             narrationBox.SetActive(true);
             activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.laptop;
+            narrationText.text = narration.dialLock;
         }
         else if (Input.GetKeyDown(KeyCode.Keypad4))
         {
             narrationBox.SetActive(true);
             activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.document;
+            narrationText.text = narration.buttonLock;
         }
-        else if (Input.GetKeyDown(KeyCode.Keypad5))
+
+        // 자물쇠와 상호작용을 했을 때, Enter 키를 누르면 해당 자물쇠 UI 활성화
+        if(Input.GetKeyDown(KeyCode.Return))
         {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.playerBag;
+            if (narrationText.text == narration.directionLock)
+            {
+                narrationBox.SetActive(false);
+                activeUIChildren[7].SetActive(true);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Keypad6))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.deadBodyBag;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad7))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.IDcard;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad8))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.wallClock;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad9))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.kitchenKnife;
-        }
+    }
+
+    void DirectionLock()
+    {
+        // 방향 자물쇠 초기화
+        dirLockInput = new List<string>();
+
+        // 방향 자물쇠 정답 세팅
+        dirLockAnswer = new string[4];
+        dirLockAnswer[0] = "Up";
+        dirLockAnswer[1] = "Down";
+        dirLockAnswer[2] = "Right";
+        dirLockAnswer[3] = "Left";
     }
 
     // 방향 자물쇠 정답 확인
@@ -127,21 +108,34 @@ public class UIManager : Singleton<UIManager>
             if (input[i] != answer[i] || input[i] == null) 
             {
                 Debug.Log("실패");
-                dirLockInput.Clear(); // 입력 값 초기화
+                input.Clear(); // 입력 값 초기화
                 break;
             }
             else if (input[input.Count - 1] == answer[input.Count - 1])
             {
                 Debug.Log("성공");
-                dirLockInput.Clear();
+                input.Clear();
+
+                // UI 종료
+                foreach (GameObject obj in activeUIChildren)
+                {
+                    if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+                }
+
+                // 성공 시 상호작용 로직 필요
             }
         }
     }
 
     // 방향 자물쇠 값 초기화
-    public void ResetInput()
+    public void ResetInput(string lockName)
     {
-        dirLockInput.Clear(); // 입력 값 초기화
+        switch (lockName)
+        {
+            case "Direction":
+                dirLockInput.Clear(); // 입력 값 초기화
+                break;
+        }
     }
 
     // Active UI 를 껐을 시, 초기화가 필요한 오브젝트들 초기화
@@ -160,7 +154,8 @@ public class UIManager : Singleton<UIManager>
         } 
         else if(obj.name.Contains("Lock"))
         {
-            ResetInput();
+            ResetInput("Direction");
+            // 다른 자물쇠 Input 도 필요
         } 
         else if(obj.name.Contains("Wallet"))
         {
