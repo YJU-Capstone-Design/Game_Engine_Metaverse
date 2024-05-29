@@ -50,7 +50,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     [Header("# Common UI")]
     public GameObject lobbyCanvas;
+    public LobbyUIManager lobbyUIManager;
     public GameObject inGameCanvas;
+    public UIManager inGameUIManager;
     public GameObject loadingUI;
     public Animator loadingFadeAnim;
 
@@ -137,18 +139,28 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             // Lobby UI 활성화
             lobbyCanvas.SetActive(true);
+            lobbyUIManager.gameObject.SetActive(true);
+
+            // InGameCanvas UI 비활성화
+            inGameCanvas.SetActive(false);
+            inGameUIManager.gameObject.SetActive(false);
         } 
         else
         {
             // InGameCanvas UI 활성화
             inGameCanvas.SetActive(true);
+            inGameUIManager.gameObject.SetActive(true);
+
+            // Lobby UI 비활성화
+            lobbyCanvas.SetActive(false);
+            lobbyUIManager.gameObject.SetActive(false);
         }
 
         // 캐릭터 생성
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
 
         // Player Name Box 생성
-        PhotonNetwork.Instantiate(playerNameBoxPrefab.name, LobbyUIManager.Instance.playerNameBoxParent.transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate(playerNameBoxPrefab.name, lobbyUIManager.playerNameBoxParent.transform.position, Quaternion.identity);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -271,8 +283,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, false); // 본인과 관련된 데이터들 삭제
 
         // 본인  mini 파티 UI 비활성화
-        LobbyUIManager.Instance.miniPartyUI.SetActive(false);
-        LobbyUIManager.Instance.gameStartButton.SetActive(false);
+        lobbyUIManager.miniPartyUI.SetActive(false);
+        lobbyUIManager.gameStartButton.SetActive(false);
 
         // myParty 초기화
         myParty = null;
@@ -301,7 +313,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // 로딩 화면 활성화
             StartCoroutine("Loading", true);
 
-            foreach (GameObject lobbyUI in LobbyUIManager.Instance.activeUIBoxs)
+            foreach (GameObject lobbyUI in lobbyUIManager.activeUIBoxs)
             {
                 if (lobbyUI.activeInHierarchy)
                 {
@@ -310,11 +322,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             }
 
             // 본인 mini 파티 UI 비활성화
-            LobbyUIManager.Instance.miniPartyUI.SetActive(false);
-            LobbyUIManager.Instance.gameStartButton.SetActive(false);
+            lobbyUIManager.miniPartyUI.SetActive(false);
+            lobbyUIManager.gameStartButton.SetActive(false);
 
             // List 들 초기화
-            LobbyUIManager.Instance.partyPlayerList.Clear();
+            lobbyUIManager.partyPlayerList.Clear();
             partyList.Clear();
 
             // LobbyCanvas 비활성화
@@ -336,13 +348,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             if (playerPV.ViewID / 1000 == ActorNum && leftPhoton)
             {
                 // Player Name Box 를 List 에서 삭제
-                for(int j = 0; j < LobbyUIManager.Instance.playerNameBoxList.Count; j++)
+                for(int j = 0; j < lobbyUIManager.playerNameBoxList.Count; j++)
                 {
-                    PhotonView playerNamePV = LobbyUIManager.Instance.playerNameBoxList[j].GetComponent<PhotonView>();
+                    PhotonView playerNamePV = lobbyUIManager.playerNameBoxList[j].GetComponent<PhotonView>();
 
                     if(playerNamePV.ViewID / 1000 == ActorNum)
                     {
-                        LobbyUIManager.Instance.playerNameBoxList.Remove(LobbyUIManager.Instance.playerNameBoxList[j]);
+                        lobbyUIManager.playerNameBoxList.Remove(lobbyUIManager.playerNameBoxList[j]);
                     }
                 }
                 
@@ -367,14 +379,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                     {
                         for (int k = partyLogic.partyPlayerIDList.Count - 1; k > -1; k--)
                         {
-                            for(int l = 0; l < LobbyUIManager.Instance.playerNameBoxList.Count; l++)
+                            for(int l = 0; l < lobbyUIManager.playerNameBoxList.Count; l++)
                             {
-                                PhotonView playerNamePV = LobbyUIManager.Instance.playerNameBoxList[l].GetComponent<PhotonView>();
+                                PhotonView playerNamePV = lobbyUIManager.playerNameBoxList[l].GetComponent<PhotonView>();
 
                                 if(playerNamePV.ViewID/1000 == partyLogic.partyPlayerIDList[k]/1000 && playerNamePV.IsMine)
                                 {
                                     // 파티원들 및 본인 Player Name Box 원위치
-                                    playerNamePV.transform.SetParent(LobbyUIManager.Instance.playerNameBoxParent);
+                                    playerNamePV.transform.SetParent(lobbyUIManager.playerNameBoxParent);
                                     playerNamePV.GetComponent<RectTransform>().localPosition = Vector2.zero;
 
                                     // 파티원들 및 본인 Photon Manager 의 myParty 초기화
@@ -406,7 +418,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                                 partyLogic.lobbyUIManager.partyPlayerList.Remove(partyLogic.lobbyUIManager.partyPlayerList[k]);
 
                                 // Player Name Box 원위치
-                                partyPlayerNameBoxPV.transform.SetParent(LobbyUIManager.Instance.playerNameBoxParent);
+                                partyPlayerNameBoxPV.transform.SetParent(lobbyUIManager.playerNameBoxParent);
                                 partyPlayerNameBoxPV.GetComponent<RectTransform>().localPosition = Vector2.zero;
                                 partyPlayerNameBoxPV.gameObject.SetActive(false);
                             }

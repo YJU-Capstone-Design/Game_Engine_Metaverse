@@ -433,7 +433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &25866298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36306,7 +36306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1667391957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43868,7 +43868,9 @@ MonoBehaviour:
   startCanvas: {fileID: 1559304917}
   userIDInput: {fileID: 1389042888}
   lobbyCanvas: {fileID: 1628897428}
+  lobbyUIManager: {fileID: 1667391957}
   inGameCanvas: {fileID: 691149442}
+  inGameUIManager: {fileID: 25866298}
   loadingUI: {fileID: 2122594342}
   loadingFadeAnim: {fileID: 660009389}
 --- !u!4 &2059845989
