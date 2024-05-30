@@ -461,6 +461,25 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         }
     }
 
+    // 게임 시작 후 Lobby 로 돌아가는 버튼
+    public void BackToLobby()
+    {
+        roomName = "Lobby";
+
+        PhotonNetwork.LeaveRoom();
+
+        // 로딩 화면 활성화
+        StartCoroutine("Loading", true);
+
+        foreach (GameObject lobbyUI in lobbyUIManager.activeUIBoxs)
+        {
+            if (lobbyUI.activeInHierarchy)
+            {
+                lobbyUI.SetActive(false);
+            }
+        }
+    }
+
     // 게임 종료 버튼
     public void ExitGameButton()
     {
