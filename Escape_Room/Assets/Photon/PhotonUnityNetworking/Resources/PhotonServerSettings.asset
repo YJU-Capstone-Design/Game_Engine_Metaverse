@@ -63,6 +63,7 @@ MonoBehaviour:
   - GameStart
   - SetName
   - Player_Move
+  - UseHint
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

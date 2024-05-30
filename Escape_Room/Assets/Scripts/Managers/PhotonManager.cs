@@ -56,6 +56,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public GameObject loadingUI;
     public Animator loadingFadeAnim;
 
+    [Header("# InGame")]
+    public int hintCount;
+
     private void Awake()
     {
         startCanvas.SetActive(true);
@@ -154,6 +157,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // Lobby UI 비활성화
             lobbyCanvas.SetActive(false);
             lobbyUIManager.gameObject.SetActive(false);
+
+            // 힌트 횟수 초기화
+            hintCount = 2;
         }
 
         // 캐릭터 생성

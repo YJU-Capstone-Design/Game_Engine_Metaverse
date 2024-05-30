@@ -1,12 +1,15 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
+    public PhotonManager photonManager;
+    PhotonView pv;
+
     [Header("# Direction Lock")]
     public List<string> dirLockInput;
     string[] dirLockAnswer; // 방향 자물쇠 정답
@@ -39,6 +42,7 @@ public class UIManager : Singleton<UIManager>
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
         narration = GetComponent<Narration>();
 
         DirectionLockSetting();
@@ -89,23 +93,33 @@ public class UIManager : Singleton<UIManager>
             narrationText.text = narration.buttonLock;
         }
 
-        // 자물쇠와 상호작용을 했을 때, Enter 키를 누르면 해당 자물쇠 UI 활성화
-        if (Input.GetKeyDown(KeyCode.Return))
+        // narrationBox 가 활성화 되었을 때, Enter 키를 누르면 기능이 있을 경우엔 기능 작동, 아니면 narrationBox 비활성화
+        if (narrationBox.activeInHierarchy)
         {
-            if (narrationText.text == narration.directionLock)
+            if (Input.GetKeyDown(KeyCode.Return))
             {
+                if (narrationText.text == narration.directionLock)
+                {
+                    activeUIChildren[7].SetActive(true); // 방향 자물쇠 UI 활성화
+                }
+                else if (narrationText.text == narration.buttonLock)
+                {
+                    activeUIChildren[10].SetActive(true); // 버튼 자물쇠 UI 활성화
+                }
+                else if (narrationText.text == narration.dialLock)
+                {
+                    activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
+                }
+                else if (narrationText.text == narration.hint)
+                {
+                    if(photonManager.hintCount > 0)
+                    {
+                        pv.RPC("UseHint", RpcTarget.All);
+                    }
+                }
+
                 narrationBox.SetActive(false);
-                activeUIChildren[7].SetActive(true);
-            }
-            else if (narrationText.text == narration.buttonLock)
-            {
-                narrationBox.SetActive(false);
-                activeUIChildren[10].SetActive(true);
-            }
-            else if(narrationText.text == narration.dialLock)
-            {
-                narrationBox.SetActive(false);
-                activeUIChildren[11].SetActive(true);
+                activeUIChildren[0].SetActive(false);
             }
         }
     }
@@ -265,7 +279,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    // 채팅 정보 열람 버튼
+    // 버튼 자물쇠 확인 버튼 애니메이션
     public void CheckButtonAnim()
     {
         // Anchor 초기화
@@ -317,6 +331,42 @@ public class UIManager : Singleton<UIManager>
         target.anchorMax = currentMax;
 
         yield return null;
+    }
+
+    // 힌트 사용
+    [PunRPC]
+    void UseHint()
+    {
+        if (photonManager.hintCount <= 0)
+            return;
+
+        // 남은 횟수가 1회일 시, 다른 사람 UI 도 종료
+        if(photonManager.hintCount == 1)
+        {
+            narrationBox.SetActive(false);
+            activeUIChildren[0].SetActive(false);
+        }
+
+        photonManager.hintCount--;
+
+        Debug.Log("Use Hint");
+        // 힌트 사용 로직 필요
+    }
+
+    public void HintButton()
+    {
+        if(photonManager.hintCount > 0)
+        {
+            narrationText.text = narration.hint;
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+        }
+        else
+        {
+            narrationText.text = narration.hintZero;
+            narrationBox.SetActive(true);
+            activeUIChildren[0].SetActive(true);
+        }
     }
 
     // Active UI 를 껐을 시, 초기화가 필요한 오브젝트들 초기화
