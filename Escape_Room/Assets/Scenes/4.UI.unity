@@ -448,6 +448,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   photonManager: {fileID: 2059845988}
+  activeUIChildren:
+  - {fileID: 130509255}
+  - {fileID: 1391267072}
+  - {fileID: 1969866497}
+  - {fileID: 149504945}
+  - {fileID: 211045837}
+  - {fileID: 1662087255}
+  - {fileID: 1603693380}
+  - {fileID: 2056900356}
+  - {fileID: 1765392883}
+  - {fileID: 677643235}
+  - {fileID: 539194945}
+  - {fileID: 475728045}
+  timerText: {fileID: 820367218}
   dirLockInput: []
   btnLockInput: 
   btnLockCheckButton: {fileID: 1126714539}
@@ -475,19 +489,6 @@ MonoBehaviour:
   btnSprites:
   - {fileID: 21300000, guid: f7dbbf8abe4f74c499e6f2712b6aaa9a, type: 3}
   - {fileID: 21300000, guid: e9f3fdd0db48460419cf07f78715e830, type: 3}
-  activeUIChildren:
-  - {fileID: 130509255}
-  - {fileID: 1391267072}
-  - {fileID: 1969866497}
-  - {fileID: 149504945}
-  - {fileID: 211045837}
-  - {fileID: 1662087255}
-  - {fileID: 1603693380}
-  - {fileID: 2056900356}
-  - {fileID: 1765392883}
-  - {fileID: 677643235}
-  - {fileID: 539194945}
-  - {fileID: 475728045}
   walletObjs:
   - {fileID: 1088677573}
   - {fileID: 543587753}

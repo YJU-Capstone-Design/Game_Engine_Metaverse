@@ -8,7 +8,14 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     public PhotonManager photonManager;
-    PhotonView pv;
+    public PhotonView pv;
+
+    [Header("# UI Boxs")]
+    [SerializeField] List<GameObject> activeUIChildren;
+
+    [Header("# Player Info")]
+    [SerializeField] TextMeshProUGUI timerText;
+    public float playTime;
 
     [Header("# Direction Lock")]
     public List<string> dirLockInput;
@@ -29,9 +36,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] GameObject[] answerBtns;
     [SerializeField] Sprite[] btnSprites;
 
-    [Header("# UI Boxs")]
-    [SerializeField] List<GameObject> activeUIChildren;
-
     [Header("# Wallet")]
     [SerializeField] GameObject[] walletObjs;
 
@@ -44,6 +48,8 @@ public class UIManager : Singleton<UIManager>
     {
         pv = GetComponent<PhotonView>();
         narration = GetComponent<Narration>();
+
+        InGameSetting();
 
         DirectionLockSetting();
         ButtonLockSetting();
@@ -112,7 +118,7 @@ public class UIManager : Singleton<UIManager>
                 }
                 else if (narrationText.text == narration.hint)
                 {
-                    if(photonManager.hintCount > 0)
+                    if (photonManager.hintCount > 0)
                     {
                         pv.RPC("UseHint", RpcTarget.All);
                     }
@@ -124,27 +130,52 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    void InGameSetting()
+    {
+        playTime = 1800;
+    }
+
+    // 타이머 함수는 PhotonManager 에서 실행
+    [PunRPC]
+    void Timer(float time)
+    {
+        if(time > 0)
+        {
+            int minute = (int)(time / 60);
+            int second = (int)(time % 60);
+
+            timerText.text = $"{minute} : {second}";
+        } 
+        else
+        {
+            time = 0;
+            timerText.text = "00 : 00";
+
+            // 실패 UI 활성화
+        }
+    }
+
     void DirectionLockSetting()
     {
         // 방향 자물쇠 초기화
         dirLockInput = new List<string>();
 
         // 방향 자물쇠 정답 세팅 상7, 우3, 하2 로 변경해야 됨.
-        dirLockAnswer = new string[4] { "Up", "Down", "Right" , "Left" };
+        dirLockAnswer = new string[4] { "Up", "Down", "Right", "Left" };
     }
 
     void ButtonLockSetting()
     {
         btnLockInput = new List<int>();
 
-        btnLockAnswer = new int[4] { 1, 2, 4, 5};
+        btnLockAnswer = new int[4] { 1, 2, 4, 5 };
     }
 
     void DialLockSetting()
     {
-        dialLockInput = new List<int> { 0, 0, 0};
+        dialLockInput = new List<int> { 0, 0, 0 };
 
-        dialLockAnswer = new int[3] { 7, 3, 2};
+        dialLockAnswer = new int[3] { 7, 3, 2 };
     }
 
     // 자물쇠 정답 확인
@@ -215,13 +246,13 @@ public class UIManager : Singleton<UIManager>
             CheckButtonAnim();
 
             // 버튼 초기화
-            foreach(ButtonLock btn in btnLockButtons)
+            foreach (ButtonLock btn in btnLockButtons)
             {
                 btn.upButton.SetActive(true);
                 btn.downButton.SetActive(false);
             }
         }
-        else if(name == "Dial")
+        else if (name == "Dial")
         {
             for (int i = 0; i < dialLockInput.Count; i++)
             {
@@ -341,7 +372,7 @@ public class UIManager : Singleton<UIManager>
             return;
 
         // 남은 횟수가 1회일 시, 다른 사람 UI 도 종료
-        if(photonManager.hintCount == 1)
+        if (photonManager.hintCount == 1)
         {
             narrationBox.SetActive(false);
             activeUIChildren[0].SetActive(false);
@@ -355,7 +386,7 @@ public class UIManager : Singleton<UIManager>
 
     public void HintButton()
     {
-        if(photonManager.hintCount > 0)
+        if (photonManager.hintCount > 0)
         {
             narrationText.text = narration.hint;
             narrationBox.SetActive(true);

@@ -68,7 +68,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         loadingFadeAnim.gameObject.SetActive(false);
     }
 
-   
+    private void Update()
+    {
+        if(PhotonNetwork.IsMasterClient && inGameCanvas.activeInHierarchy)
+        {
+            UIManager.Instance.playTime -= Time.deltaTime;
+
+            UIManager.Instance.pv.RPC("Timer", RpcTarget.AllBuffered, UIManager.Instance.playTime);
+        }
+    }
+
+
     // 포톤 서버에 접속 후 호출되는 콜백 함수
     public override void OnConnectedToMaster()
     {
