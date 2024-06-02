@@ -76,6 +76,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             UIManager.Instance.pv.RPC("Timer", RpcTarget.AllBuffered, UIManager.Instance.playTime);
         }
+
+        SetPlayerList();
     }
 
 
@@ -468,6 +470,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             // Fade 화면 비활성화
             loadingFadeAnim.gameObject.SetActive(false);
+        }
+    }
+
+    // 실시간 Player List 최신화
+    public void SetPlayerList()
+    {
+        // Player List 정리
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            if (playerList[i] == null)
+            {
+                playerList.Remove(playerList[i]);
+            }
         }
     }
 

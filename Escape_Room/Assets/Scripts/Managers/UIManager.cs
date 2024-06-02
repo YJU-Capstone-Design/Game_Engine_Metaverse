@@ -130,6 +130,12 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    private void Start()
+    {
+        // Player List Á¤¸®
+        photonManager.SetPlayerList();
+    }
+
     void InGameSetting()
     {
         playTime = 1800;
