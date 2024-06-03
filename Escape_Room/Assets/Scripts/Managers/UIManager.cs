@@ -270,22 +270,22 @@ public class UIManager : Singleton<UIManager>
         }
         else if (name == "Dial")
         {
-            for (int i = 0; i < dialLockInput.Count; i++)
+            for (int i = 0; i < dialLockAnswer.Length; i++)
             {
                 if (dialLockInput[i] != dialLockAnswer[i])
                 {
                     Debug.Log("실패");
-                    DialLockSetting(); // 입력 값 초기화
 
                     // 실패 로직
                     StartCoroutine(FailLock());
 
                     break;
                 }
-                else if (dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
+                
+                if (i == 2 && dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
                 {
                     Debug.Log("성공");
-                    DialLockSetting();
+                    DialLockSetting(); // 초기화
 
                     // 성공 로직
                     StartCoroutine(SuccessLock("Dial"));
@@ -366,7 +366,7 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
 
         isCheckAnswer = false;
 
@@ -399,7 +399,7 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
 
         isCheckAnswer = false;
 
