@@ -17,6 +17,7 @@ public class UIManager : Singleton<UIManager>
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
     public float playTime;
+    public TextMeshProUGUI[] actvieObjectNames;
 
     [Header("# Direction Lock")]
     public List<string> dirLockInput;
