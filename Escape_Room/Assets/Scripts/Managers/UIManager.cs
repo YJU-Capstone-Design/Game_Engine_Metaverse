@@ -12,6 +12,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("# UI Boxs")]
     [SerializeField] List<GameObject> activeUIChildren;
+    bool isCheckAnswer = false;
 
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
@@ -31,6 +32,9 @@ public class UIManager : Singleton<UIManager>
     public List<int> dialLockInput;
     int[] dialLockAnswer;
     [SerializeField] DialLock[] dialLockTexts; // Dial Lock 숫자 칸
+
+    [Header("# Key Lock")]
+    [SerializeField] TextMeshProUGUI fluidKeyText; // "28 + 유저 수" 값을 가지는 키
 
     [Header("# Question Button")]
     [SerializeField] GameObject[] answerBtns;
@@ -65,7 +69,7 @@ public class UIManager : Singleton<UIManager>
         }
 
         // 켜져있는 오브젝트 꺼짐
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !isCheckAnswer)
         {
             foreach (GameObject obj in activeUIChildren)
             {
@@ -116,6 +120,10 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
                 }
+                else if (narrationText.text == narration.keyLock)
+                {
+                    activeUIChildren[12].SetActive(true); // 열쇠 자물쇠 UI 활성화
+                }
                 else if (narrationText.text == narration.hint)
                 {
                     if (photonManager.hintCount > 0)
@@ -125,7 +133,6 @@ public class UIManager : Singleton<UIManager>
                 }
 
                 narrationBox.SetActive(false);
-                activeUIChildren[0].SetActive(false);
             }
         }
     }
@@ -134,6 +141,9 @@ public class UIManager : Singleton<UIManager>
     {
         // Player List 정리
         photonManager.SetPlayerList();
+
+        // fluidKeyText 설정
+        fluidKeyText.text = (28 + photonManager.playerList.Count).ToString();
     }
 
     void InGameSetting()
@@ -196,6 +206,9 @@ public class UIManager : Singleton<UIManager>
                 {
                     Debug.Log("실패");
                     dirLockInput.Clear(); // 입력 값 초기화
+
+                    // 실패 로직
+                    StartCoroutine(FailLock());
                     break;
                 }
                 else if (dirLockInput[dirLockInput.Count - 1] == dirLockAnswer[dirLockInput.Count - 1])
@@ -203,13 +216,8 @@ public class UIManager : Singleton<UIManager>
                     Debug.Log("성공");
                     dirLockInput.Clear();
 
-                    // UI 종료
-                    foreach (GameObject obj in activeUIChildren)
-                    {
-                        if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
-                    }
-
-                    // 성공 시 상호작용 로직 필요
+                    // 성공 로직
+                    StartCoroutine(SuccessLock("Direction"));
                 }
             }
         }
@@ -219,6 +227,9 @@ public class UIManager : Singleton<UIManager>
             {
                 Debug.Log("실패");
                 btnLockInput.Clear(); // 입력 값 초기화
+
+                // 실패 로직
+                StartCoroutine(FailLock());
             }
             else if (btnLockInput.Count == btnLockAnswer.Length)
             {
@@ -230,6 +241,10 @@ public class UIManager : Singleton<UIManager>
                     {
                         Debug.Log("실패");
                         btnLockInput.Clear(); // 입력 값 초기화
+
+                        // 실패 로직
+                        StartCoroutine(FailLock());
+
                         break;
                     }
                     else if (btnLockInput[btnLockInput.Count - 1] == btnLockAnswer[btnLockInput.Count - 1])
@@ -237,13 +252,8 @@ public class UIManager : Singleton<UIManager>
                         Debug.Log("성공");
                         btnLockInput.Clear();
 
-                        // UI 종료
-                        foreach (GameObject obj in activeUIChildren)
-                        {
-                            if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
-                        }
-
-                        // 성공 시 상호작용 로직 필요
+                        // 성공 로직
+                        StartCoroutine(SuccessLock("Button"));
                     }
                 }
             }
@@ -266,6 +276,10 @@ public class UIManager : Singleton<UIManager>
                 {
                     Debug.Log("실패");
                     DialLockSetting(); // 입력 값 초기화
+
+                    // 실패 로직
+                    StartCoroutine(FailLock());
+
                     break;
                 }
                 else if (dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
@@ -273,13 +287,8 @@ public class UIManager : Singleton<UIManager>
                     Debug.Log("성공");
                     DialLockSetting();
 
-                    // UI 종료
-                    foreach (GameObject obj in activeUIChildren)
-                    {
-                        if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
-                    }
-
-                    // 성공 시 상호작용 로직 필요
+                    // 성공 로직
+                    StartCoroutine(SuccessLock("Dial"));
                 }
             }
         }
@@ -326,6 +335,78 @@ public class UIManager : Singleton<UIManager>
         Vector2 nextAnchorMax = new Vector2(0.65f, 0);
 
         StartCoroutine(SmoothCoroutine(btnLockCheckButton, originalAnchorMin, originalAnchorMax, nextAnchorMin, nextAnchorMax, 0.1f));
+    }
+
+    // 열쇠 자물쇠 Key 버튼
+    public void UseKeyButton(bool answer)
+    {
+        if(answer)
+        {
+            Debug.Log("열쇠 자물쇠 성공");
+
+            activeUIChildren[12].SetActive(false); // 열쇠 자물쇠 UI 비활성화
+            activeUIChildren[0].SetActive(false);
+
+            // 성공 로직
+            StartCoroutine(SuccessLock("Key"));
+        } 
+        else
+        {
+            Debug.Log("열쇠 자물쇠 실패");
+
+            // 실패 로직
+            StartCoroutine(FailLock());
+        }
+    }
+
+    // 문제 해결 시 실행되는 함수
+    IEnumerator SuccessLock(string name)
+    {
+        activeUIChildren[13].SetActive(true);
+
+        isCheckAnswer = true;
+
+        yield return new WaitForSeconds(1.5f);
+
+        isCheckAnswer = false;
+
+        // UI 비활성화
+        foreach (GameObject obj in activeUIChildren)
+        {
+            if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+        }
+
+        // 성공 결과 로직 필요
+        switch (name)
+        {
+            case "Direction":
+                break;
+            case "Button":
+                break;
+            case "Dial":
+                break;
+            case "Key":
+                break;
+        }
+
+        // 사운드도 필요
+    }
+
+    // 문제 해결 실패 시 실행되는 함수
+    IEnumerator FailLock()
+    {
+        activeUIChildren[14].SetActive(true);
+
+        isCheckAnswer = true;
+
+        yield return new WaitForSeconds(1.5f);
+
+        isCheckAnswer = false;
+
+        // 실패 UI 비활성화
+        activeUIChildren[14].SetActive(false);
+
+        // 실패 시 제약 필요
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
