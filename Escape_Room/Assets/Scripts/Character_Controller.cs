@@ -1,7 +1,6 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Character_Controller : MonoBehaviour
@@ -10,28 +9,35 @@ public class Character_Controller : MonoBehaviour
 
     [Header("Component")]
     [SerializeField] private Animator animator;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private PhotonManager photonManager;
     [SerializeField] private PhotonView photonView;
     [SerializeField] private PhotonTransformView photonTransformView;
 
     [Header("Parts")]
     // Insert "Body" Object
-    public GameObject player_Body;
+    [SerializeField] private GameObject player_Body;
     // Camera (1st or 3rd)
-    public GameObject camera_First, camera_Third;
+    [SerializeField] private GameObject camera_First, camera_Third;
     // Insert "Rotate_Horizontal" Object
-    public Transform camera_Rotation;
+    [SerializeField] private Transform camera_Rotation;
 
     [Header("Speed")]
-    public float speed_Walk = 10f;
-    public float speed_Run = 15f;
-    public float speed_Rotate = 1f;
+    [SerializeField] private float speed_Walk = 10f;
+    [SerializeField] private float speed_Run = 15f;
+    [SerializeField] private float speed_Rotate = 1f;
+
+    [Header("Interact")]
+    [SerializeField] private GameObject detectObj;
 
     // Concealed variable
     // Player Position
     private float pos_X, pos_Z;
     // Camera Rotation
     private float rot_X, rot_Y;
+    // Find Interact Object
+    private float sphereRadius = 30f;
+    private float findRange = 45f;
 
     /* -------------------------------------------------- */
 
@@ -89,15 +95,7 @@ public class Character_Controller : MonoBehaviour
     private void Player_Setting()
     {
         animator = GetComponent<Animator>();
-
-        if (photonView.IsMine)
-        {
-            this.gameObject.name += "(Local Player)";
-        }
-        else
-        {
-            this.gameObject.name += "(Other Player)";
-        }
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Camera_Setting()
@@ -105,8 +103,8 @@ public class Character_Controller : MonoBehaviour
         if (photonView.IsMine)
         {
             // Enable and setting local player's third camera 
-            camera_First.SetActive(false);
-            camera_Third.SetActive(true);
+            camera_First.SetActive(true);
+            camera_Third.SetActive(false);
         }
         else
         {
@@ -124,17 +122,19 @@ public class Character_Controller : MonoBehaviour
         {
             // Player code
             Player_Move();
+            Player_DetectObject();
+            Player_InteractObject();
 
             // Camera code
-            Camera_Move();
             Camera_Change();
+            Camera_Rotate();
         }
     }
 
     private void Player_Move()
     {
-        pos_X = Input.GetAxis("Horizontal");
-        pos_Z = Input.GetAxis("Vertical");
+        pos_X = Input.GetAxisRaw("Horizontal");
+        pos_Z = Input.GetAxisRaw("Vertical");
 
         if (pos_X != 0 || pos_Z != 0) // isMove
         {
@@ -155,23 +155,119 @@ public class Character_Controller : MonoBehaviour
             {
                 // Run State
                 animator.SetBool("Run", true);
-                transform.Translate(moveDir.normalized * speed_Run * Time.deltaTime);
+
+                if (player_Body.activeSelf == true)
+                {
+                    rb.velocity = moveDir.normalized * speed_Run;
+                }
+                else
+                {
+                    transform.Translate(moveDir.normalized * speed_Run * Time.deltaTime);
+                }
             }
             else // !isRun
             {
                 // Walk State
                 animator.SetBool("Run", false);
-                transform.Translate(moveDir.normalized * speed_Walk * Time.deltaTime);
+
+                if (player_Body.activeSelf == true)
+                {
+                    rb.velocity = moveDir.normalized * speed_Walk;
+                }
+                else
+                {
+                    transform.Translate(moveDir.normalized * speed_Walk * Time.deltaTime);
+                }
             }
         }
         else // !isMove
         {
             // Idle State
             animator.SetBool("Walk", false);
+            rb.velocity = Vector3.zero;
         }
     }
 
-    private void Camera_Move()
+    private void Player_DetectObject()
+    {
+        Vector3 rayStart = transform.position;
+        Vector3 rayDir = transform.forward;
+
+        Quaternion leftRot = Quaternion.Euler(0, -findRange * 0.5f, 0);
+        Vector3 leftDir = leftRot * rayDir;
+        float leftRad = Mathf.Acos(Vector3.Dot(rayDir, leftDir));
+        float leftDeg = -(Mathf.Rad2Deg * leftRad);
+
+        Quaternion rightRot = Quaternion.Euler(0, findRange * 0.5f, 0);
+        Vector3 rightDir = rightRot * rayDir;
+        float rightRad = Mathf.Acos(Vector3.Dot(rayDir, rightDir));
+        float rightDeg = Mathf.Rad2Deg * rightRad;
+
+        RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f);
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform.CompareTag("Interact")) // Temp tag
+            {
+                GameObject hitObj = hit.transform.gameObject;
+
+                Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
+                float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
+                float hitDeg = Mathf.Rad2Deg * hitRad;
+
+                if (hitDeg >= leftDeg && hitDeg <= rightDeg)
+                {
+                    if (detectObj != null)
+                    {
+                        float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
+                        float hitDist = Vector3.Distance(rayStart, hitObj.transform.position);
+
+                        if (hitDist < detectObjDist)
+                        {
+                            detectObj = hitObj;
+                        }
+                    }
+                    else
+                    {
+                        detectObj = hitObj;
+                    }
+                }
+            }
+        }
+    }
+
+    private void Player_InteractObject()
+    {
+        if (player_Body.activeSelf == true)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                /*if (!isUse || !isClear)
+                {
+                    // Continue interact
+                }*/
+            }
+        }
+    }
+
+    private void Camera_Change()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            if (camera_First.activeSelf == true)
+            {
+                camera_First.SetActive(false);
+                camera_Third.SetActive(true);
+            }
+            else
+            {
+                camera_First.SetActive(true);
+                camera_Third.SetActive(false);
+            }
+        }
+    }
+
+    private void Camera_Rotate()
     {
         rot_X = Input.GetAxis("Mouse Y"); // Up and down
         rot_Y = Input.GetAxis("Mouse X"); // Left and right
@@ -182,20 +278,5 @@ public class Character_Controller : MonoBehaviour
         }
     }
 
-    private void Camera_Change()
-    {
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            if (camera_Third.activeSelf == true)
-            {
-                camera_First.SetActive(true);
-                camera_Third.SetActive(false);
-            }
-            else
-            {
-                camera_First.SetActive(false);
-                camera_Third.SetActive(true);
-            }
-        }
-    }
+    /* -------------------------------------------------- */
 }

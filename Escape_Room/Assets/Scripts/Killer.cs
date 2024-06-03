@@ -14,6 +14,8 @@ public class Killer : MonoBehaviour
     [Header("Setting")]
     [SerializeField] private GameObject weapon;
     [SerializeField] private float attackRange = 5f;
+    [SerializeField] private float sphereRadius = 30f;
+    [SerializeField] private float findRange = 45f;
 
     [Header("Target")]
     [SerializeField] private GameObject target;
@@ -56,12 +58,6 @@ public class Killer : MonoBehaviour
         // Raycast 사용을 위한 시작점 및 방향 설정
         Vector3 rayStart = transform.position;
         Vector3 rayDir = transform.forward;
-
-        // Player 인식 범위
-        float sphereRadius = 30f;
-
-        // Killer 시야각 구현
-        float findRange = 45f; // 좌측 22.5도, 우측 22.5도 합 45도의 시야각 구현
 
         Quaternion leftRot = Quaternion.Euler(0, -findRange * 0.5f, 0); // 왼쪽 각도 최댓값
         Vector3 leftDir = leftRot * rayDir;
