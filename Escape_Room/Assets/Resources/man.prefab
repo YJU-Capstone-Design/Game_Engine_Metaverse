@@ -201,6 +201,7 @@ MonoBehaviour:
   photonManager: {fileID: 0}
   photonView: {fileID: 0}
   photonTransformView: {fileID: 0}
+  uiManager: {fileID: 0}
   player_Body: {fileID: 2374430763718696840}
   camera_First: {fileID: 3738339002912586576}
   camera_Third: {fileID: 8337538511887817034}

@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Character_Controller : MonoBehaviour
@@ -13,6 +14,7 @@ public class Character_Controller : MonoBehaviour
     [SerializeField] private PhotonManager photonManager;
     [SerializeField] private PhotonView photonView;
     [SerializeField] private PhotonTransformView photonTransformView;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Parts")]
     // Insert "Body" Object
@@ -44,6 +46,8 @@ public class Character_Controller : MonoBehaviour
     private void Awake()
     {
         Player_Init();
+
+        uiManager = LobbyUIManager.Instance.photonManager.inGameUIManager;
     }
 
     private void Player_Init()
@@ -203,35 +207,53 @@ public class Character_Controller : MonoBehaviour
         float rightRad = Mathf.Acos(Vector3.Dot(rayDir, rightDir));
         float rightDeg = Mathf.Rad2Deg * rightRad;
 
-        RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f);
+        RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f, LayerMask.GetMask("ActiveObject"));
 
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.CompareTag("Interact")) // Temp tag
+            GameObject hitObj = hit.transform.gameObject;
+
+            Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
+            float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
+            float hitDeg = Mathf.Rad2Deg * hitRad;
+
+            if (hitDeg >= leftDeg && hitDeg <= rightDeg)
             {
-                GameObject hitObj = hit.transform.gameObject;
-
-                Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
-                float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
-                float hitDeg = Mathf.Rad2Deg * hitRad;
-
-                if (hitDeg >= leftDeg && hitDeg <= rightDeg)
+                if (detectObj != null)
                 {
-                    if (detectObj != null)
-                    {
-                        float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
-                        float hitDist = Vector3.Distance(rayStart, hitObj.transform.position);
+                    float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
+                    float hitDist = Vector3.Distance(rayStart, hitObj.transform.position);
 
-                        if (hitDist < detectObjDist)
-                        {
-                            detectObj = hitObj;
-                        }
-                    }
-                    else
+                    if (hitDist < detectObjDist)
                     {
                         detectObj = hitObj;
                     }
                 }
+                else
+                {
+                    detectObj = hitObj;
+                }
+            }
+        }
+
+        if(uiManager.gameObject.activeInHierarchy)
+        {
+            if (detectObj != null)
+            {
+                uiManager.activeObjectName.text = detectObj.name;
+                
+                if(!uiManager.interacting)
+                {
+                    uiManager.activeObjectButton.SetActive(true);
+                }
+                else
+                {
+                    uiManager.activeObjectButton.SetActive(false);
+                }
+            }
+            else
+            {
+                uiManager.activeObjectButton.SetActive(false);
             }
         }
     }
