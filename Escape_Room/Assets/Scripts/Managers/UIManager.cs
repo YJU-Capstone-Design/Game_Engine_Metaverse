@@ -461,6 +461,13 @@ public class UIManager : Singleton<UIManager>
         activeUIChildren[14].SetActive(false);
 
         // 실패 시 제한시간 30초 감소
+        pv.RPC("ReduceTime", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    void ReduceTime()
+    {
+        playTime -= 30;
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)

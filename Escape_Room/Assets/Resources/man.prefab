@@ -209,6 +209,8 @@ MonoBehaviour:
   speed_Walk: 3
   speed_Run: 6
   speed_Rotate: 1
+  sphereRadius: 2
+  findRange: 45
   detectObj: {fileID: 0}
 --- !u!114 &1530840900654459803
 MonoBehaviour:

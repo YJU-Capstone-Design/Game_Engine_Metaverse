@@ -72,7 +72,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         if(PhotonNetwork.IsMasterClient && inGameCanvas.activeInHierarchy)
         {
-            UIManager.Instance.playTime -= Time.deltaTime;
+            if(UIManager.Instance.playTime >= 0)
+            {
+                UIManager.Instance.playTime -= Time.deltaTime;
+            } 
+            else
+            {
+                UIManager.Instance.playTime = 0;
+            }
 
             UIManager.Instance.pv.RPC("Timer", RpcTarget.AllBuffered, UIManager.Instance.playTime);
         }
@@ -312,17 +319,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         roomName = myPlayer.ViewID.ToString(); // 새로 만들 Room 이름 설정
 
-        pv.RPC("GameStart", RpcTarget.All, this.roomName);
+        pv.RPC("GameStart", RpcTarget.All, this.roomName, this.myPlayer.name);
     }
 
     [PunRPC]
     // 게임 시작 버튼
-    public void GameStart(string roomName)
+    public void GameStart(string roomName, string bossName)
     {
         // 자신의 파티에 게임을 시작한 사람이 있을 경우에만 작동
         if (myParty.partyPlayerIDList.Contains(int.Parse(roomName)))
         {
-            this.roomName = roomName; // 참가할 Room 이름 설정
+            this.roomName = roomName + bossName; // 참가할 Room 이름 설정
 
             pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
 

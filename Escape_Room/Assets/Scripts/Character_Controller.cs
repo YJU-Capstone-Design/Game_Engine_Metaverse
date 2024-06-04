@@ -213,9 +213,11 @@ public class Character_Controller : MonoBehaviour
 
         RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f, LayerMask.GetMask("ActiveObject"));
 
+        if(hits.Length < 1) { detectObj = null; }
+
         foreach (RaycastHit hit in hits)
         {
-            Debug.Log("Hit : " + hit.transform.gameObject.name);
+            //Debug.Log("Hit : " + hit.transform.gameObject.name);
             GameObject hitObj = hit.transform.gameObject;
 
             Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
@@ -224,7 +226,7 @@ public class Character_Controller : MonoBehaviour
 
             if (hitDeg >= leftDeg && hitDeg <= rightDeg)
             {
-                Debug.Log("detect");
+                //Debug.Log("detect");
                 if (detectObj != null)
                 {
                     float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
@@ -232,13 +234,13 @@ public class Character_Controller : MonoBehaviour
 
                     if (hitDist < detectObjDist)
                     {
-                        Debug.Log("change");
+                       // Debug.Log("change");
                         detectObj = hitObj;
                     }
                 }
                 else
                 {
-                    Debug.Log("new");
+                    //Debug.Log("new");
                     detectObj = hitObj;
                 }
             }

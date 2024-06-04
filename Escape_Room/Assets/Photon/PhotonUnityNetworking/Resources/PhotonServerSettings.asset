@@ -65,6 +65,7 @@ MonoBehaviour:
   - Player_Move
   - UseHint
   - Timer
+  - ReduceTime
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
