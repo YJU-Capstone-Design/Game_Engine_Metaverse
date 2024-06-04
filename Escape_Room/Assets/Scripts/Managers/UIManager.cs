@@ -15,6 +15,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] List<GameObject> activeUIChildren;
     bool isCheckAnswer = false;
 
+    [Header("# Active Objects")]
+    [SerializeField] List<GameObject> doors;
+    [SerializeField] List<GameObject> activeObjects;
+
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
     public float playTime; 
@@ -91,53 +95,53 @@ public class UIManager : Singleton<UIManager>
 
                 switch (activeObjectName.text)
                 {
-                    case "침대":
+                    case "Bed":
                         narrationText.text = narration.bed;
                         break;
-                    case "시체":
+                    case "DeadBody":
                         narrationText.text = narration.deadBody;
                         break;
-                    case "의자":
+                    case "Chair":
                         narrationText.text = narration.chair;
                         break;
-                    case "노트북":
+                    case "Laptop":
                         narrationText.text = narration.laptop;
-                        // 노트북 UI 도 같이 활성화??
+                        activeUIChildren[8].SetActive(true);
                         break;
-                    case "서류":
+                    case "Document":
                         narrationText.text = narration.document;
                         break;
-                    case "내 가방":
+                    case "playerBag":
                         narrationText.text = narration.playerBag;
                         break;
-                    case "피해자 가방":
+                    case "DeadBodyBag":
                         narrationText.text = narration.deadBodyBag;
                         break;
-                    case "지갑":
+                    case "Wallet":
                         narrationText.text = narration.wallet;
                         break;
-                    case "벽걸이 시계":
+                    case "WallClock":
                         narrationText.text = narration.wallClock;
                         break;
-                    case "식칼":
+                    case "KitchenKnife":
                         narrationText.text = narration.kitchenKnife;
                         break;
-                    case "벽걸이 TV":
+                    case "WallTV":
                         narrationText.text = narration.WallTV;
                         break;
-                    case "방향 자물쇠":
+                    case "DirectionLock":
                         narrationText.text = narration.directionLock;
                         break;
-                    case "버튼 자물쇠":
+                    case "ButtonLock":
                         narrationText.text = narration.buttonLock;
                         break;
-                    case "다이얼 자물쇠":
+                    case "DialLock":
                         narrationText.text = narration.dialLock;
                         break;
-                    case "열쇠 자물쇠":
+                    case "KeyLock":
                         narrationText.text = narration.keyLock;
                         break;
-                    case "수납장":
+                    case "StorageCloset":
                         narrationText.text = narration.storageCloset;
                         break;
                 }
@@ -177,6 +181,8 @@ public class UIManager : Singleton<UIManager>
                 else
                 {
                     interacting = false;
+
+                    CloseAllUI();
                 }
 
                 narrationBox.SetActive(false);
@@ -423,20 +429,10 @@ public class UIManager : Singleton<UIManager>
             if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
         }
 
-        interacting = false;
+        // 성공 결과 (포톤)
+        pv.RPC("OpenDoor", RpcTarget.All, name);
 
-        // 성공 결과 로직 필요
-        switch (name)
-        {
-            case "Direction":
-                break;
-            case "Button":
-                break;
-            case "Dial":
-                break;
-            case "Key":
-                break;
-        }
+        interacting = false;
 
         // 사운드도 필요
     }
@@ -457,6 +453,27 @@ public class UIManager : Singleton<UIManager>
 
         // 실패 시 제한시간 30초 감소
         pv.RPC("ReduceTime", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    void OpenDoor(string name)
+    {
+        Animator doorAnim;
+
+        switch (name)
+        {
+            case "Direction":
+                doorAnim = doors[0].GetComponent<Animator>();
+                doorAnim.SetBool("open", true);
+                activeObjects[0].GetComponent<BoxCollider>().enabled = false;
+                break;
+            case "Button":
+                break;
+            case "Dial":
+                break;
+            case "Key":
+                break;
+        }
     }
 
     [PunRPC]

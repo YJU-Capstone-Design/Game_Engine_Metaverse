@@ -29,7 +29,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public PhotonView myPlayer; // 생성된 본인 캐릭터
     public PartyList myParty; // 본인이 생성/가입한 파티
     public PlayerNameBox myPlayerName; // 생성된 본인 이름 Box
-    [SerializeField] Vector3 spawnPoint; // 생성된 Player(Character) 가 Spawn 되는 위치
+    [SerializeField] Vector3 lobbyspawnPoint; // 생성된 Player(Character) 가 Lobby 에 Spawn 되는 위치
+    [SerializeField] Vector3 inGameSpawnPoint; // 생성된 Player(Character) 가 InGame 에 Spawn 되는 위치
     public List<GameObject> playerList; // 생성된 Player(Character) 가 저장되는 List
 
     [Header("# PartyList Info")]
@@ -182,7 +183,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         }
 
         // 캐릭터 생성
-        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity, 0);
+        if(roomName == "Lobby")
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, lobbyspawnPoint, Quaternion.identity, 0);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, inGameSpawnPoint, Quaternion.identity, 0);
+        }
 
         // Player Name Box 생성
         PhotonNetwork.Instantiate(playerNameBoxPrefab.name, lobbyUIManager.playerNameBoxParent.transform.position, Quaternion.identity);

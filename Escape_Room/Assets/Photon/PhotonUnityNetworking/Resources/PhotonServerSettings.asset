@@ -66,6 +66,7 @@ MonoBehaviour:
   - UseHint
   - Timer
   - ReduceTime
+  - OpenDoor
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
