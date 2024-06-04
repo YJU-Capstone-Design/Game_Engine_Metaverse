@@ -60,7 +60,15 @@ public class Character_Controller : MonoBehaviour
         if (photonView.IsMine)
         {
             LobbyUIManager.Instance.photonManager.myPlayer = photonView;
-            photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
+            
+            if(uiManager != null) // 상호 작용 중이지 않을 경우에만 움직임 가능
+            {
+                if(!uiManager.interacting) { photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName); }
+            } 
+            else
+            {
+                photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
+            }
         }
     }
 

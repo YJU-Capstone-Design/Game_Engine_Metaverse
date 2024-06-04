@@ -75,12 +75,7 @@ public class UIManager : Singleton<UIManager>
         // 켜져있는 오브젝트 꺼짐
         if (Input.GetKeyDown(KeyCode.Escape) && !isCheckAnswer)
         {
-            foreach (GameObject obj in activeUIChildren)
-            {
-                if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
-            }
-
-            interacting = false;
+            CloseAllUI();
         }
 
         // 상호작용 가능한 오브젝트 버튼이 활성화 되었을 때
@@ -621,5 +616,24 @@ public class UIManager : Singleton<UIManager>
                 anim.SetBool("Click", true);
             }
         }
+    }
+
+    // 게임 시작 후 Lobby 로 돌아가는 버튼 재확인 UI
+    public void OpenBackToLobbyUI()
+    {
+        activeUIChildren[15].SetActive(true);
+
+        interacting = true;
+    }
+
+    // 모든 UI 종료 버튼
+    public void CloseAllUI()
+    {
+        foreach (GameObject obj in activeUIChildren)
+        {
+            if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+        }
+
+        interacting = false; ;
     }
 }
