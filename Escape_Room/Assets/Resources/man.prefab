@@ -180,7 +180,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.8
   m_Height: 2.25
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
@@ -210,7 +210,7 @@ MonoBehaviour:
   speed_Run: 6
   speed_Rotate: 1
   sphereRadius: 2
-  findRange: 45
+  findRange: 130
   detectObj: {fileID: 0}
 --- !u!114 &1530840900654459803
 MonoBehaviour:
