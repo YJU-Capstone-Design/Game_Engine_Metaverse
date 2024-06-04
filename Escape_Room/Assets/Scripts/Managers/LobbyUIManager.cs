@@ -53,12 +53,13 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         // 켜져있는 오브젝트 꺼짐
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            foreach (GameObject obj in activeUIBoxs)
-            {
-                if (obj.activeInHierarchy) { obj.SetActive(false); partyPageCount = 1; }
-                photonManager.maxPeopleNum = 1;
-                photonManager.maxPeopleNumText.text = "1";
-            }
+            CloseAllUI();
+        }
+
+        // playerNameBoxList 실시간 최신화 
+        for(int i = 0; i < playerNameBoxList.Count; i++)
+        {
+            if (playerNameBoxList[i] == null) { playerNameBoxList.Remove(playerNameBoxList[i]); }
         }
 
         // 파티 매칭 UI 열기
@@ -297,5 +298,21 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         photonManager.partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
         if(photonManager.partyPageLength == 0) { photonManager.partyPageLength = 1; }
         photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
+    }
+
+    // 게임 종료 재확인 UI 활성화
+    public void OpenExitGameUI()
+    {
+        activeUIBoxs[3].SetActive(true);
+    }
+
+    public void CloseAllUI()
+    {
+        foreach (GameObject obj in activeUIBoxs)
+        {
+            if (obj.activeInHierarchy) { obj.SetActive(false); partyPageCount = 1; }
+            photonManager.maxPeopleNum = 1;
+            photonManager.maxPeopleNumText.text = "1";
+        }
     }
 }
