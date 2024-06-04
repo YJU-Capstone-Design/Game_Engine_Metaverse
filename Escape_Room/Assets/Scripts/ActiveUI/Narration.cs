@@ -14,6 +14,7 @@ public class Narration : MonoBehaviour
     public string document;      // 서류
     public string playerBag;     // 플레이어 가방
     public string deadBodyBag;   // 피해자 가방
+    public string wallet;        // 지갑
     public string IDcard;        // 신분증
     public string wallClock;     // 벽걸이 시계
     public string kitchenKnife;  // 식칼
@@ -37,6 +38,7 @@ public class Narration : MonoBehaviour
         document = "3.25이라는 숫자에 빨간펜으로 집착적으로 동그라미가 쳐져 있다. 중요한 날 같다.";
         playerBag = "샤프, 펜, 지우개, 자, 가위 등 평범한 학용품이 들어있다.(힌트 사용 시 수납 가능)";
         deadBodyBag = "신분증이 들어 있는 지갑이 들어있다.";
+        wallet = "피해자의 가방 속에서 지갑을 발견했다.\n열어서 확인하고 싶으시면 Enter를 눌러주십시오...";
         IDcard = "신분증을 보니 피해자는 25살인 거 같다. 생일은 1999.03.25이다.";
         wallClock = "건전지가 다 닳은 거 같다. 시각은 7:32을 가리키고 있다.";
         kitchenKnife = "피가 묻은 식칼이다. 중요한 증거품이 될 거 같다.";

@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,10 @@ public class UIManager : Singleton<UIManager>
 
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
-    public float playTime;
+    public float playTime; 
+    public GameObject activeObjectButton;
+    public TextMeshProUGUI activeObjectName;
+    public bool interacting = false; // 현재 상호작용 중인지 여부
 
     [Header("# Direction Lock")]
     public List<string> dirLockInput;
@@ -45,7 +49,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("# Narration")]
     Narration narration;
-    [SerializeField] GameObject narrationBox;
+    public GameObject narrationBox;
     [SerializeField] TextMeshProUGUI narrationText;
 
     private void Awake()
@@ -75,32 +79,74 @@ public class UIManager : Singleton<UIManager>
             {
                 if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
             }
+
+            interacting = false;
         }
 
-        // 테스트 용 나레이션 오픈 로직
-        if (Input.GetKeyDown(KeyCode.Keypad1))
+        // 상호작용 가능한 오브젝트 버튼이 활성화 되었을 때
+        if(activeObjectButton.activeInHierarchy)
         {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.keyLock;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.directionLock;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.dialLock;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad4))
-        {
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
-            narrationText.text = narration.buttonLock;
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                // narrationBox 활성화
+                narrationBox.SetActive(true);
+                activeUIChildren[0].SetActive(true);
+
+                interacting = true;
+
+                switch (activeObjectName.text)
+                {
+                    case "침대":
+                        narrationText.text = narration.bed;
+                        break;
+                    case "시체":
+                        narrationText.text = narration.deadBody;
+                        break;
+                    case "의자":
+                        narrationText.text = narration.chair;
+                        break;
+                    case "노트북":
+                        narrationText.text = narration.laptop;
+                        // 노트북 UI 도 같이 활성화??
+                        break;
+                    case "서류":
+                        narrationText.text = narration.document;
+                        break;
+                    case "내 가방":
+                        narrationText.text = narration.playerBag;
+                        break;
+                    case "피해자 가방":
+                        narrationText.text = narration.deadBodyBag;
+                        break;
+                    case "지갑":
+                        narrationText.text = narration.wallet;
+                        break;
+                    case "벽걸이 시계":
+                        narrationText.text = narration.wallClock;
+                        break;
+                    case "식칼":
+                        narrationText.text = narration.kitchenKnife;
+                        break;
+                    case "벽걸이 TV":
+                        narrationText.text = narration.WallTV;
+                        break;
+                    case "방향 자물쇠":
+                        narrationText.text = narration.directionLock;
+                        break;
+                    case "버튼 자물쇠":
+                        narrationText.text = narration.buttonLock;
+                        break;
+                    case "다이얼 자물쇠":
+                        narrationText.text = narration.dialLock;
+                        break;
+                    case "열쇠 자물쇠":
+                        narrationText.text = narration.keyLock;
+                        break;
+                    case "수납장":
+                        narrationText.text = narration.storageCloset;
+                        break;
+                }
+            }
         }
 
         // narrationBox 가 활성화 되었을 때, Enter 키를 누르면 기능이 있을 경우엔 기능 작동, 아니면 narrationBox 비활성화
@@ -130,6 +176,12 @@ public class UIManager : Singleton<UIManager>
                     {
                         pv.RPC("UseHint", RpcTarget.All);
                     }
+
+                    interacting = false;
+                }
+                else
+                {
+                    interacting = false;
                 }
 
                 narrationBox.SetActive(false);
@@ -270,22 +322,22 @@ public class UIManager : Singleton<UIManager>
         }
         else if (name == "Dial")
         {
-            for (int i = 0; i < dialLockInput.Count; i++)
+            for (int i = 0; i < dialLockAnswer.Length; i++)
             {
                 if (dialLockInput[i] != dialLockAnswer[i])
                 {
                     Debug.Log("실패");
-                    DialLockSetting(); // 입력 값 초기화
 
                     // 실패 로직
                     StartCoroutine(FailLock());
 
                     break;
                 }
-                else if (dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
+                
+                if (i == 2 && dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
                 {
                     Debug.Log("성공");
-                    DialLockSetting();
+                    DialLockSetting(); // 초기화
 
                     // 성공 로직
                     StartCoroutine(SuccessLock("Dial"));
@@ -366,7 +418,7 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
 
         isCheckAnswer = false;
 
@@ -375,6 +427,8 @@ public class UIManager : Singleton<UIManager>
         {
             if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
         }
+
+        interacting = false;
 
         // 성공 결과 로직 필요
         switch (name)
@@ -399,14 +453,14 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
 
         isCheckAnswer = false;
 
         // 실패 UI 비활성화
         activeUIChildren[14].SetActive(false);
 
-        // 실패 시 제약 필요
+        // 실패 시 제한시간 30초 감소
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)

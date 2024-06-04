@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Character_Controller : MonoBehaviour
@@ -13,6 +14,7 @@ public class Character_Controller : MonoBehaviour
     [SerializeField] private PhotonManager photonManager;
     [SerializeField] private PhotonView photonView;
     [SerializeField] private PhotonTransformView photonTransformView;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Parts")]
     // Insert "Body" Object
@@ -27,6 +29,10 @@ public class Character_Controller : MonoBehaviour
     [SerializeField] private float speed_Run = 15f;
     [SerializeField] private float speed_Rotate = 1f;
 
+    [Header("Detect")]
+    [SerializeField] private float sphereRadius = 2f;
+    [SerializeField] private float findRange = 45f;
+
     [Header("Interact")]
     [SerializeField] private GameObject detectObj;
 
@@ -35,15 +41,14 @@ public class Character_Controller : MonoBehaviour
     private float pos_X, pos_Z;
     // Camera Rotation
     private float rot_X, rot_Y;
-    // Find Interact Object
-    private float sphereRadius = 30f;
-    private float findRange = 45f;
 
     /* -------------------------------------------------- */
 
     private void Awake()
     {
         Player_Init();
+
+        uiManager = LobbyUIManager.Instance.photonManager.inGameUIManager;
     }
 
     private void Player_Init()
@@ -145,8 +150,7 @@ public class Character_Controller : MonoBehaviour
 
             // Player move direction
             Vector3 moveDir = moveDir_Forward + moveDir_Right;
-
-            // Player rotate
+           
             player_Body.transform.localRotation = Quaternion.Slerp(player_Body.transform.rotation, Quaternion.LookRotation(moveDir.normalized), speed_Rotate);
 
             animator.SetBool("Walk", true);
@@ -190,8 +194,8 @@ public class Character_Controller : MonoBehaviour
 
     private void Player_DetectObject()
     {
-        Vector3 rayStart = transform.position;
-        Vector3 rayDir = transform.forward;
+        Vector3 rayStart = camera_First.transform.position;
+        Vector3 rayDir = camera_First.transform.forward;
 
         Quaternion leftRot = Quaternion.Euler(0, -findRange * 0.5f, 0);
         Vector3 leftDir = leftRot * rayDir;
@@ -203,35 +207,61 @@ public class Character_Controller : MonoBehaviour
         float rightRad = Mathf.Acos(Vector3.Dot(rayDir, rightDir));
         float rightDeg = Mathf.Rad2Deg * rightRad;
 
-        RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f);
+        Debug.DrawRay(rayStart, rayDir * sphereRadius, Color.red);
+        Debug.DrawRay(rayStart, leftDir * sphereRadius, Color.green);
+        Debug.DrawRay(rayStart, rightDir * sphereRadius, Color.blue);
+
+        RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f, LayerMask.GetMask("ActiveObject"));
 
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.CompareTag("Interact")) // Temp tag
+            Debug.Log("Hit : " + hit.transform.gameObject.name);
+            GameObject hitObj = hit.transform.gameObject;
+
+            Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
+            float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
+            float hitDeg = Mathf.Rad2Deg * hitRad;
+
+            if (hitDeg >= leftDeg && hitDeg <= rightDeg)
             {
-                GameObject hitObj = hit.transform.gameObject;
-
-                Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
-                float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
-                float hitDeg = Mathf.Rad2Deg * hitRad;
-
-                if (hitDeg >= leftDeg && hitDeg <= rightDeg)
+                Debug.Log("detect");
+                if (detectObj != null)
                 {
-                    if (detectObj != null)
-                    {
-                        float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
-                        float hitDist = Vector3.Distance(rayStart, hitObj.transform.position);
+                    float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
+                    float hitDist = Vector3.Distance(rayStart, hitObj.transform.position);
 
-                        if (hitDist < detectObjDist)
-                        {
-                            detectObj = hitObj;
-                        }
-                    }
-                    else
+                    if (hitDist < detectObjDist)
                     {
+                        Debug.Log("change");
                         detectObj = hitObj;
                     }
                 }
+                else
+                {
+                    Debug.Log("new");
+                    detectObj = hitObj;
+                }
+            }
+        }
+
+        if(uiManager.gameObject.activeInHierarchy)
+        {
+            if (detectObj != null)
+            {
+                uiManager.activeObjectName.text = detectObj.name;
+                
+                if(!uiManager.interacting)
+                {
+                    uiManager.activeObjectButton.SetActive(true);
+                }
+                else
+                {
+                    uiManager.activeObjectButton.SetActive(false);
+                }
+            }
+            else
+            {
+                uiManager.activeObjectButton.SetActive(false);
             }
         }
     }
@@ -269,7 +299,6 @@ public class Character_Controller : MonoBehaviour
 
     private void Camera_Rotate()
     {
-        rot_X = Input.GetAxis("Mouse Y"); // Up and down
         rot_Y = Input.GetAxis("Mouse X"); // Left and right
 
         if (rot_Y != 0)
