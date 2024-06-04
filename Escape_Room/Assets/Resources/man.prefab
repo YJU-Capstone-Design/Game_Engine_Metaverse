@@ -44,12 +44,11 @@ GameObject:
   m_Component:
   - component: {fileID: 592274095298916754}
   - component: {fileID: 6834215674391882728}
+  - component: {fileID: 1814686715456097040}
   - component: {fileID: 7499155942773710503}
   - component: {fileID: 4866766692632240935}
   - component: {fileID: 8444362332976624298}
   - component: {fileID: 2979265754020112422}
-  - component: {fileID: 1814686715456097040}
-  - component: {fileID: 1530840900654459803}
   - component: {fileID: -258842796632714038}
   m_Layer: 0
   m_Name: man
@@ -96,6 +95,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1814686715456097040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248822274323737384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9107e449ac312754a8f6705deb8ad1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  rb: {fileID: 0}
+  photonManager: {fileID: 0}
+  photonView: {fileID: 0}
+  photonTransformView: {fileID: 0}
+  uiManager: {fileID: 0}
+  player_Body: {fileID: 2374430763718696840}
+  camera_First: {fileID: 3738339002912586576}
+  camera_Third: {fileID: 8337538511887817034}
+  camera_Rotation: {fileID: 6263693633168431974}
+  speed_Walk: 3
+  speed_Run: 6
+  speed_Rotate: 1
+  sphereRadius: 2
+  findRange: 45
+  detectObj: {fileID: 0}
 --- !u!114 &7499155942773710503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,45 +211,6 @@ CapsuleCollider:
   m_Height: 2.25
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &1814686715456097040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248822274323737384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9107e449ac312754a8f6705deb8ad1f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  rb: {fileID: 0}
-  photonManager: {fileID: 0}
-  photonView: {fileID: 0}
-  photonTransformView: {fileID: 0}
-  uiManager: {fileID: 0}
-  player_Body: {fileID: 2374430763718696840}
-  camera_First: {fileID: 3738339002912586576}
-  camera_Third: {fileID: 8337538511887817034}
-  camera_Rotation: {fileID: 6263693633168431974}
-  speed_Walk: 3
-  speed_Run: 6
-  speed_Rotate: 1
-  detectObj: {fileID: 0}
---- !u!114 &1530840900654459803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248822274323737384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f51ab8ed42cc104baab892209dcf0e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifePoint: 3
 --- !u!54 &-258842796632714038
 Rigidbody:
   m_ObjectHideFlags: 0

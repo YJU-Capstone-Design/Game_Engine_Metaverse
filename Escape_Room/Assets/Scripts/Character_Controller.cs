@@ -36,11 +36,14 @@ public class Character_Controller : MonoBehaviour
     [Header("Interact")]
     [SerializeField] private GameObject detectObj;
 
+    [Header("Player Life")]
+    public int playerLife = 3;
+
     // Concealed variable
     // Player Position
     private float pos_X, pos_Z;
     // Camera Rotation
-    private float rot_X, rot_Y;
+    private float rot_Y;
 
     /* -------------------------------------------------- */
 
@@ -129,6 +132,7 @@ public class Character_Controller : MonoBehaviour
             Player_Move();
             Player_DetectObject();
             Player_InteractObject();
+            Player_Death();
 
             // Camera code
             Camera_Change();
@@ -277,6 +281,17 @@ public class Character_Controller : MonoBehaviour
                     // Continue interact
                 }*/
             }
+        }
+    }
+
+    private void Player_Death()
+    {
+        if (playerLife <= 0)
+        {
+            player_Body.SetActive(false);
+        } else
+        {
+            player_Body.SetActive(true);
         }
     }
 
