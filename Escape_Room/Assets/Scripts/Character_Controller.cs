@@ -224,12 +224,13 @@ public class Character_Controller : MonoBehaviour
         Debug.DrawRay(rayStart, rightDir * sphereRadius, Color.blue);
 
         RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f, LayerMask.GetMask("ActiveObject"));
+        List<Transform> specificRangeHit = new List<Transform>();
 
-        if(hits.Length < 1) { detectObj = null; }
+        if (hits.Length < 1) { detectObj = null; }
 
         foreach (RaycastHit hit in hits)
         {
-            //Debug.Log("Hit : " + hit.transform.gameObject.name);
+            Debug.Log("Hit : " + hit.transform.gameObject.name);
             GameObject hitObj = hit.transform.gameObject;
 
             Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
@@ -238,23 +239,38 @@ public class Character_Controller : MonoBehaviour
 
             if (hitDeg >= leftDeg && hitDeg <= rightDeg)
             {
-                //Debug.Log("detect");
-                if (detectObj != null)
-                {
-                    float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
-                    float hitDist = Vector3.Distance(rayStart, hitObj.transform.position);
+                Debug.Log(hit.transform.gameObject.name);
 
-                    if (hitDist < detectObjDist)
+                if(!specificRangeHit.Contains(hit.transform)) { specificRangeHit.Add(hit.transform); }
+
+                if (specificRangeHit.Count > 1 && detectObj != null)
+                {
+                    foreach (Transform obj in specificRangeHit)
                     {
-                       // Debug.Log("change");
-                        detectObj = hitObj;
+                        float detectObjDist = Vector3.Distance(rayStart, detectObj.transform.position);
+                        float hitDist = Vector3.Distance(rayStart, hitObj.transform.position);
+
+                        if (hitDist < detectObjDist)
+                        {
+                            // Debug.Log("change");
+                            detectObj = obj.gameObject;
+                        }
+
                     }
                 }
                 else
                 {
                     //Debug.Log("new");
-                    detectObj = hitObj;
+                    detectObj = hit.transform.gameObject;
                 }
+            }
+            else
+            {
+                if(specificRangeHit.Contains(hit.transform))
+                {
+                    specificRangeHit.Remove(hit.transform);
+                }
+                detectObj = null;
             }
         }
 
@@ -278,6 +294,12 @@ public class Character_Controller : MonoBehaviour
                 uiManager.activeObjectButton.SetActive(false);
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(camera_First.transform.position, sphereRadius);
     }
 
     private void Player_InteractObject()

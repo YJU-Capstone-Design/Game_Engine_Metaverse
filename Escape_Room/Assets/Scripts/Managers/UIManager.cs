@@ -87,64 +87,7 @@ public class UIManager : Singleton<UIManager>
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                // narrationBox 활성화
-                narrationBox.SetActive(true);
-                activeUIChildren[0].SetActive(true);
-
-                interacting = true;
-
-                switch (activeObjectName.text)
-                {
-                    case "Bed":
-                        narrationText.text = narration.bed;
-                        break;
-                    case "DeadBody":
-                        narrationText.text = narration.deadBody;
-                        break;
-                    case "Chair":
-                        narrationText.text = narration.chair;
-                        break;
-                    case "Laptop":
-                        narrationText.text = narration.laptop;
-                        activeUIChildren[8].SetActive(true);
-                        break;
-                    case "Document":
-                        narrationText.text = narration.document;
-                        break;
-                    case "playerBag":
-                        narrationText.text = narration.playerBag;
-                        break;
-                    case "DeadBodyBag":
-                        narrationText.text = narration.deadBodyBag;
-                        break;
-                    case "Wallet":
-                        narrationText.text = narration.wallet;
-                        break;
-                    case "WallClock":
-                        narrationText.text = narration.wallClock;
-                        break;
-                    case "KitchenKnife":
-                        narrationText.text = narration.kitchenKnife;
-                        break;
-                    case "WallTV":
-                        narrationText.text = narration.WallTV;
-                        break;
-                    case "DirectionLock":
-                        narrationText.text = narration.directionLock;
-                        break;
-                    case "ButtonLock":
-                        narrationText.text = narration.buttonLock;
-                        break;
-                    case "DialLock":
-                        narrationText.text = narration.dialLock;
-                        break;
-                    case "KeyLock":
-                        narrationText.text = narration.keyLock;
-                        break;
-                    case "StorageCloset":
-                        narrationText.text = narration.storageCloset;
-                        break;
-                }
+                OpenNarration(activeObjectName.text); 
             }
         }
 
@@ -156,18 +99,31 @@ public class UIManager : Singleton<UIManager>
                 if (narrationText.text == narration.directionLock)
                 {
                     activeUIChildren[7].SetActive(true); // 방향 자물쇠 UI 활성화
+                    narrationBox.SetActive(false);
                 }
                 else if (narrationText.text == narration.buttonLock)
                 {
                     activeUIChildren[10].SetActive(true); // 버튼 자물쇠 UI 활성화
+                    narrationBox.SetActive(false);
                 }
                 else if (narrationText.text == narration.dialLock)
                 {
                     activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
+                    narrationBox.SetActive(false);
                 }
                 else if (narrationText.text == narration.keyLock)
                 {
                     activeUIChildren[12].SetActive(true); // 열쇠 자물쇠 UI 활성화
+                    narrationBox.SetActive(false);
+                }
+                else if(narrationText.text == narration.deadBodyBag)
+                {
+                    activeUIChildren[5].SetActive(true); // 지갑 UI 활성화
+                    OpenNarration("Wallet");
+                }
+                else if (narrationText.text == narration.wallet)
+                {
+                    narrationBox.SetActive(false);
                 }
                 else if (narrationText.text == narration.hint)
                 {
@@ -177,6 +133,7 @@ public class UIManager : Singleton<UIManager>
                     }
 
                     interacting = false;
+                    narrationBox.SetActive(false);
                 }
                 else
                 {
@@ -184,8 +141,6 @@ public class UIManager : Singleton<UIManager>
 
                     CloseAllUI();
                 }
-
-                narrationBox.SetActive(false);
             }
         }
     }
@@ -221,6 +176,71 @@ public class UIManager : Singleton<UIManager>
             timerText.text = "00 : 00";
 
             // 실패 UI 활성화
+        }
+    }
+
+    void OpenNarration(string objName)
+    {
+        // narrationBox 활성화
+        narrationBox.SetActive(true);
+        activeUIChildren[0].SetActive(true);
+
+        interacting = true;
+
+        switch (objName)
+        {
+            case "Bed":
+                narrationText.text = narration.bed;
+                break;
+            case "DeadBody":
+                narrationText.text = narration.deadBody;
+                break;
+            case "Chair":
+                narrationText.text = narration.chair;
+                break;
+            case "Laptop":
+                narrationText.text = narration.laptop;
+                activeUIChildren[8].SetActive(true);
+                break;
+            case "Document":
+                narrationText.text = narration.document;
+                break;
+            case "playerBag":
+                narrationText.text = narration.playerBag;
+                break;
+            case "DeadBodyBag":
+                narrationText.text = narration.deadBodyBag;
+                break;
+            case "Wallet":
+                narrationText.text = narration.wallet;
+                break;
+            case "IDCard":
+                narrationText.text = narration.IDcard;
+                break;
+            case "WallClock":
+                narrationText.text = narration.wallClock;
+                break;
+            case "KitchenKnife":
+                narrationText.text = narration.kitchenKnife;
+                break;
+            case "WallTV":
+                narrationText.text = narration.WallTV;
+                break;
+            case "DirectionLock":
+                narrationText.text = narration.directionLock;
+                break;
+            case "ButtonLock":
+                narrationText.text = narration.buttonLock;
+                break;
+            case "DialLock":
+                narrationText.text = narration.dialLock;
+                break;
+            case "KeyLock":
+                narrationText.text = narration.keyLock;
+                break;
+            case "StorageCloset":
+                narrationText.text = narration.storageCloset;
+                break;
         }
     }
 
@@ -623,15 +643,16 @@ public class UIManager : Singleton<UIManager>
     public void CheckIDCard(GameObject obj)
     {
         Animator anim = obj.GetComponent<Animator>();
-        obj.GetComponent<Button>().enabled = false; // 버튼 기능은 비활성화    
 
-        if (anim != null)
+        if (anim != null && !narrationBox.activeInHierarchy)
         {
             foreach (GameObject wallet in walletObjs)
             {
                 anim = wallet.GetComponent<Animator>();
                 anim.SetBool("Click", true);
             }
+
+            obj.GetComponent<Button>().enabled = false; // 버튼 기능은 비활성화 
         }
     }
 
@@ -649,6 +670,8 @@ public class UIManager : Singleton<UIManager>
         foreach (GameObject obj in activeUIChildren)
         {
             if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+
+            activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
         }
 
         interacting = false; ;
