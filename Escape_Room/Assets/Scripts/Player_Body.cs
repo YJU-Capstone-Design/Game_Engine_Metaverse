@@ -5,12 +5,11 @@ using UnityEngine;
 public class Player_Body : MonoBehaviour
 {
     public Character_Controller parent;
-    public Weapon weapon;
+    public GameObject weapon;
 
     private void Start()
     {
         parent = this.transform.parent.gameObject.GetComponent<Character_Controller>();
-        weapon = GameObject.Find("Weapon").GetComponent<Weapon>();
     }
 
     private void OnCollisionEnter(Collision obj)

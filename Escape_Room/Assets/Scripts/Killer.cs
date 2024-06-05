@@ -12,7 +12,7 @@ public class Killer : MonoBehaviour
     [SerializeField] private NavMeshAgent nma;
 
     [Header("Setting")]
-    [SerializeField] private GameObject weapon;
+    [SerializeField] public GameObject weapon;
     [SerializeField] private float attackRange = 5f;
     [SerializeField] private float sphereRadius = 30f;
     [SerializeField] private float findRange = 45f;
@@ -44,6 +44,8 @@ public class Killer : MonoBehaviour
         nma.stoppingDistance = 2f;
 
         weapon = GetComponentInChildren<Weapon>().gameObject;
+
+
     }
 
     private void Update()
@@ -151,5 +153,11 @@ public class Killer : MonoBehaviour
                 animator.SetBool("isWalk", false);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        // 살인마가 맵에서 삭제될 시(게임이 끝날 시) 플레이어 갱신 종료
+        gameManager.CancelInvoke("Player_Check");
     }
 }

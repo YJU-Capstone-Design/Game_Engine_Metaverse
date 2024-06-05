@@ -31,7 +31,7 @@ public class Character_Controller : MonoBehaviour
 
     [Header("Detect")]
     [SerializeField] private float sphereRadius = 2f;
-    [SerializeField] private float findRange = 45f;
+    [SerializeField] private float findRange = 130f;
 
     [Header("Interact")]
     [SerializeField] private GameObject detectObj;
@@ -298,6 +298,7 @@ public class Character_Controller : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // Only Test Code
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(camera_First.transform.position, sphereRadius);
     }

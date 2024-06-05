@@ -1,6 +1,8 @@
+using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -44,8 +46,13 @@ public class GameManager : Singleton<GameManager>
 
     void Killer_Spawn()
     {
-        GameObject Killer = Instantiate(killerPrefab, killerSpawnPoint.position, killerSpawnPoint.rotation);
-        Killer.GetComponent<Killer>().gameManager = this;
         isSpawn = true;
+
+        GameObject killer = Instantiate(killerPrefab, killerSpawnPoint.position, killerSpawnPoint.rotation);
+        killer.GetComponent<Killer>().gameManager = this;
+
+        InvokeRepeating("Player_Check", 5, 5);
     }
+
+
 }
