@@ -137,9 +137,6 @@ public class UIManager : Singleton<UIManager>
                     {
                         pv.RPC("UseHint", RpcTarget.All);
                     }
- 
-                    Debug.Log("hint" + "     " + narrationText.text);
-                    narrationText.text = "";
                     interacting = false;
                     CloseAllUI();
                 }
