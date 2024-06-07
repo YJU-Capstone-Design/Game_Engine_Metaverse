@@ -67,6 +67,8 @@ MonoBehaviour:
   - Timer
   - ReduceTime
   - OpenDoor
+  - GetSchoolsupplies
+  - BreakLock
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

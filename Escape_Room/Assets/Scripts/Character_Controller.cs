@@ -60,15 +60,8 @@ public class Character_Controller : MonoBehaviour
         if (photonView.IsMine)
         {
             LobbyUIManager.Instance.photonManager.myPlayer = photonView;
-            
-            if(uiManager != null) // 상호 작용 중이지 않을 경우에만 움직임 가능
-            {
-                if(!uiManager.interacting) { photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName); }
-            } 
-            else
-            {
-                photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
-            }
+
+            photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
         }
     }
 
@@ -134,13 +127,28 @@ public class Character_Controller : MonoBehaviour
         if (photonView.IsMine)
         {
             // Player code
-            Player_Move();
+            if (uiManager != null) // 상호 작용 중이지 않을 경우에만 움직임 가능
+            {
+                if(!uiManager.interacting)
+                {
+                    Player_Move();
+
+                    // Camera code
+                    Camera_Change();
+                    Camera_Rotate();
+                }
+            }
+            else
+            {
+                Player_Move();
+
+                // Camera code
+                Camera_Change();
+                Camera_Rotate();
+            }
+
             Player_DetectObject();
             Player_InteractObject();
-
-            // Camera code
-            Camera_Change();
-            Camera_Rotate();
         }
     }
 
@@ -226,7 +234,7 @@ public class Character_Controller : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            Debug.Log("Hit : " + hit.transform.gameObject.name);
+            //Debug.Log("Hit : " + hit.transform.gameObject.name);
             GameObject hitObj = hit.transform.gameObject;
 
             Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
@@ -235,7 +243,7 @@ public class Character_Controller : MonoBehaviour
 
             if (hitDeg >= leftDeg && hitDeg <= rightDeg)
             {
-                Debug.Log(hit.transform.gameObject.name);
+                //Debug.Log(hit.transform.gameObject.name);
 
                 if(!specificRangeHit.Contains(hit.transform)) { specificRangeHit.Add(hit.transform); }
 

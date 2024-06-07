@@ -18,6 +18,10 @@ public class UIManager : Singleton<UIManager>
     [Header("# Active Objects")]
     [SerializeField] List<GameObject> doors;
     [SerializeField] List<GameObject> activeObjects; // 사용 후 상호작용이 불가능하게 만들 오브젝트들 (ex. 자물쇠)
+    [SerializeField] List<GameObject> hintObjects; // 힌트 사용 시 상호작용하는 오브젝트들
+    [SerializeField] List<GameObject> hintButtons; // 힌트 버튼들
+    bool getSchoolsupplies = false;
+    bool breakLock = false;
 
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
@@ -79,6 +83,8 @@ public class UIManager : Singleton<UIManager>
         // 켜져있는 오브젝트 꺼짐
         if (Input.GetKeyDown(KeyCode.Escape) && !isCheckAnswer)
         {
+            narrationText.text = "";
+
             CloseAllUI();
         }
 
@@ -131,9 +137,11 @@ public class UIManager : Singleton<UIManager>
                     {
                         pv.RPC("UseHint", RpcTarget.All);
                     }
-
+ 
+                    Debug.Log("hint" + "     " + narrationText.text);
+                    narrationText.text = "";
                     interacting = false;
-                    narrationBox.SetActive(false);
+                    CloseAllUI();
                 }
                 else
                 {
@@ -210,8 +218,9 @@ public class UIManager : Singleton<UIManager>
             case "Document":
                 narrationText.text = narration.document;
                 break;
-            case "playerBag":
+            case "PlayerBag":
                 narrationText.text = narration.playerBag;
+                pv.RPC("GetSchoolsupplies", RpcTarget.All);
                 break;
             case "DeadBodyBag":
                 narrationText.text = narration.deadBodyBag;
@@ -237,7 +246,7 @@ public class UIManager : Singleton<UIManager>
             case "ButtonLock":
                 narrationText.text = narration.buttonLock;
                 break;
-            case "DialLock":
+            case "Refrigerator":
                 narrationText.text = narration.dialLock;
                 break;
             case "KeyLock":
@@ -245,6 +254,12 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "StorageCloset":
                 narrationText.text = narration.storageCloset;
+                break;
+            case "Hint":
+                narrationText.text = narration.hint;
+                break;
+            case "HintZero":
+                narrationText.text = narration.hintZero;
                 break;
         }
     }
@@ -449,10 +464,7 @@ public class UIManager : Singleton<UIManager>
         isCheckAnswer = false;
 
         // UI 비활성화
-        foreach (GameObject obj in activeUIChildren)
-        {
-            if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
-        }
+        CloseAllUI();
 
         // 성공 결과 (포톤)
         pv.RPC("OpenDoor", RpcTarget.All, name);
@@ -478,6 +490,24 @@ public class UIManager : Singleton<UIManager>
 
         // 실패 시 제한시간 30초 감소
         pv.RPC("ReduceTime", RpcTarget.MasterClient);
+    }
+
+    public void BreakLockButton(string name)
+    {
+        StartCoroutine(SuccessLock(name));
+
+        pv.RPC("BreakLock", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void BreakLock()
+    {
+        breakLock = true;
+
+        foreach (GameObject hintButton in hintButtons)
+        {
+            hintButton.SetActive(false);
+        }
     }
 
     [PunRPC]
@@ -507,48 +537,6 @@ public class UIManager : Singleton<UIManager>
         playTime -= 30;
     }
 
-    IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
-    {
-        Vector3 velocity = Vector3.zero;
-
-        target.anchorMin = currentMin;
-        target.anchorMax = currentMax;
-
-        float offset = 0.01f;
-
-        while (nextMin.x - offset >= target.anchorMin.x && nextMax.x - offset >= target.anchorMax.x)
-        {
-            target.anchorMin
-                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
-
-            target.anchorMax
-                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
-
-            yield return null;
-        }
-
-        target.anchorMin = nextMin;
-        target.anchorMax = nextMax;
-
-        yield return new WaitForSeconds(0.1f);
-
-        while (nextMin.x + offset <= target.anchorMin.x && nextMax.x + offset <= target.anchorMax.x)
-        {
-            target.anchorMin
-                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
-
-            target.anchorMax
-                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
-
-            yield return null;
-        }
-
-        target.anchorMin = currentMin;
-        target.anchorMax = currentMax;
-
-        yield return null;
-    }
-
     // 힌트 사용
     [PunRPC]
     void UseHint()
@@ -563,25 +551,48 @@ public class UIManager : Singleton<UIManager>
             activeUIChildren[0].SetActive(false);
         }
 
-        photonManager.hintCount--;
-
-        Debug.Log("Use Hint");
         // 힌트 사용 로직 필요
+        if(photonManager.hintCount == 2)
+        {
+            hintObjects[0].layer = 6;
+
+            // 파티클 오브젝트 활성화 필요
+        }
+        else if(photonManager.hintCount == 1)
+        {
+            hintObjects[1].layer = 6;
+
+            // 파티클 오브젝트 활성화 필요
+        }
+
+        photonManager.hintCount--;
     }
 
+    [PunRPC]
+    void GetSchoolsupplies()
+    {
+        getSchoolsupplies = true;
+
+        foreach(GameObject hintButton in hintButtons)
+        {
+            hintButton.SetActive(true); ;
+        }
+    }
+
+    
+
+    // 인게임 힌트 버튼
     public void HintButton()
     {
+        interacting = true;
+
         if (photonManager.hintCount > 0)
         {
-            narrationText.text = narration.hint;
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
+            OpenNarration("Hint");
         }
         else
         {
-            narrationText.text = narration.hintZero;
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
+            OpenNarration("HintZero");
         }
     }
 
@@ -679,6 +690,50 @@ public class UIManager : Singleton<UIManager>
             activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
         }
 
-        interacting = false; ;
+        interacting = false;
+
+        narrationText.text = "";
+    }
+
+    IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
+    {
+        Vector3 velocity = Vector3.zero;
+
+        target.anchorMin = currentMin;
+        target.anchorMax = currentMax;
+
+        float offset = 0.01f;
+
+        while (nextMin.x - offset >= target.anchorMin.x && nextMax.x - offset >= target.anchorMax.x)
+        {
+            target.anchorMin
+                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
+
+            target.anchorMax
+                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
+
+            yield return null;
+        }
+
+        target.anchorMin = nextMin;
+        target.anchorMax = nextMax;
+
+        yield return new WaitForSeconds(0.1f);
+
+        while (nextMin.x + offset <= target.anchorMin.x && nextMax.x + offset <= target.anchorMax.x)
+        {
+            target.anchorMin
+                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
+
+            target.anchorMax
+                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
+
+            yield return null;
+        }
+
+        target.anchorMin = currentMin;
+        target.anchorMax = currentMax;
+
+        yield return null;
     }
 }
