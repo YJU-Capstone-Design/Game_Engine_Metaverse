@@ -14,16 +14,18 @@ public class Killer : MonoBehaviour
     [Header("Setting")]
     [SerializeField] private GameObject weapon;
     [SerializeField] private float attackRange = 5f;
-    [SerializeField] private float sphereRadius = 30f;
+    [SerializeField] private float sphereRadius = 5f;
     [SerializeField] private float findRange = 45f;
 
     [Header("Target")]
     [SerializeField] private GameObject target;
+    public Vector3[] wanderPosition = new Vector3[4] { new Vector3(95f, -0.5f, -18f), new Vector3(92.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 10f) };
 
     [Header("State")]
     // private bool isFind = false;
     // private bool isWalk = false;
     protected bool isAtk = false;
+    private bool isWander = false;
 
     private void Start()
     {
@@ -38,10 +40,10 @@ public class Killer : MonoBehaviour
         animator.SetBool("isWalk", false);
 
         nma = GetComponent<NavMeshAgent>();
-        nma.speed = 10f;
+        nma.speed = 5f;
         nma.angularSpeed = 120f;
         nma.acceleration = 8f;
-        nma.stoppingDistance = 2f;
+        nma.stoppingDistance = 1f;
 
         weapon = GetComponentInChildren<Weapon>().gameObject;
     }
@@ -75,7 +77,7 @@ public class Killer : MonoBehaviour
         Debug.DrawRay(rayStart, rightDir * sphereRadius, Color.blue);
 
         // 거리는 0이고 구의 크기가 30f인 범위 생성
-        RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f);
+        RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f, LayerMask.GetMask("Player"));
 
         foreach (RaycastHit hit in hits)
         {

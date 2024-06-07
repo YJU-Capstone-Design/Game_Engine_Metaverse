@@ -1404,6 +1404,11 @@ MonoBehaviour:
   storageCloset: 
   hint: 
   hintZero: 
+  remote: 
+  livingroomTV: 
+  whiteBoard: 
+  doorLock: 
+  refrigerator: 
 --- !u!114 &25866301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26784,6 +26789,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &853483724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 853483725}
+  m_Layer: 0
+  m_Name: KillerSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &853483725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853483724}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 91.375, y: -0.5, z: -22.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &856372621
 GameObject:
   m_ObjectHideFlags: 0
@@ -63784,3 +63820,4 @@ SceneRoots:
   - {fileID: 25866299}
   - {fileID: 1667391958}
   - {fileID: 2059845989}
+  - {fileID: 853483725}
