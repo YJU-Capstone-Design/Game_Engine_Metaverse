@@ -180,6 +180,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             // 힌트 횟수 초기화
             hintCount = 2;
+
+            // 세팅 초기화
+            UIManager.Instance.InGameSetting();
         }
 
         // 캐릭터 생성

@@ -17,7 +17,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("# Active Objects")]
     [SerializeField] List<GameObject> doors;
-    [SerializeField] List<GameObject> activeObjects;
+    [SerializeField] List<GameObject> activeObjects; // 사용 후 상호작용이 불가능하게 만들 오브젝트들 (ex. 자물쇠)
 
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
@@ -154,7 +154,7 @@ public class UIManager : Singleton<UIManager>
         fluidKeyText.text = (28 + photonManager.playerList.Count).ToString();
     }
 
-    void InGameSetting()
+    public void InGameSetting()
     {
         playTime = 1800;
     }
@@ -485,7 +485,7 @@ public class UIManager : Singleton<UIManager>
             case "Direction":
                 doorAnim = doors[0].GetComponent<Animator>();
                 doorAnim.SetBool("open", true);
-                activeObjects[0].GetComponent<BoxCollider>().enabled = false;
+                activeObjects[0].GetComponent<Collider>().enabled = false;
                 break;
             case "Button":
                 break;
