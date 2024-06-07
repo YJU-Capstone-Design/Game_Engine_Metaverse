@@ -157,6 +157,11 @@ public class UIManager : Singleton<UIManager>
     public void InGameSetting()
     {
         playTime = 1800;
+
+        foreach(GameObject activeObj in activeObjects)
+        {
+            activeObj.GetComponent<Collider>().enabled = true;
+        }
     }
 
     // 타이머 함수는 PhotonManager 에서 실행

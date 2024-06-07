@@ -27,6 +27,11 @@ public class Narration : MonoBehaviour
     public string storageCloset; // 수납장
     public string hint; // 힌트
     public string hintZero; // 힌트를 다 사용
+    public string remote; // 리모컨
+    public string livingroomTV; // 거실 TV
+    public string whiteBoard; // 화이트보드
+    public string doorLock; // 도어락
+    public string refrigerator; // 냉장고
 
 
     private void Awake()
@@ -50,6 +55,11 @@ public class Narration : MonoBehaviour
         key = "이걸로 열쇠형 자물쇠를 열 수 있을 거 같다.";
         storageCloset = "평범한 수납장인 거 같다.";
         hintZero = "사용 가능한 힌트 횟수를 다 사용하셨습니다.";
+        remote = "";
+        livingroomTV = "";
+        whiteBoard = "피해자들의 사진인 것 같다. 모든 사진에는 X 표시가 되어있다. \n자세히 확인하고 싶으시면 Enter를 눌러주십시오...";
+        doorLock = "";
+        refrigerator = "";
     }
 
     private void Update()
