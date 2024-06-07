@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class Killer : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class Killer : MonoBehaviour
     [SerializeField] private NavMeshAgent nma;
 
     [Header("Setting")]
-    [SerializeField] private GameObject weapon;
+    public GameObject weapon;
     [SerializeField] private float attackRange = 5f;
     [SerializeField] private float sphereRadius = 5f;
     [SerializeField] private float findRange = 45f;
@@ -46,6 +47,11 @@ public class Killer : MonoBehaviour
         nma.stoppingDistance = 1f;
 
         weapon = GetComponentInChildren<Weapon>().gameObject;
+
+        //wanderPosition[0] = new Vector3(95f, -0.5f, -18f);
+        //wanderPosition[1] = new Vector3(92.5f, -0.5f, 0f);
+        //wanderPosition[2] = new Vector3(77.5f, -0.5f, 0f);
+        //wanderPosition[3] = new Vector3(77.5f, -0.5f, 10f);
     }
 
     private void Update()
@@ -54,7 +60,7 @@ public class Killer : MonoBehaviour
         Killer_Move();
         Killer_Attack();
     }
-        
+
     private void Killer_Find()
     {
         // Raycast 사용을 위한 시작점 및 방향 설정
@@ -81,63 +87,84 @@ public class Killer : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            Debug.Log(hit.transform.gameObject);
-            // 특정 Player가 Killer의 인식 범위 안에 들어올 경우
-            if (hit.transform.CompareTag("Player"))
+            GameObject hitPlayer = hit.transform.gameObject;
+            // 해당 Player의 방향벡터값 계산
+            Vector3 hitDir = (hitPlayer.transform.position - rayStart).normalized;
+            float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
+            float hitDeg = Mathf.Rad2Deg * hitRad;
+
+            // 해당 Player가 Killer의 시야각 내부에 위치할 경우
+            if (hitDeg >= leftDeg && hitDeg <= rightDeg)
             {
-                Debug.Log("CompareTag Player");
-                GameObject hitPlayer = hit.transform.gameObject;
-                // 해당 Player의 방향벡터값 계산
-                Vector3 hitDir = (hitPlayer.transform.position - rayStart).normalized;
-                float hitRad = Mathf.Acos(Vector3.Dot(rayDir, hitDir));
-                float hitDeg = Mathf.Rad2Deg * hitRad;
-
-                // 해당 Player가 Killer의 시야각 내부에 위치할 경우
-                if (hitDeg >= leftDeg && hitDeg <= rightDeg)
+                // 해당 Player를 Target으로 설정할 지에 대한 코드
+                if (target != null)
                 {
-                    // 해당 Player를 Target으로 설정할 지에 대한 코드
-                    if (target != null)
-                    {
-                        // 설정된 Target이 있을 경우 해당 Player와 Target의 거리 비교
-                        // Player와 Killer 간 거리가 더 가까운 Player를 Target으로 재설정 
-                        float targetDist = Vector3.Distance(rayStart, target.transform.position);
-                        float hitDist = Vector3.Distance(rayStart, hitPlayer.transform.position);
+                    // 설정된 Target이 있을 경우 해당 Player와 Target의 거리 비교
+                    // Player와 Killer 간 거리가 더 가까운 Player를 Target으로 재설정 
+                    float targetDist = Vector3.Distance(rayStart, target.transform.position);
+                    float hitDist = Vector3.Distance(rayStart, hitPlayer.transform.position);
 
-                        if (hitDist < targetDist)
-                        {
-                            target = hitPlayer;
-                        }
-                    }
-                    else
+                    if (hitDist < targetDist)
                     {
-                        // 설정된 Target이 없을 경우 해당 Player를 Target으로 지정
                         target = hitPlayer;
                     }
                 }
                 else
                 {
-                    // 범위 내에 Player가 존재하나 설정된 Target이 없을 경우 해당 Player를 바라보도록 설정
-                    // if (target == null)
-                    // {
-                    // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hitDir), Time.deltaTime * 2.5f);
-                    // }
+                    // 설정된 Target이 없을 경우 해당 Player를 Target으로 지정
+                    target = hitPlayer;
                 }
             }
-            else Debug.Log("에바임");
+            else
+            {
+                // 범위 내에 Player가 존재하나 설정된 Target이 없을 경우 해당 Player를 바라보도록 설정
+                // if (target == null)
+                // {
+                // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hitDir), Time.deltaTime * 2.5f);
+                // }
+                target = null;
+            }
         }
     }
 
     private void Killer_Move()
     {
+        nma.enabled = true;
         if (target != null)
         {
-            nma.enabled = true;
+            StopCoroutine(wander());
+            isWander = false;
             nma.SetDestination(target.transform.position);
             animator.SetBool("isWalk", true);
-        } else
+        }
+        else
         {
-            nma.SetDestination(transform.position);
-            animator.SetBool("isWalk", false);
+            if (!isWander)
+            {
+                isWander = true;
+                StartCoroutine(wander());
+                animator.SetBool("isWalk", false);
+            }
+        }
+    }
+
+    private IEnumerator wander()
+    {
+
+        for (int i = 0; i < wanderPosition.Length;)
+        {
+            Vector3 tfPos = new Vector3(wanderPosition[i].x, transform.position.y, wanderPosition[i].z);
+            nma.SetDestination(tfPos);
+            yield return new WaitForSecondsRealtime(5f);
+
+            if (i == wanderPosition.Length - 1)
+            {
+                i = 0;
+            }
+            else
+            {
+                i++;
+            }
         }
     }
 
@@ -153,5 +180,11 @@ public class Killer : MonoBehaviour
                 animator.SetBool("isWalk", false);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        // 살인마가 맵에서 삭제될 시(게임이 끝날 시) 플레이어 갱신 종료
+        gameManager.CancelInvoke("Player_Check");
     }
 }
