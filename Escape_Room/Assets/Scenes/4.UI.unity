@@ -106,7 +106,7 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 3
     agentTypeID: 0
-    agentRadius: 0.5
+    agentRadius: 0.15
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
@@ -114,7 +114,7 @@ NavMeshSettings:
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.16666667
+    cellSize: 0.05
     manualTileSize: 0
     tileSize: 256
     buildHeightMesh: 0
@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: e946648c5e28b934f80750dc6dce8183, type: 2}
 --- !u!114 &3003251 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5340136494524004467, guid: 46a8b320cd320ce479749617ee1a9fca,
@@ -8836,6 +8836,57 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 311416104}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &313864977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 313864979}
+  - component: {fileID: 313864978}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &313864978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313864977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07451de04aadaab4395994925bd41c5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  photonManager: {fileID: 0}
+  playerList: []
+  killerPrefab: {fileID: 226475387858174092, guid: cc8c934501ac52d4297e5881f3b14f5e,
+    type: 3}
+  killerSpawnTime: 1200
+  killerSpawnPoint: {fileID: 1278993450}
+  isSpawn: 0
+--- !u!4 &313864979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313864977}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &329780532
 GameObject:
   m_ObjectHideFlags: 0
@@ -10508,8 +10559,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 389194211}
-  - component: {fileID: 389194214}
-  - component: {fileID: 389194213}
   - component: {fileID: 389194212}
   m_Layer: 0
   m_Name: D_Advanced_Grunge_29
@@ -10557,30 +10606,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.5}
   m_Size: {x: 1, y: 1, z: 1}
   m_FadeFactor: 1
---- !u!114 &389194213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389194210}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &389194214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389194210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &390246936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21732,8 +21757,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 711613030}
-  - component: {fileID: 711613033}
-  - component: {fileID: 711613032}
   - component: {fileID: 711613031}
   m_Layer: 0
   m_Name: D_Advanced_Grunge_3
@@ -21781,30 +21804,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.15}
   m_Size: {x: 0.3, y: 0.3, z: 0.3}
   m_FadeFactor: 1
---- !u!114 &711613032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711613029}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &711613033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711613029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &715980359
 GameObject:
   m_ObjectHideFlags: 0
@@ -21945,8 +21944,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 720053841}
-  - component: {fileID: 720053844}
-  - component: {fileID: 720053843}
   - component: {fileID: 720053842}
   m_Layer: 0
   m_Name: D_Advanced_Grunge_30
@@ -21994,30 +21991,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.5}
   m_Size: {x: 1, y: 1, z: 1}
   m_FadeFactor: 1
---- !u!114 &720053843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720053840}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &720053844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720053840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &721366557
 GameObject:
   m_ObjectHideFlags: 0
@@ -23339,7 +23312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1030974699, guid: abc00000000002207643421380915773, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1030974699, guid: abc00000000002207643421380915773, type: 3}
       propertyPath: m_LocalRotation.x
@@ -23347,15 +23320,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1030974699, guid: abc00000000002207643421380915773, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1030974699, guid: abc00000000002207643421380915773, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1030974699, guid: abc00000000002207643421380915773, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 270
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 1030974703, guid: abc00000000002207643421380915773, type: 3}
       propertyPath: m_LocalRotation.w
@@ -37553,8 +37526,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1261889978}
-  - component: {fileID: 1261889981}
-  - component: {fileID: 1261889980}
   - component: {fileID: 1261889979}
   m_Layer: 0
   m_Name: D_Advanced_Grunge_41
@@ -37602,30 +37573,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.5}
   m_Size: {x: 1, y: 1, z: 1}
   m_FadeFactor: 1
---- !u!114 &1261889980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261889977}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1261889981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261889977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1265371757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38274,6 +38221,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1277831709}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1278993449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1278993450}
+  m_Layer: 0
+  m_Name: KillerSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1278993450
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278993449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 91.5, y: -0.5, z: -22}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1283139597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39524,8 +39502,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1314285246}
-  - component: {fileID: 1314285249}
-  - component: {fileID: 1314285248}
   - component: {fileID: 1314285247}
   m_Layer: 0
   m_Name: D_Advanced_Grunge_26
@@ -39573,30 +39549,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.5}
   m_Size: {x: 1, y: 1, z: 1}
   m_FadeFactor: 1
---- !u!114 &1314285248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314285245}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1314285249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314285245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1316067608
 GameObject:
   m_ObjectHideFlags: 0
@@ -41904,7 +41856,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375319324}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -12.0331955, y: 69.872444, z: -217.55975}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -41914,7 +41866,7 @@ Transform:
   - {fileID: 1375319297}
   - {fileID: 1375319309}
   m_Father: {fileID: 596643260}
-  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &1378015618
 GameObject:
   m_ObjectHideFlags: 0
@@ -44121,8 +44073,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1458338198}
-  - component: {fileID: 1458338201}
-  - component: {fileID: 1458338200}
   - component: {fileID: 1458338199}
   m_Layer: 0
   m_Name: D_Advanced_Grunge_14
@@ -44170,30 +44120,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.5}
   m_Size: {x: 1, y: 1, z: 1}
   m_FadeFactor: 1
---- !u!114 &1458338200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458338197}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1458338201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458338197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1461330284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59872,8 +59798,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2031888323}
-  - component: {fileID: 2031888326}
-  - component: {fileID: 2031888325}
   - component: {fileID: 2031888324}
   m_Layer: 0
   m_Name: D_Advanced_Grunge_40
@@ -59921,30 +59845,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.5}
   m_Size: {x: 1, y: 1, z: 1}
   m_FadeFactor: 1
---- !u!114 &2031888325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031888322}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2031888326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031888322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2043771931
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64281,3 +64181,5 @@ SceneRoots:
   - {fileID: 25866299}
   - {fileID: 1667391958}
   - {fileID: 2059845989}
+  - {fileID: 1278993450}
+  - {fileID: 313864979}

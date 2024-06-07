@@ -9,12 +9,12 @@ public class Player_Body : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log(this.transform.parent.name);
         parent = this.transform.parent.gameObject.GetComponent<Character_Controller>();
     }
 
-    private void OnCollisionEnter(Collision obj)
+    private void OnTriggerEnter(Collider obj)
     {
-        
         if (this.gameObject.activeSelf == true)
         {
             if (obj.gameObject == weapon)

@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 8444362332976624298}
   - component: {fileID: 2979265754020112422}
   - component: {fileID: 1814686715456097040}
-  - component: {fileID: 1530840900654459803}
   - component: {fileID: -258842796632714038}
   m_Layer: 0
   m_Name: man
@@ -212,19 +211,7 @@ MonoBehaviour:
   sphereRadius: 2
   findRange: 130
   detectObj: {fileID: 0}
---- !u!114 &1530840900654459803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248822274323737384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f51ab8ed42cc104baab892209dcf0e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifePoint: 3
+  playerLife: 3
 --- !u!54 &-258842796632714038
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -945,7 +932,8 @@ GameObject:
   - component: {fileID: 7017223343744921376}
   - component: {fileID: 1616738347486946319}
   - component: {fileID: 8430214248707736263}
-  m_Layer: 0
+  - component: {fileID: 4844812845407275953}
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1007,7 +995,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1015,6 +1003,20 @@ CapsuleCollider:
   m_Height: 2.25
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
+--- !u!114 &4844812845407275953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2374430763718696840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f51ab8ed42cc104baab892209dcf0e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  weapon: {fileID: 0}
 --- !u!1 &2393244445261020883
 GameObject:
   m_ObjectHideFlags: 0
