@@ -51,7 +51,10 @@ public class UIManager : Singleton<UIManager>
     [Header("# TV / Remote")]
     public List<string> tvInput;
     string tvAnswer;
+    public GameObject tvInputField;
     public TextMeshProUGUI tvInputText;
+    public bool connetUSB = false;
+    public bool tvPowerOn = false;
 
     [Header("# Question Button")]
     [SerializeField] GameObject[] answerBtns;

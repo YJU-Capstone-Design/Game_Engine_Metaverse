@@ -21,6 +21,9 @@ public class RemoteButton : MonoBehaviour
 
     public void InputButton(string value)
     {
+        if (!uiManager.connetUSB)
+            return;
+
         if(value == "Delete")
         {
             if(uiManager.tvInputText.text.Length > 0)
@@ -30,6 +33,10 @@ public class RemoteButton : MonoBehaviour
                 uiManager.tvInputText.text = string.Join("", uiManager.tvInput);
 
             }
+        }
+        else if(value == "Power")
+        {
+            uiManager.tvInputField.SetActive(true);
         }
         else if(value == "null")
         {

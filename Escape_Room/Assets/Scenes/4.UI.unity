@@ -1350,7 +1350,10 @@ MonoBehaviour:
   - {fileID: 523798841}
   fluidKeyText: {fileID: 118169624}
   tvInput: []
+  tvInputField: {fileID: 109137176}
   tvInputText: {fileID: 1359393077}
+  connetUSB: 0
+  tvPowerOn: 0
   answerBtns:
   - {fileID: 1451499819}
   - {fileID: 2050888636}
@@ -3991,7 +3994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &109137177
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7406,7 +7409,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: null
+          m_StringArgument: Power
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1001 &220015340
