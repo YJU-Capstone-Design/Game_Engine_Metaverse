@@ -48,6 +48,11 @@ public class UIManager : Singleton<UIManager>
     [Header("# Key Lock")]
     [SerializeField] TextMeshProUGUI fluidKeyText; // "28 + 유저 수" 값을 가지는 키
 
+    [Header("# TV / Remote")]
+    public List<string> tvInput;
+    string tvAnswer;
+    public TextMeshProUGUI tvInputText;
+
     [Header("# Question Button")]
     [SerializeField] GameObject[] answerBtns;
     [SerializeField] Sprite[] btnSprites;
@@ -70,6 +75,7 @@ public class UIManager : Singleton<UIManager>
         DirectionLockSetting();
         ButtonLockSetting();
         DialLockSetting();
+        TVSetting();
     }
 
     private void Update()
@@ -284,6 +290,13 @@ public class UIManager : Singleton<UIManager>
         dialLockAnswer = new int[3] { 7, 3, 2 };
     }
 
+    void TVSetting()
+    {
+        tvInput = new List<string>();
+        tvAnswer = "0325";
+        tvInputText.text = ""; 
+    }
+
     // 자물쇠 정답 확인
     public void CheckLockAnswer(string name)
     {
@@ -304,7 +317,6 @@ public class UIManager : Singleton<UIManager>
                 else if (dirLockInput[dirLockInput.Count - 1] == dirLockAnswer[dirLockInput.Count - 1])
                 {
                     Debug.Log("성공");
-                    dirLockInput.Clear();
 
                     // 성공 로직
                     StartCoroutine(SuccessLock("Direction"));
@@ -340,7 +352,6 @@ public class UIManager : Singleton<UIManager>
                     else if (btnLockInput[btnLockInput.Count - 1] == btnLockAnswer[btnLockInput.Count - 1])
                     {
                         Debug.Log("성공");
-                        btnLockInput.Clear();
 
                         // 성공 로직
                         StartCoroutine(SuccessLock("Button"));
@@ -375,11 +386,27 @@ public class UIManager : Singleton<UIManager>
                 if (i == 2 && dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
                 {
                     Debug.Log("성공");
-                    DialLockSetting(); // 초기화
 
                     // 성공 로직
                     StartCoroutine(SuccessLock("Dial"));
                 }
+            }
+        }
+        else if(name == "TV")
+        {
+            if(tvInputText.text == tvAnswer)
+            {
+                Debug.Log("성공");
+
+                // 성공 로직
+                StartCoroutine(SuccessLock("TV"));
+            }
+            else
+            {
+                Debug.Log("실패");
+
+                // 실패 로직
+                StartCoroutine(FailLock());
             }
         }
     }
@@ -411,6 +438,9 @@ public class UIManager : Singleton<UIManager>
                     num.SetInitialValue();
                 }
 
+                break;
+            case "TV":
+                TVSetting();
                 break;
         }
     }
@@ -459,6 +489,25 @@ public class UIManager : Singleton<UIManager>
         yield return new WaitForSeconds(1);
 
         isCheckAnswer = false;
+
+        // 초기화
+        switch (name)
+        {
+            case "Direction":
+                DirectionLockSetting();
+                break;
+            case "Button":
+                ButtonLockSetting();
+                break;
+            case "Dial":
+                DialLockSetting();
+                break;
+            case "TV":
+                TVSetting();
+                break;
+            default:
+                break;
+        }
 
         // UI 비활성화
         CloseAllUI();
@@ -520,10 +569,14 @@ public class UIManager : Singleton<UIManager>
                 activeObjects[0].GetComponent<Collider>().enabled = false;
                 break;
             case "Button":
+                // USB 금고/TV 키패드 활성화
                 break;
             case "Dial":
                 break;
             case "Key":
+                break;
+            case "TV":
+                // 주방 벽 비활성화
                 break;
         }
     }
