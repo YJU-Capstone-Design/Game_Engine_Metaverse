@@ -21,6 +21,7 @@ public class RemoteButton : MonoBehaviour
 
     public void InputButton(string value)
     {
+        Debug.Log(gameObject.name);
         if (!uiManager.connetUSB)
             return;
 
@@ -37,6 +38,7 @@ public class RemoteButton : MonoBehaviour
         else if(value == "Power")
         {
             uiManager.tvInputField.SetActive(true);
+            uiManager.tvPowerOn = true;
         }
         else if(value == "null")
         {
@@ -44,6 +46,8 @@ public class RemoteButton : MonoBehaviour
         }
         else
         {
+            if (!uiManager.tvPowerOn)
+                return;
             uiManager.tvInput.Add(value);
             uiManager.tvInputText.text = string.Join("", uiManager.tvInput);
         }

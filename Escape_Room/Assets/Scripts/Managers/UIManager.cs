@@ -56,6 +56,11 @@ public class UIManager : Singleton<UIManager>
     public bool connetUSB = false;
     public bool tvPowerOn = false;
 
+    [Header("# DoorLock")]
+    public List<string> doorLockInput;
+    string doorLockAnswer;
+    public TextMeshProUGUI doorLockInputText;
+
     [Header("# Question Button")]
     [SerializeField] GameObject[] answerBtns;
     [SerializeField] Sprite[] btnSprites;
@@ -79,6 +84,7 @@ public class UIManager : Singleton<UIManager>
         ButtonLockSetting();
         DialLockSetting();
         TVSetting();
+        DoorLockSetting();
     }
 
     private void Update()
@@ -283,21 +289,28 @@ public class UIManager : Singleton<UIManager>
     {
         btnLockInput = new List<int>();
 
-        btnLockAnswer = new int[4] { 1, 2, 4, 5 };
+        btnLockAnswer = new int[4] { 3, 2, 6, 1 };
     }
 
     void DialLockSetting()
     {
         dialLockInput = new List<int> { 0, 0, 0 };
 
-        dialLockAnswer = new int[3] { 7, 3, 2 };
+        dialLockAnswer = new int[3] { 5, 2, 5 };
     }
 
     void TVSetting()
     {
         tvInput = new List<string>();
-        tvAnswer = "0325";
+        tvAnswer = "12";
         tvInputText.text = ""; 
+    }
+
+    void DoorLockSetting()
+    {
+        doorLockInput = new List<string>();
+        doorLockAnswer = "0325";
+        doorLockInputText.text = "";
     }
 
     // 자물쇠 정답 확인
@@ -412,6 +425,22 @@ public class UIManager : Singleton<UIManager>
                 StartCoroutine(FailLock());
             }
         }
+        else if(name == "DoorLock")
+        {
+            if (doorLockInputText.text == doorLockAnswer)
+            {
+                Debug.Log("성공");
+
+                StartCoroutine(SuccessLock("DoorLock"));
+            }
+            else
+            {
+                Debug.Log("실패");
+
+                // 실패 로직
+                StartCoroutine(FailLock());
+            }
+        }
     }
 
     // 방자물쇠 값 초기화
@@ -444,6 +473,9 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "TV":
                 TVSetting();
+                break;
+            case "DoorLock":
+                DoorLockSetting();
                 break;
         }
     }
@@ -507,6 +539,9 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "TV":
                 TVSetting();
+                break;
+            case "DoorLock":
+                DoorLockSetting();
                 break;
             default:
                 break;
@@ -580,6 +615,9 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "TV":
                 // 주방 벽 비활성화
+                break;
+            case "DoorLock":
+                // 현관문 열리기
                 break;
         }
     }
