@@ -53,6 +53,7 @@ public class UIManager : Singleton<UIManager>
     string tvAnswer;
     public GameObject tvInputField;
     public TextMeshProUGUI tvInputText;
+    bool getUSB = false;
     public bool connetUSB = false;
     public bool tvPowerOn = false;
 
@@ -154,6 +155,12 @@ public class UIManager : Singleton<UIManager>
                     }
                     interacting = false;
                     CloseAllUI();
+                }
+                else if(narrationText.text == narration.livingroomTV_2)
+                {
+                    connetUSB = true;
+                    activeUIChildren[16].SetActive(true); // TV/Remote UI 활성화
+                    narrationBox.SetActive(false);
                 }
                 else
                 {
@@ -273,6 +280,25 @@ public class UIManager : Singleton<UIManager>
             case "HintZero":
                 narrationText.text = narration.hintZero;
                 break;
+            case "Remote":
+                narrationText.text = narration.remote;
+                break;
+            case "LivingRoomTV":
+                if(!getUSB)
+                {
+                    narrationText.text = narration.livingroomTV_1;
+                }
+                else if(getUSB)
+                {
+                    narrationText.text = narration.livingroomTV_2;
+                }
+                break;
+            case "WhiteBoard":
+                narrationText.text = narration.whiteBoard;
+                break;
+            case "ExitDoor":
+                narrationText.text = narration.doorLock;
+                break;
         }
     }
 
@@ -289,7 +315,7 @@ public class UIManager : Singleton<UIManager>
     {
         btnLockInput = new List<int>();
 
-        btnLockAnswer = new int[4] { 3, 2, 6, 1 };
+        btnLockAnswer = new int[4] { 1, 2, 3, 6 };
     }
 
     void DialLockSetting()
@@ -420,6 +446,7 @@ public class UIManager : Singleton<UIManager>
             else
             {
                 Debug.Log("실패");
+                TVSetting();
 
                 // 실패 로직
                 StartCoroutine(FailLock());
@@ -436,6 +463,7 @@ public class UIManager : Singleton<UIManager>
             else
             {
                 Debug.Log("실패");
+                DoorLockSetting();
 
                 // 실패 로직
                 StartCoroutine(FailLock());
@@ -607,14 +635,16 @@ public class UIManager : Singleton<UIManager>
                 activeObjects[0].GetComponent<Collider>().enabled = false;
                 break;
             case "Button":
-                // USB 금고/TV 키패드 활성화
+                // TV 키패드 활성화
+                getUSB = true;
                 break;
             case "Dial":
                 break;
             case "Key":
                 break;
             case "TV":
-                // 주방 벽 비활성화
+                activeObjects[1].GetComponent<Collider>().enabled = false;
+                activeObjects[2].SetActive(false); // 주방 가벽 비활성화
                 break;
             case "DoorLock":
                 // 현관문 열리기
