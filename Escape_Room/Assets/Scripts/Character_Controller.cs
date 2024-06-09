@@ -36,6 +36,9 @@ public class Character_Controller : MonoBehaviour
     [Header("Interact")]
     [SerializeField] private GameObject detectObj;
 
+    [Header("Status")]
+    public int playerLife = 3;
+
     // Concealed variable
     // Player Position
     private float pos_X, pos_Z;

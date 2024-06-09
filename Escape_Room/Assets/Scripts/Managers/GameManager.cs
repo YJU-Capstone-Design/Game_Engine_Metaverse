@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("Manager")]
     public PhotonManager photonManager;
+    public UIManager uiManager;
 
     [Header("Player")]
     public List<Character_Controller> playerList;
@@ -29,10 +30,10 @@ public class GameManager : Singleton<GameManager>
     {
         if (!isSpawn)
         {
-/*            if (UIManager.Instance.playTime <= killerSpawnTime)
+            if (uiManager.playTime <= killerSpawnTime)
             {
                 Killer_Spawn();
-            }*/
+            }
         }
     }
 
