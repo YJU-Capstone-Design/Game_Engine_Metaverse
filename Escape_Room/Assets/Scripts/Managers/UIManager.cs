@@ -18,6 +18,10 @@ public class UIManager : Singleton<UIManager>
     [Header("# Active Objects")]
     [SerializeField] List<GameObject> doors;
     [SerializeField] List<GameObject> activeObjects; // 사용 후 상호작용이 불가능하게 만들 오브젝트들 (ex. 자물쇠)
+    [SerializeField] List<GameObject> hintObjects; // 힌트 사용 시 상호작용하는 오브젝트들
+    [SerializeField] List<GameObject> hintButtons; // 힌트 버튼들
+    bool getSchoolsupplies = false;
+    bool breakLock = false;
 
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
@@ -44,6 +48,19 @@ public class UIManager : Singleton<UIManager>
     [Header("# Key Lock")]
     [SerializeField] TextMeshProUGUI fluidKeyText; // "28 + 유저 수" 값을 가지는 키
 
+    [Header("# TV / Remote")]
+    public List<string> tvInput;
+    string tvAnswer;
+    public GameObject tvInputField;
+    public TextMeshProUGUI tvInputText;
+    public bool connetUSB = false;
+    public bool tvPowerOn = false;
+
+    [Header("# DoorLock")]
+    public List<string> doorLockInput;
+    string doorLockAnswer;
+    public TextMeshProUGUI doorLockInputText;
+
     [Header("# Question Button")]
     [SerializeField] GameObject[] answerBtns;
     [SerializeField] Sprite[] btnSprites;
@@ -66,6 +83,8 @@ public class UIManager : Singleton<UIManager>
         DirectionLockSetting();
         ButtonLockSetting();
         DialLockSetting();
+        TVSetting();
+        DoorLockSetting();
     }
 
     private void Update()
@@ -79,6 +98,8 @@ public class UIManager : Singleton<UIManager>
         // 켜져있는 오브젝트 꺼짐
         if (Input.GetKeyDown(KeyCode.Escape) && !isCheckAnswer)
         {
+            narrationText.text = "";
+
             CloseAllUI();
         }
 
@@ -131,9 +152,8 @@ public class UIManager : Singleton<UIManager>
                     {
                         pv.RPC("UseHint", RpcTarget.All);
                     }
-
                     interacting = false;
-                    narrationBox.SetActive(false);
+                    CloseAllUI();
                 }
                 else
                 {
@@ -210,8 +230,9 @@ public class UIManager : Singleton<UIManager>
             case "Document":
                 narrationText.text = narration.document;
                 break;
-            case "playerBag":
+            case "PlayerBag":
                 narrationText.text = narration.playerBag;
+                pv.RPC("GetSchoolsupplies", RpcTarget.All);
                 break;
             case "DeadBodyBag":
                 narrationText.text = narration.deadBodyBag;
@@ -237,7 +258,7 @@ public class UIManager : Singleton<UIManager>
             case "ButtonLock":
                 narrationText.text = narration.buttonLock;
                 break;
-            case "DialLock":
+            case "Refrigerator":
                 narrationText.text = narration.dialLock;
                 break;
             case "KeyLock":
@@ -245,6 +266,12 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "StorageCloset":
                 narrationText.text = narration.storageCloset;
+                break;
+            case "Hint":
+                narrationText.text = narration.hint;
+                break;
+            case "HintZero":
+                narrationText.text = narration.hintZero;
                 break;
         }
     }
@@ -262,14 +289,28 @@ public class UIManager : Singleton<UIManager>
     {
         btnLockInput = new List<int>();
 
-        btnLockAnswer = new int[4] { 1, 2, 4, 5 };
+        btnLockAnswer = new int[4] { 3, 2, 6, 1 };
     }
 
     void DialLockSetting()
     {
         dialLockInput = new List<int> { 0, 0, 0 };
 
-        dialLockAnswer = new int[3] { 7, 3, 2 };
+        dialLockAnswer = new int[3] { 5, 2, 5 };
+    }
+
+    void TVSetting()
+    {
+        tvInput = new List<string>();
+        tvAnswer = "12";
+        tvInputText.text = ""; 
+    }
+
+    void DoorLockSetting()
+    {
+        doorLockInput = new List<string>();
+        doorLockAnswer = "0325";
+        doorLockInputText.text = "";
     }
 
     // 자물쇠 정답 확인
@@ -292,7 +333,6 @@ public class UIManager : Singleton<UIManager>
                 else if (dirLockInput[dirLockInput.Count - 1] == dirLockAnswer[dirLockInput.Count - 1])
                 {
                     Debug.Log("성공");
-                    dirLockInput.Clear();
 
                     // 성공 로직
                     StartCoroutine(SuccessLock("Direction"));
@@ -328,7 +368,6 @@ public class UIManager : Singleton<UIManager>
                     else if (btnLockInput[btnLockInput.Count - 1] == btnLockAnswer[btnLockInput.Count - 1])
                     {
                         Debug.Log("성공");
-                        btnLockInput.Clear();
 
                         // 성공 로직
                         StartCoroutine(SuccessLock("Button"));
@@ -363,11 +402,43 @@ public class UIManager : Singleton<UIManager>
                 if (i == 2 && dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
                 {
                     Debug.Log("성공");
-                    DialLockSetting(); // 초기화
 
                     // 성공 로직
                     StartCoroutine(SuccessLock("Dial"));
                 }
+            }
+        }
+        else if(name == "TV")
+        {
+            if(tvInputText.text == tvAnswer)
+            {
+                Debug.Log("성공");
+
+                // 성공 로직
+                StartCoroutine(SuccessLock("TV"));
+            }
+            else
+            {
+                Debug.Log("실패");
+
+                // 실패 로직
+                StartCoroutine(FailLock());
+            }
+        }
+        else if(name == "DoorLock")
+        {
+            if (doorLockInputText.text == doorLockAnswer)
+            {
+                Debug.Log("성공");
+
+                StartCoroutine(SuccessLock("DoorLock"));
+            }
+            else
+            {
+                Debug.Log("실패");
+
+                // 실패 로직
+                StartCoroutine(FailLock());
             }
         }
     }
@@ -399,6 +470,12 @@ public class UIManager : Singleton<UIManager>
                     num.SetInitialValue();
                 }
 
+                break;
+            case "TV":
+                TVSetting();
+                break;
+            case "DoorLock":
+                DoorLockSetting();
                 break;
         }
     }
@@ -448,11 +525,30 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = false;
 
-        // UI 비활성화
-        foreach (GameObject obj in activeUIChildren)
+        // 초기화
+        switch (name)
         {
-            if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+            case "Direction":
+                DirectionLockSetting();
+                break;
+            case "Button":
+                ButtonLockSetting();
+                break;
+            case "Dial":
+                DialLockSetting();
+                break;
+            case "TV":
+                TVSetting();
+                break;
+            case "DoorLock":
+                DoorLockSetting();
+                break;
+            default:
+                break;
         }
+
+        // UI 비활성화
+        CloseAllUI();
 
         // 성공 결과 (포톤)
         pv.RPC("OpenDoor", RpcTarget.All, name);
@@ -480,6 +576,24 @@ public class UIManager : Singleton<UIManager>
         pv.RPC("ReduceTime", RpcTarget.MasterClient);
     }
 
+    public void BreakLockButton(string name)
+    {
+        StartCoroutine(SuccessLock(name));
+
+        pv.RPC("BreakLock", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void BreakLock()
+    {
+        breakLock = true;
+
+        foreach (GameObject hintButton in hintButtons)
+        {
+            hintButton.SetActive(false);
+        }
+    }
+
     [PunRPC]
     void OpenDoor(string name)
     {
@@ -493,10 +607,17 @@ public class UIManager : Singleton<UIManager>
                 activeObjects[0].GetComponent<Collider>().enabled = false;
                 break;
             case "Button":
+                // USB 금고/TV 키패드 활성화
                 break;
             case "Dial":
                 break;
             case "Key":
+                break;
+            case "TV":
+                // 주방 벽 비활성화
+                break;
+            case "DoorLock":
+                // 현관문 열리기
                 break;
         }
     }
@@ -505,48 +626,6 @@ public class UIManager : Singleton<UIManager>
     void ReduceTime()
     {
         playTime -= 30;
-    }
-
-    IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
-    {
-        Vector3 velocity = Vector3.zero;
-
-        target.anchorMin = currentMin;
-        target.anchorMax = currentMax;
-
-        float offset = 0.01f;
-
-        while (nextMin.x - offset >= target.anchorMin.x && nextMax.x - offset >= target.anchorMax.x)
-        {
-            target.anchorMin
-                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
-
-            target.anchorMax
-                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
-
-            yield return null;
-        }
-
-        target.anchorMin = nextMin;
-        target.anchorMax = nextMax;
-
-        yield return new WaitForSeconds(0.1f);
-
-        while (nextMin.x + offset <= target.anchorMin.x && nextMax.x + offset <= target.anchorMax.x)
-        {
-            target.anchorMin
-                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
-
-            target.anchorMax
-                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
-
-            yield return null;
-        }
-
-        target.anchorMin = currentMin;
-        target.anchorMax = currentMax;
-
-        yield return null;
     }
 
     // 힌트 사용
@@ -563,25 +642,48 @@ public class UIManager : Singleton<UIManager>
             activeUIChildren[0].SetActive(false);
         }
 
-        photonManager.hintCount--;
-
-        Debug.Log("Use Hint");
         // 힌트 사용 로직 필요
+        if(photonManager.hintCount == 2)
+        {
+            hintObjects[0].layer = 6;
+
+            // 파티클 오브젝트 활성화 필요
+        }
+        else if(photonManager.hintCount == 1)
+        {
+            hintObjects[1].layer = 6;
+
+            // 파티클 오브젝트 활성화 필요
+        }
+
+        photonManager.hintCount--;
     }
 
+    [PunRPC]
+    void GetSchoolsupplies()
+    {
+        getSchoolsupplies = true;
+
+        foreach(GameObject hintButton in hintButtons)
+        {
+            hintButton.SetActive(true); ;
+        }
+    }
+
+    
+
+    // 인게임 힌트 버튼
     public void HintButton()
     {
+        interacting = true;
+
         if (photonManager.hintCount > 0)
         {
-            narrationText.text = narration.hint;
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
+            OpenNarration("Hint");
         }
         else
         {
-            narrationText.text = narration.hintZero;
-            narrationBox.SetActive(true);
-            activeUIChildren[0].SetActive(true);
+            OpenNarration("HintZero");
         }
     }
 
@@ -679,6 +781,50 @@ public class UIManager : Singleton<UIManager>
             activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
         }
 
-        interacting = false; ;
+        interacting = false;
+
+        narrationText.text = "";
+    }
+
+    IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
+    {
+        Vector3 velocity = Vector3.zero;
+
+        target.anchorMin = currentMin;
+        target.anchorMax = currentMax;
+
+        float offset = 0.01f;
+
+        while (nextMin.x - offset >= target.anchorMin.x && nextMax.x - offset >= target.anchorMax.x)
+        {
+            target.anchorMin
+                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
+
+            target.anchorMax
+                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
+
+            yield return null;
+        }
+
+        target.anchorMin = nextMin;
+        target.anchorMax = nextMax;
+
+        yield return new WaitForSeconds(0.1f);
+
+        while (nextMin.x + offset <= target.anchorMin.x && nextMax.x + offset <= target.anchorMax.x)
+        {
+            target.anchorMin
+                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
+
+            target.anchorMax
+                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
+
+            yield return null;
+        }
+
+        target.anchorMin = currentMin;
+        target.anchorMax = currentMax;
+
+        yield return null;
     }
 }

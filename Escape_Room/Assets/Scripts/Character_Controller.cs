@@ -31,19 +31,16 @@ public class Character_Controller : MonoBehaviour
 
     [Header("Detect")]
     [SerializeField] private float sphereRadius = 2f;
-    [SerializeField] private float findRange = 130f;
+    [SerializeField] private float findRange = 45f;
 
     [Header("Interact")]
     [SerializeField] private GameObject detectObj;
-
-    [Header("Player Life")]
-    public int playerLife = 3;
 
     // Concealed variable
     // Player Position
     private float pos_X, pos_Z;
     // Camera Rotation
-    private float rot_Y;
+    private float rot_X, rot_Y;
 
     /* -------------------------------------------------- */
 
@@ -64,14 +61,7 @@ public class Character_Controller : MonoBehaviour
         {
             LobbyUIManager.Instance.photonManager.myPlayer = photonView;
 
-            if (uiManager != null) // 상호 작용 중이지 않을 경우에만 움직임 가능
-            {
-                if (!uiManager.interacting) { photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName); }
-            }
-            else
-            {
-                photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
-            }
+            photonView.RPC("SetName", RpcTarget.AllBuffered, LobbyUIManager.Instance.photonManager.masterName);
         }
     }
 
@@ -137,14 +127,28 @@ public class Character_Controller : MonoBehaviour
         if (photonView.IsMine)
         {
             // Player code
-            Player_Move();
+            if (uiManager != null) // 상호 작용 중이지 않을 경우에만 움직임 가능
+            {
+                if(!uiManager.interacting)
+                {
+                    Player_Move();
+
+                    // Camera code
+                    Camera_Change();
+                    Camera_Rotate();
+                }
+            }
+            else
+            {
+                Player_Move();
+
+                // Camera code
+                Camera_Change();
+                Camera_Rotate();
+            }
+
             Player_DetectObject();
             Player_InteractObject();
-            Player_Death();
-
-            // Camera code
-            Camera_Change();
-            Camera_Rotate();
         }
     }
 
@@ -162,7 +166,7 @@ public class Character_Controller : MonoBehaviour
 
             // Player move direction
             Vector3 moveDir = moveDir_Forward + moveDir_Right;
-
+           
             player_Body.transform.localRotation = Quaternion.Slerp(player_Body.transform.rotation, Quaternion.LookRotation(moveDir.normalized), speed_Rotate);
 
             animator.SetBool("Walk", true);
@@ -230,7 +234,7 @@ public class Character_Controller : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            Debug.Log("Hit : " + hit.transform.gameObject.name);
+            //Debug.Log("Hit : " + hit.transform.gameObject.name);
             GameObject hitObj = hit.transform.gameObject;
 
             Vector3 hitDir = (hitObj.transform.position - rayStart).normalized;
@@ -239,9 +243,9 @@ public class Character_Controller : MonoBehaviour
 
             if (hitDeg >= leftDeg && hitDeg <= rightDeg)
             {
-                Debug.Log(hit.transform.gameObject.name);
+                //Debug.Log(hit.transform.gameObject.name);
 
-                if (!specificRangeHit.Contains(hit.transform)) { specificRangeHit.Add(hit.transform); }
+                if(!specificRangeHit.Contains(hit.transform)) { specificRangeHit.Add(hit.transform); }
 
                 if (specificRangeHit.Count > 1 && detectObj != null)
                 {
@@ -266,7 +270,7 @@ public class Character_Controller : MonoBehaviour
             }
             else
             {
-                if (specificRangeHit.Contains(hit.transform))
+                if(specificRangeHit.Contains(hit.transform))
                 {
                     specificRangeHit.Remove(hit.transform);
                 }
@@ -274,13 +278,13 @@ public class Character_Controller : MonoBehaviour
             }
         }
 
-        if (uiManager.gameObject.activeInHierarchy)
+        if(uiManager.gameObject.activeInHierarchy)
         {
             if (detectObj != null)
             {
                 uiManager.activeObjectName.text = detectObj.name;
-
-                if (!uiManager.interacting)
+                
+                if(!uiManager.interacting)
                 {
                     uiManager.activeObjectButton.SetActive(true);
                 }
@@ -298,7 +302,6 @@ public class Character_Controller : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Only Test Code
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(camera_First.transform.position, sphereRadius);
     }
@@ -314,18 +317,6 @@ public class Character_Controller : MonoBehaviour
                     // Continue interact
                 }*/
             }
-        }
-    }
-
-    private void Player_Death()
-    {
-        if (playerLife <= 0)
-        {
-            player_Body.SetActive(false);
-        }
-        else
-        {
-            player_Body.SetActive(true);
         }
     }
 

@@ -75,7 +75,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             if(UIManager.Instance.playTime >= 0)
             {
-                UIManager.Instance.playTime -= Time.deltaTime;
+                pv.RPC("TimeLimit", RpcTarget.All);
             } 
             else
             {
@@ -87,7 +87,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         SetPlayerList();
     }
-
 
     // 포톤 서버에 접속 후 호출되는 콜백 함수
     public override void OnConnectedToMaster()
@@ -516,6 +515,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // 로딩 화면 활성화
         StartCoroutine("Loading", true);
+    }
+
+    // 시간 감소 함수
+    [PunRPC]
+    void TimeLimit()
+    {
+        UIManager.Instance.playTime -= Time.deltaTime;
     }
 
     // 게임 종료 버튼
