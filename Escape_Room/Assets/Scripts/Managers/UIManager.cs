@@ -162,6 +162,11 @@ public class UIManager : Singleton<UIManager>
                     activeUIChildren[16].SetActive(true); // TV/Remote UI 활성화
                     narrationBox.SetActive(false);
                 }
+                else if (narrationText.text == narration.doorLock)
+                {
+                    activeUIChildren[17].SetActive(true); // DoorLock UI 활성화
+                    narrationBox.SetActive(false);
+                }
                 else
                 {
                     interacting = false;
@@ -648,6 +653,9 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "DoorLock":
                 // 현관문 열리기
+                doorAnim = doors[1].GetComponent<Animator>();
+                doorAnim.Play("Opening 1");
+                activeObjects[4].GetComponent<Collider>().enabled = false;
                 break;
         }
     }
