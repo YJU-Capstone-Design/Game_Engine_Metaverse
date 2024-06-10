@@ -15,7 +15,7 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Killer")]
     public GameObject killerPrefab;
-    public int killerSpawnTime = 1200;
+    public int killerSpawnTime = 600; // 10min
     public Transform killerSpawnPoint;
 
     public bool isSpawn = false;

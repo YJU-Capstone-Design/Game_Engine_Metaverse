@@ -188,7 +188,7 @@ public class UIManager : Singleton<UIManager>
 
     public void InGameSetting()
     {
-        playTime = 1800;
+        playTime = 900; // 15min
 
         foreach(GameObject activeObj in activeObjects)
         {
