@@ -16,17 +16,17 @@ public class Killer : MonoBehaviour
     public GameObject weapon;
     [SerializeField] private float attackRange = 5f;
     [SerializeField] private float sphereRadius = 5f;
-    [SerializeField] private float findRange = 45f;
+    [SerializeField] private float findRange = 120f;
 
     [Header("Target")]
     [SerializeField] private GameObject target;
-    public Vector3[] wanderPosition = new Vector3[4] { new Vector3(95f, -0.5f, -18f), new Vector3(92.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 10f) };
+    public Vector3[] wanderPosition = new Vector3[4] { new Vector3(95f, -0.5f, -18f), new Vector3(92.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, -10f) };
 
     [Header("State")]
     // private bool isFind = false;
     // private bool isWalk = false;
     protected bool isAtk = false;
-    private bool isWander = false;
+    [SerializeField] private bool isWander = false;
 
     private void Start()
     {
@@ -44,7 +44,7 @@ public class Killer : MonoBehaviour
         nma.speed = 5f;
         nma.angularSpeed = 120f;
         nma.acceleration = 8f;
-        nma.stoppingDistance = 1f;
+        nma.stoppingDistance = 0f;
 
         weapon = GetComponentInChildren<Weapon>().gameObject;
 
@@ -143,7 +143,6 @@ public class Killer : MonoBehaviour
             {
                 isWander = true;
                 StartCoroutine(wander());
-                animator.SetBool("isWalk", false);
             }
         }
     }
@@ -155,7 +154,17 @@ public class Killer : MonoBehaviour
         {
             Vector3 tfPos = new Vector3(wanderPosition[i].x, transform.position.y, wanderPosition[i].z);
             nma.SetDestination(tfPos);
-            yield return new WaitForSecondsRealtime(5f);
+            animator.SetBool("isWalk", true);
+            while (Vector3.Distance(transform.position, tfPos) > 0.5f)
+            {
+                Debug.Log(Vector3.Distance(transform.position, tfPos));
+                Debug.Log(transform.position);
+                yield return null;
+            }
+            Debug.Log(Vector3.Distance(transform.position, tfPos));
+            nma.SetDestination(transform.position);
+            animator.SetBool("isWalk", false);
+            yield return new WaitForSecondsRealtime(3f);
 
             if (i == wanderPosition.Length - 1)
             {
@@ -186,5 +195,12 @@ public class Killer : MonoBehaviour
     {
         // 살인마가 맵에서 삭제될 시(게임이 끝날 시) 플레이어 갱신 종료
         gameManager.CancelInvoke("Player_Check");
+    }
+
+    private void OnCollisionEnter(Collision obj)
+    {
+        if (obj.gameObject.CompareTag("BlockLine")) {
+            Physics.IgnoreCollision(obj.collider, GetComponent<Collider>());
+        }
     }
 }
