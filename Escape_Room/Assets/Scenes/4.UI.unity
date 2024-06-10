@@ -1333,7 +1333,7 @@ MonoBehaviour:
   - {fileID: 1106221947}
   - {fileID: 243488593}
   timerText: {fileID: 820367218}
-  playTime: 0
+  playTime: 1800
   activeObjectButton: {fileID: 920487791}
   activeObjectName: {fileID: 39617702}
   interacting: 0
