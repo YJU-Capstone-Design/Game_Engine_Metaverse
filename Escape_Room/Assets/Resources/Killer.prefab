@@ -2829,6 +2829,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 754601816834661050}
+    - targetCorrespondingSourceObject: {fileID: 1000012660662770, guid: e35d7c138ad98e44096ba0a9ecd32680,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7936802683979792558}
   m_SourcePrefab: {fileID: 100100000, guid: e35d7c138ad98e44096ba0a9ecd32680, type: 3}
 --- !u!4 &2135926717049891131 stripped
 Transform:
@@ -2864,3 +2868,28 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: 4300000, guid: fdc27d8a5bffd964e86bce10091249ae, type: 3}
+--- !u!114 &7936802683979792558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137501683092432081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a708410be8b1e4a46aa92820a31073a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+  animator: {fileID: 0}
+  nma: {fileID: 0}
+  weapon: {fileID: 0}
+  attackRange: 5
+  sphereRadius: 5
+  findRange: 45
+  target: {fileID: 0}
+  wanderPosition:
+  - {x: 95, y: -0.5, z: -18}
+  - {x: 92.5, y: -0.5, z: 0}
+  - {x: 77.5, y: -0.5, z: 0}
+  - {x: 77.5, y: -0.5, z: 10}
