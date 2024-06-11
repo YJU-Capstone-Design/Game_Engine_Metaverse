@@ -15,7 +15,7 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Killer")]
     public GameObject killerPrefab;
-    public int killerSpawnTime = 600; // 10min
+    public int killerSpawnTime;
     public Transform killerSpawnPoint;
 
     public bool isSpawn = false;
@@ -24,6 +24,8 @@ public class GameManager : Singleton<GameManager>
     {
         photonManager = FindObjectOfType<PhotonManager>();
         //InvokeRepeating("Player_Check", 5, 5);
+
+        killerSpawnTime = 600;
     }
 
     void Update()
