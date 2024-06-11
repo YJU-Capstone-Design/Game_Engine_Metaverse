@@ -4,7 +4,6 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
 
 public class Killer : MonoBehaviour
 {
