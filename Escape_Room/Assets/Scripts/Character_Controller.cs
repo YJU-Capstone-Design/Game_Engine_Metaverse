@@ -152,6 +152,8 @@ public class Character_Controller : MonoBehaviour
 
             Player_DetectObject();
             Player_InteractObject();
+
+            Player_Die();
         }
     }
 
