@@ -69,6 +69,10 @@ public class UIManager : Singleton<UIManager>
     [Header("# Wallet")]
     [SerializeField] GameObject[] walletObjs;
 
+    [Header("# White Board")]
+    [SerializeField] GameObject clueNote;
+    [SerializeField] GameObject[] victimClueNotes;
+
     [Header("# Narration")]
     Narration narration;
     public GameObject narrationBox;
@@ -101,7 +105,19 @@ public class UIManager : Singleton<UIManager>
         {
             narrationText.text = "";
 
-            CloseAllUI();
+            if (clueNote.activeInHierarchy)
+            {
+                clueNote.SetActive(false);
+
+                foreach(GameObject clueNote in victimClueNotes)
+                {
+                    clueNote.SetActive(false);
+                }
+            }
+            else
+            {
+                CloseAllUI();
+            }
         }
 
         // 상호작용 가능한 오브젝트 버튼이 활성화 되었을 때
@@ -669,6 +685,30 @@ public class UIManager : Singleton<UIManager>
     void ReduceTime()
     {
         playTime -= 30;
+    }
+
+    public void CheckClueNote(string name)
+    {
+        clueNote.SetActive(true);
+
+        switch (name)
+        {
+            case "Lee":
+                victimClueNotes[0].SetActive(true);
+                break;
+            case "Armstrong":
+                victimClueNotes[1].SetActive(true);
+                break;
+            case "SamSu":
+                victimClueNotes[2].SetActive(true);
+                break;
+            case "SooYoung":
+                victimClueNotes[3].SetActive(true);
+                break;
+            case "Minji":
+                victimClueNotes[4].SetActive(true);
+                break;
+        }
     }
 
     // 힌트 사용
