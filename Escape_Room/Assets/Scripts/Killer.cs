@@ -26,7 +26,7 @@ public class Killer : MonoBehaviour
     [Header("State")]
     // private bool isFind = false;
     // private bool isWalk = false;
-    // protected bool isAtk = false;
+    protected bool isAtk = false;
     [SerializeField] private bool isWander = false;
 
     private void Start()
@@ -135,21 +135,24 @@ public class Killer : MonoBehaviour
     private void Killer_Move()
     {
         nma.enabled = true;
-        if (target != null)
+        if (!isAtk)
         {
-            StopCoroutine(Wander());
-            isWander = false;
-            nma.speed = 5f;
-            nma.SetDestination(target.transform.position);
-            animator.SetBool("isWalk", true);
-        }
-        else
-        {
-            if (!isWander)
+            if (target != null)
             {
-                isWander = true;
-                nma.speed = 3f;
-                StartCoroutine(Wander());
+                StopCoroutine(Wander());
+                isWander = false;
+                nma.speed = 5f;
+                nma.SetDestination(target.transform.position);
+                animator.SetBool("isWalk", true);
+            }
+            else
+            {
+                if (!isWander)
+                {
+                    isWander = true;
+                    nma.speed = 3f;
+                    StartCoroutine(Wander());
+                }
             }
         }
     }
@@ -188,13 +191,18 @@ public class Killer : MonoBehaviour
         {
             if (hit.transform.gameObject == target)
             {
-                if (Vector3.Distance(transform.position, target.transform.position) < 1f)
+                if (Vector3.Distance(transform.position, target.transform.position) < 1f && !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                 {
+                    isAtk = true;
                     nma.SetDestination(transform.position);
                     animator.SetTrigger("isAtk");
                     animator.SetBool("isWalk", false);
                 }
             }
+        }
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
+        {
+            isAtk = false;
         }
     }
 
