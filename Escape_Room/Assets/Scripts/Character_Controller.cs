@@ -323,6 +323,14 @@ public class Character_Controller : MonoBehaviour
         }
     }
 
+    private void Player_Die()
+    {
+        if (playerLife <= 0)
+        {
+            player_Body.SetActive(false);
+        }
+    }
+
     private void Camera_Change()
     {
         if (Input.GetKeyDown(KeyCode.F5))

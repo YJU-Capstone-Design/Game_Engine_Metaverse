@@ -179,7 +179,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.65
   m_Height: 2.25
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
@@ -1016,6 +1016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
+  killer: {fileID: 0}
   weapon: {fileID: 0}
 --- !u!1 &2393244445261020883
 GameObject:

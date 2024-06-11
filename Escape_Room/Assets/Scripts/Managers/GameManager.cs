@@ -25,16 +25,19 @@ public class GameManager : Singleton<GameManager>
         photonManager = FindObjectOfType<PhotonManager>();
         //InvokeRepeating("Player_Check", 5, 5);
 
-        killerSpawnTime = 600;
+        killerSpawnTime = 899;
     }
 
     void Update()
     {
-        if (!isSpawn)
+        if (uiManager.gameObject.activeSelf == true)
         {
-            if (uiManager.playTime <= killerSpawnTime)
+            if (!isSpawn)
             {
-                Killer_Spawn();
+                if (uiManager.playTime <= killerSpawnTime)
+                {
+                    Killer_Spawn();
+                }
             }
         }
     }

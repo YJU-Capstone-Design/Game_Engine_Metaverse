@@ -4,6 +4,7 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 
 public class Killer : MonoBehaviour
 {
@@ -14,18 +15,18 @@ public class Killer : MonoBehaviour
 
     [Header("Setting")]
     public GameObject weapon;
-    [SerializeField] private float attackRange = 5f;
+    // [SerializeField] private float attackRange = 5f;
     [SerializeField] private float sphereRadius = 5f;
     [SerializeField] private float findRange = 120f;
 
     [Header("Target")]
     [SerializeField] private GameObject target;
-    public Vector3[] wanderPosition = new Vector3[4] { new Vector3(95f, -0.5f, -18f), new Vector3(92.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, -10f) };
+    public Vector3[] wanderPosition = new Vector3[5] { new Vector3(95f, -0.5f, -18f), new Vector3(92.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, -10f), new Vector3(87.5f, -0.5f, -8f) };
 
     [Header("State")]
     // private bool isFind = false;
     // private bool isWalk = false;
-    protected bool isAtk = false;
+    // protected bool isAtk = false;
     [SerializeField] private bool isWander = false;
 
     private void Start()
@@ -41,10 +42,10 @@ public class Killer : MonoBehaviour
         animator.SetBool("isWalk", false);
 
         nma = GetComponent<NavMeshAgent>();
-        nma.speed = 5f;
+        nma.speed = 3f;
         nma.angularSpeed = 120f;
         nma.acceleration = 8f;
-        nma.stoppingDistance = 0f;
+        nma.stoppingDistance = 1f;
 
         weapon = GetComponentInChildren<Weapon>().gameObject;
 
@@ -64,7 +65,7 @@ public class Killer : MonoBehaviour
     private void Killer_Find()
     {
         // Raycast 사용을 위한 시작점 및 방향 설정
-        Vector3 rayStart = transform.position;
+        Vector3 rayStart = transform.position + new Vector3(0, 1.5f, 0);
         Vector3 rayDir = transform.forward;
 
         Quaternion leftRot = Quaternion.Euler(0, -findRange * 0.5f, 0); // 왼쪽 각도 최댓값
@@ -117,13 +118,17 @@ public class Killer : MonoBehaviour
             }
             else
             {
-                // 범위 내에 Player가 존재하나 설정된 Target이 없을 경우 해당 Player를 바라보도록 설정
-                // if (target == null)
-                // {
-                // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(hitDir), Time.deltaTime * 2.5f);
-                // }
-                target = null;
+                if (target != null)
+                {
+                    Vector3 targetDir = (target.transform.position - rayStart).normalized;
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetDir), Time.deltaTime * 2.5f);
+                }
             }
+        }
+
+        if (hits == null)
+        {
+            target = null;
         }
     }
 
@@ -132,8 +137,9 @@ public class Killer : MonoBehaviour
         nma.enabled = true;
         if (target != null)
         {
-            StopCoroutine(wander());
+            StopCoroutine(Wander());
             isWander = false;
+            nma.speed = 5f;
             nma.SetDestination(target.transform.position);
             animator.SetBool("isWalk", true);
         }
@@ -142,12 +148,13 @@ public class Killer : MonoBehaviour
             if (!isWander)
             {
                 isWander = true;
-                StartCoroutine(wander());
+                nma.speed = 3f;
+                StartCoroutine(Wander());
             }
         }
     }
 
-    private IEnumerator wander()
+    private IEnumerator Wander()
     {
 
         for (int i = 0; i < wanderPosition.Length;)
@@ -155,13 +162,10 @@ public class Killer : MonoBehaviour
             Vector3 tfPos = new Vector3(wanderPosition[i].x, transform.position.y, wanderPosition[i].z);
             nma.SetDestination(tfPos);
             animator.SetBool("isWalk", true);
-            while (Vector3.Distance(transform.position, tfPos) > 0.5f)
+            while (Vector3.Distance(transform.position, tfPos) > 1.5f)
             {
-                Debug.Log(Vector3.Distance(transform.position, tfPos));
-                Debug.Log(transform.position);
                 yield return null;
             }
-            Debug.Log(Vector3.Distance(transform.position, tfPos));
             nma.SetDestination(transform.position);
             animator.SetBool("isWalk", false);
             yield return new WaitForSecondsRealtime(3f);
@@ -180,13 +184,15 @@ public class Killer : MonoBehaviour
     private void Killer_Attack()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange))
+        if (Physics.Raycast(transform.position + new Vector3(0, 1.5f, 0), transform.forward, out hit, 5f, LayerMask.GetMask("Player")))
         {
             if (hit.transform.gameObject == target)
             {
-                isAtk = true;
-                animator.SetTrigger("isATK");
-                animator.SetBool("isWalk", false);
+                if (Vector3.Distance(transform.position, target.transform.position) < 2.5f)
+                {
+                    animator.SetTrigger("isAtk");
+                    animator.SetBool("isWalk", false);
+                }
             }
         }
     }
