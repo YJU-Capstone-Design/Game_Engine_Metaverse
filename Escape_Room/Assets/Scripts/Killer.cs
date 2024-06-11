@@ -26,7 +26,7 @@ public class Killer : MonoBehaviour
     [Header("State")]
     // private bool isFind = false;
     // private bool isWalk = false;
-    protected bool isAtk = false;
+    [SerializeField] protected bool isAtk = false;
     [SerializeField] private bool isWander = false;
 
     private void Start()
@@ -200,7 +200,7 @@ public class Killer : MonoBehaviour
                 }
             }
         }
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
         {
             isAtk = false;
         }
