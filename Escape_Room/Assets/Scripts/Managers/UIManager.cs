@@ -167,6 +167,11 @@ public class UIManager : Singleton<UIManager>
                     activeUIChildren[17].SetActive(true); // DoorLock UI 활성화
                     narrationBox.SetActive(false);
                 }
+                else if(narrationText.text == narration.whiteBoard)
+                {
+                    activeUIChildren[18].SetActive(true); // WhiteBoard UI 활성화
+                    narrationBox.SetActive(false);
+                }
                 else
                 {
                     interacting = false;
