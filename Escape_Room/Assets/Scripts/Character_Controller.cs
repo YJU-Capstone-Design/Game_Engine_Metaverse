@@ -132,13 +132,24 @@ public class Character_Controller : MonoBehaviour
             // Player code
             if (uiManager != null) // 상호 작용 중이지 않을 경우에만 움직임 가능
             {
-                if(!uiManager.interacting)
+                if (!uiManager.interacting)
                 {
+                    speed_Walk = 3f;
+                    speed_Run = 6f;
+
                     Player_Move();
 
                     // Camera code
                     Camera_Change();
                     Camera_Rotate();
+                }
+                else
+                {
+                    speed_Walk = 0;
+                    speed_Run = 0;
+                    rb.velocity = Vector3.zero;
+                    animator.SetBool("Walk", false);
+                    animator.SetBool("Run", false);
                 }
             }
             else
@@ -152,6 +163,8 @@ public class Character_Controller : MonoBehaviour
 
             Player_DetectObject();
             Player_InteractObject();
+
+            Player_Die();
         }
     }
 
@@ -208,6 +221,7 @@ public class Character_Controller : MonoBehaviour
             // Idle State
             animator.SetBool("Walk", false);
             rb.velocity = Vector3.zero;
+            player_Body.transform.localRotation = Quaternion.Euler(new Vector3(0, camera_Rotation.localEulerAngles.y, 0));
         }
     }
 
@@ -323,6 +337,15 @@ public class Character_Controller : MonoBehaviour
         }
     }
 
+    private void Player_Die()
+    {
+        if (playerLife <= 0)
+        {
+            player_Body.SetActive(false);
+            this.GetComponent<Collider>().enabled = false;
+        }
+    }
+
     private void Camera_Change()
     {
         if (Input.GetKeyDown(KeyCode.F5))
@@ -342,12 +365,19 @@ public class Character_Controller : MonoBehaviour
 
     private void Camera_Rotate()
     {
+        //rot_X = Mathf.Clamp(-Input.GetAxis("Mouse Y"), -5f, 5f); // Up and down
         rot_Y = Input.GetAxis("Mouse X"); // Left and right
+
+        Debug.Log(rot_X);
 
         if (rot_Y != 0)
         {
             camera_Rotation.localEulerAngles += new Vector3(0, rot_Y, 0) * speed_Rotate;
         }
+        //if (rot_X != 0)
+        //{
+        //    camera_Rotation.localEulerAngles = new Vector3(rot_X, 0, 0) * speed_Rotate;
+        //}
     }
 
     /* -------------------------------------------------- */
