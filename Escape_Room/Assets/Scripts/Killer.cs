@@ -157,11 +157,11 @@ public class Killer : MonoBehaviour
             animator.SetBool("isWalk", true);
             while (Vector3.Distance(transform.position, tfPos) > 0.5f)
             {
-                //Debug.Log(Vector3.Distance(transform.position, tfPos));
-                //Debug.Log(transform.position);
+                Debug.Log(Vector3.Distance(transform.position, tfPos));
+                Debug.Log(transform.position);
                 yield return null;
             }
-            //Debug.Log(Vector3.Distance(transform.position, tfPos));
+            Debug.Log(Vector3.Distance(transform.position, tfPos));
             nma.SetDestination(transform.position);
             animator.SetBool("isWalk", false);
             yield return new WaitForSecondsRealtime(3f);
