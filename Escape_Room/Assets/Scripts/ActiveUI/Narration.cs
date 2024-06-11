@@ -33,6 +33,8 @@ public class Narration : MonoBehaviour
     public string whiteBoard; // 화이트보드
     public string doorLock; // 탈출문 도어락
     public string refrigerator; // 냉장고
+    public string refrigerator_1; // 손목이 들어있는 냉장고 서랍
+    public string refrigerator_2; // 비어있는 냉장고 서랍
 
 
     private void Awake()
@@ -61,6 +63,11 @@ public class Narration : MonoBehaviour
         livingroomTV_2 = "USB를 연결할 수 있을 것 같다.\n연결을 원하시면 Enter를 눌러주십시오...";
         whiteBoard = "피해자들의 사진인 것 같다. 모든 사진에는 X 표시가 되어있다. \n자세히 확인하고 싶으시면 Enter를 눌러주십시오...";
         doorLock= "비밀번호를 입력하면 탈출할 수 있을 거 같다.\n입력을 원하시면 Enter를 눌러주십시오...";
+        refrigerator = "냉장고의 위 칸은 번호 자물쇠로 잠겨있다.\n자물쇠 해제를 원하시면 숫자 1번을,\n아래 칸을 살펴보길 원하시면 숫자 2번을 눌러주십시오...";
+        refrigerator_1 = "누군가의 잘린 손목이 들어있다.";
+        refrigerator_2 = "이 칸은 비어있다.";
+
+
     }
 
     private void Update()

@@ -73,6 +73,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] GameObject clueNote;
     [SerializeField] GameObject[] victimClueNotes;
 
+    [Header("# Refrigerator")]
+    [SerializeField] GameObject backGroundImg;
+
     [Header("# Narration")]
     Narration narration;
     public GameObject narrationBox;
@@ -105,6 +108,7 @@ public class UIManager : Singleton<UIManager>
         {
             narrationText.text = "";
 
+            // 화이트보드
             if (clueNote.activeInHierarchy)
             {
                 clueNote.SetActive(false);
@@ -113,10 +117,18 @@ public class UIManager : Singleton<UIManager>
                 {
                     clueNote.SetActive(false);
                 }
+                Debug.Log("1");
+            }
+            else if(narrationBox.activeInHierarchy && activeUIChildren[19].activeInHierarchy) // 냉장고 서랍칸
+            {
+                narrationBox.SetActive(false);
+                backGroundImg.SetActive(false);
+                Debug.Log("2");
             }
             else
             {
                 CloseAllUI();
+                Debug.Log("3");
             }
         }
 
@@ -142,11 +154,6 @@ public class UIManager : Singleton<UIManager>
                 else if (narrationText.text == narration.buttonLock)
                 {
                     activeUIChildren[10].SetActive(true); // 버튼 자물쇠 UI 활성화
-                    narrationBox.SetActive(false);
-                }
-                else if (narrationText.text == narration.dialLock)
-                {
-                    activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
                 }
                 else if (narrationText.text == narration.keyLock)
@@ -188,11 +195,29 @@ public class UIManager : Singleton<UIManager>
                     activeUIChildren[18].SetActive(true); // WhiteBoard UI 활성화
                     narrationBox.SetActive(false);
                 }
+                else if(narrationText.text == narration.refrigerator && !activeObjects[3].activeInHierarchy)
+                {
+                    activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
+                    narrationBox.SetActive(false);
+                }
                 else
                 {
                     interacting = false;
 
                     CloseAllUI();
+                }
+            }
+            else if(narrationText.text == narration.refrigerator)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+                {
+                    activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
+                    narrationBox.SetActive(false);
+                }
+                else if(Input.GetKeyDown(KeyCode.Alpha2) ||  Input.GetKeyDown(KeyCode.Keypad2))
+                {
+                    activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
+                    narrationBox.SetActive(false);
                 }
             }
         }
@@ -291,7 +316,7 @@ public class UIManager : Singleton<UIManager>
             case "ButtonLock":
                 narrationText.text = narration.buttonLock;
                 break;
-            case "Refrigerator":
+            case "DialLock":
                 narrationText.text = narration.dialLock;
                 break;
             case "KeyLock":
@@ -324,6 +349,15 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "ExitDoor":
                 narrationText.text = narration.doorLock;
+                break;
+            case "Refrigerator":
+                narrationText.text = narration.refrigerator;
+                break;
+            case "Refrigerator_1":
+                narrationText.text = narration.refrigerator_1;
+                break;
+            case "Refrigerator_2":
+                narrationText.text = narration.refrigerator_2;
                 break;
         }
     }
@@ -661,15 +695,17 @@ public class UIManager : Singleton<UIManager>
                 activeObjects[0].GetComponent<Collider>().enabled = false;
                 break;
             case "Button":
+                activeObjects[1].GetComponent<Collider>().enabled = false;
                 // TV 키패드 활성화
                 getUSB = true;
                 break;
             case "Dial":
+                activeObjects[3].SetActive(false); // 현관 가벽 비활성화
+                narration.refrigerator = "냉장고 아래 칸에 무언가 들어있는 거 같다.\n아래 칸을 살펴보길 원하시면 Enter를 눌러주십시오...";
                 break;
             case "Key":
                 break;
             case "TV":
-                activeObjects[1].GetComponent<Collider>().enabled = false;
                 activeObjects[2].SetActive(false); // 주방 가벽 비활성화
                 break;
             case "DoorLock":
@@ -687,6 +723,7 @@ public class UIManager : Singleton<UIManager>
         playTime -= 30;
     }
 
+    // 화이트보드 ClueNote 버튼
     public void CheckClueNote(string name)
     {
         clueNote.SetActive(true);
@@ -708,6 +745,33 @@ public class UIManager : Singleton<UIManager>
             case "Minji":
                 victimClueNotes[4].SetActive(true);
                 break;
+        }
+    }
+
+    // 냉장고 서랍 칸 버튼
+    public void CheckRefrigerator(int num)
+    {
+        backGroundImg.SetActive(true);
+
+        switch (num)
+        {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+                OpenNarration("Refrigerator_1");
+                break;
+            case 7:
+                OpenNarration("Refrigerator_2");
+                break;
+
         }
     }
 
