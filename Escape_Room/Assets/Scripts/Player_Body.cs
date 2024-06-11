@@ -28,7 +28,6 @@ public class Player_Body : MonoBehaviour
                 weapon = FindObjectOfType<Weapon>().gameObject;
             }
         }
-
     }
 
     private void OnTriggerEnter(Collider obj)
