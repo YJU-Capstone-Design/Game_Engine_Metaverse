@@ -45,7 +45,7 @@ public class Killer : MonoBehaviour
         nma.speed = 3f;
         nma.angularSpeed = 120f;
         nma.acceleration = 8f;
-        nma.stoppingDistance = 1f;
+        nma.stoppingDistance = 0.5f;
 
         weapon = GetComponentInChildren<Weapon>().gameObject;
 
@@ -188,8 +188,9 @@ public class Killer : MonoBehaviour
         {
             if (hit.transform.gameObject == target)
             {
-                if (Vector3.Distance(transform.position, target.transform.position) < 2.5f)
+                if (Vector3.Distance(transform.position, target.transform.position) < 1f)
                 {
+                    nma.SetDestination(transform.position);
                     animator.SetTrigger("isAtk");
                     animator.SetBool("isWalk", false);
                 }
