@@ -92,8 +92,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         SetPlayerList();
 
-        // 게임 시작화면 게임설명 버튼 종료
-        if (startCanvas.activeInHierarchy)
+        // 게임 설명 UI ESC 종료
+        if (descriptionUI.activeInHierarchy)
         {
             if(Input.GetKeyDown(KeyCode.Escape))
             {
