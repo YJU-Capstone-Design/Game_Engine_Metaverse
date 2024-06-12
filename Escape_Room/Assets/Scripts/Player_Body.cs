@@ -17,11 +17,12 @@ public class Player_Body : MonoBehaviour
 
     private void Update()
     {
-        if (killer == null)
+        if (FindObjectOfType<Killer>().gameObject == null && killer == null)
         {
             killer = FindObjectOfType<Killer>().gameObject;
 
-        } else
+        }
+        else
         {
             if (weapon == null)
             {
@@ -41,4 +42,6 @@ public class Player_Body : MonoBehaviour
             }
         }
     }
+
+
 }

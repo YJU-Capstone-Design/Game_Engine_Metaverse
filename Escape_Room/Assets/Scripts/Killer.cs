@@ -20,7 +20,8 @@ public class Killer : MonoBehaviour
 
     [Header("Target")]
     [SerializeField] private GameObject target;
-    public Vector3[] wanderPosition = new Vector3[5] { new Vector3(95f, -0.5f, -18f), new Vector3(92.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, -10f), new Vector3(87.5f, -0.5f, -8f) };
+    [SerializeField] GameObject targetBody;
+    public Vector3[] wanderPosition = new Vector3[5] { new Vector3(95f, -0.5f, -18f), new Vector3(92.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, 0f), new Vector3(77.5f, -0.5f, -10.5f), new Vector3(87.5f, -0.5f, -8f) };
 
     [Header("State")]
     // private bool isFind = false;
@@ -85,9 +86,9 @@ public class Killer : MonoBehaviour
         // 거리는 0이고 구의 크기가 30f인 범위 생성
         RaycastHit[] hits = Physics.SphereCastAll(rayStart, sphereRadius, rayDir, 0f, LayerMask.GetMask("Player"));
 
-        foreach (RaycastHit hit in hits)
+        if (hits != null)
         {
-            if (!hit.transform.gameObject.activeSelf)
+            foreach (RaycastHit hit in hits)
             {
                 GameObject hitPlayer = hit.transform.gameObject;
                 // 해당 Player의 방향벡터값 계산
@@ -126,11 +127,17 @@ public class Killer : MonoBehaviour
                     }
                 }
             }
-        }
-
-        if (hits == null)
+        } else
         {
             target = null;
+        }
+
+        if (target != null)
+        {
+            if (target.GetComponentInChildren<Player_Body>() == null)
+            {
+                target = null;
+            }
         }
     }
 
@@ -188,23 +195,26 @@ public class Killer : MonoBehaviour
 
     private void Killer_Attack()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + new Vector3(0, 1.5f, 0), transform.forward, out hit, 5f, LayerMask.GetMask("Player")))
+        if (target != null)
         {
-            if (hit.transform.gameObject == target)
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + new Vector3(0, 1.5f, 0), transform.forward, out hit, 5f, LayerMask.GetMask("Player")))
             {
-                if (Vector3.Distance(transform.position, target.transform.position) < 1f && !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                if (hit.transform.gameObject == target)
                 {
-                    isAtk = true;
-                    nma.SetDestination(transform.position);
-                    animator.SetTrigger("isAtk");
-                    animator.SetBool("isWalk", false);
+                    if (Vector3.Distance(transform.position, target.transform.position) < 1f && !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                    {
+                        isAtk = true;
+                        nma.SetDestination(transform.position);
+                        animator.SetTrigger("isAtk");
+                        animator.SetBool("isWalk", false);
+                    }
                 }
             }
-        }
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
-        {
-            isAtk = false;
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
+            {
+                isAtk = false;
+            }
         }
     }
 
