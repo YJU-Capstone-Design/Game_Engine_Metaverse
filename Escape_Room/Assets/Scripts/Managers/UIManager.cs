@@ -117,18 +117,15 @@ public class UIManager : Singleton<UIManager>
                 {
                     clueNote.SetActive(false);
                 }
-                Debug.Log("1");
             }
             else if(narrationBox.activeInHierarchy && activeUIChildren[19].activeInHierarchy) // 냉장고 서랍칸
             {
                 narrationBox.SetActive(false);
                 backGroundImg.SetActive(false);
-                Debug.Log("2");
             }
             else
             {
                 CloseAllUI();
-                Debug.Log("3");
             }
         }
 
@@ -150,11 +147,13 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[7].SetActive(true); // 방향 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
+                    pv.RPC("UsingLock", RpcTarget.All, "Direction");
                 }
                 else if (narrationText.text == narration.buttonLock)
                 {
                     activeUIChildren[10].SetActive(true); // 버튼 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
+                    pv.RPC("UsingLock", RpcTarget.All, "Button");
                 }
                 else if (narrationText.text == narration.keyLock)
                 {
@@ -184,18 +183,20 @@ public class UIManager : Singleton<UIManager>
                     connetUSB = true;
                     activeUIChildren[16].SetActive(true); // TV/Remote UI 활성화
                     narrationBox.SetActive(false);
+                    pv.RPC("UsingLock", RpcTarget.All, "TV");
                 }
                 else if (narrationText.text == narration.doorLock)
                 {
                     activeUIChildren[17].SetActive(true); // DoorLock UI 활성화
                     narrationBox.SetActive(false);
+                    pv.RPC("UsingLock", RpcTarget.All, "DoorLock");
                 }
                 else if(narrationText.text == narration.whiteBoard)
                 {
                     activeUIChildren[18].SetActive(true); // WhiteBoard UI 활성화
                     narrationBox.SetActive(false);
                 }
-                else if(narrationText.text == narration.refrigerator && !activeObjects[3].activeInHierarchy)
+                else if(narrationText.text == narration.refrigerator && !activeObjects[5].activeInHierarchy)
                 {
                     activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
                     narrationBox.SetActive(false);
@@ -213,6 +214,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
+                    pv.RPC("UsingLock", RpcTarget.All, "Dial");
                 }
                 else if(Input.GetKeyDown(KeyCode.Alpha2) ||  Input.GetKeyDown(KeyCode.Keypad2))
                 {
@@ -700,13 +702,13 @@ public class UIManager : Singleton<UIManager>
                 getUSB = true;
                 break;
             case "Dial":
-                activeObjects[3].SetActive(false); // 현관 가벽 비활성화
+                activeObjects[5].SetActive(false); // 현관 가벽 비활성화
                 narration.refrigerator = "냉장고 아래 칸에 무언가 들어있는 거 같다.\n아래 칸을 살펴보길 원하시면 Enter를 눌러주십시오...";
                 break;
             case "Key":
                 break;
             case "TV":
-                activeObjects[2].SetActive(false); // 주방 가벽 비활성화
+                activeObjects[6].SetActive(false); // 주방 가벽 비활성화
                 break;
             case "DoorLock":
                 // 현관문 열리기
@@ -721,6 +723,29 @@ public class UIManager : Singleton<UIManager>
     void ReduceTime()
     {
         playTime -= 30;
+    }
+
+    [PunRPC]
+    void UsingLock(string name)
+    {
+        switch (name)
+        {
+            case "Direction":
+                activeObjects[0].layer = 0;
+                break;
+            case "Button":
+                activeObjects[1].layer = 0;
+                break;
+            case "Dial":
+                activeObjects[3].layer = 0;
+                break;
+            case "TV":
+                activeObjects[2].layer = 0;
+                break;
+            case "DoorLock":
+                activeObjects[4].layer = 0;
+                break;
+        }
     }
 
     // 화이트보드 ClueNote 버튼
@@ -931,6 +956,11 @@ public class UIManager : Singleton<UIManager>
         interacting = false;
 
         narrationText.text = "";
+
+        for(int i = 0; i < 5; i++)
+        {
+            activeObjects[i].layer = 6;
+        }
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
