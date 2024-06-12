@@ -10,22 +10,25 @@ public class Player_Body : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(this.transform.parent.name);
         parent = this.transform.parent.gameObject.GetComponent<Character_Controller>();
         
     }
 
     private void Update()
-    {
-        if (killer == null)
+    {   
+        if (FindObjectOfType<Killer>() != null)
         {
-            killer = FindObjectOfType<Killer>().gameObject;
-
-        } else
+            if (killer == null)
+            {
+                killer = FindObjectOfType<Killer>().gameObject;
+            }
+        }
+        
+        if (killer != null)
         {
             if (weapon == null)
             {
-                weapon = FindObjectOfType<Weapon>().gameObject;
+                weapon = killer.GetComponentInChildren<Weapon>().gameObject;
             }
         }
     }
@@ -37,8 +40,10 @@ public class Player_Body : MonoBehaviour
             if (obj.gameObject == weapon)
             {
                 parent.playerLife -= 1;
-                Debug.Log(parent.playerLife);
+                Debug.Log("Player Life = " + parent.playerLife);
             }
         }
     }
+
+
 }

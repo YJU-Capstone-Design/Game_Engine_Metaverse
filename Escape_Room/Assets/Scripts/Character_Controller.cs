@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Character_Controller : MonoBehaviour
+public class Character_Controller : MonoBehaviourPunCallbacks
 {
     /* -------------------------------------------------- */
 
@@ -12,7 +12,7 @@ public class Character_Controller : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private PhotonManager photonManager;
-    [SerializeField] private PhotonView photonView;
+    [SerializeField] private PhotonView pv;
     [SerializeField] private PhotonTransformView photonTransformView;
     [SerializeField] private UIManager uiManager;
 
@@ -57,7 +57,7 @@ public class Character_Controller : MonoBehaviour
     private void Player_Init()
     {
         photonManager = LobbyUIManager.Instance.photonManager;
-        photonView = GetComponent<PhotonView>();
+        pv = GetComponent<PhotonView>();
         photonTransformView = GetComponent<PhotonTransformView>();
 
         if (photonView.IsMine)
@@ -76,7 +76,7 @@ public class Character_Controller : MonoBehaviour
 
     /* -------------------------------------------------- */
 
-    private void OnEnable()
+    public override void OnEnable()
     {
         if (!LobbyUIManager.Instance.photonManager.playerList.Contains(this.gameObject))
         {
@@ -105,6 +105,8 @@ public class Character_Controller : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+
+        player_Body.layer = 7; // Player Layer
     }
 
     private void Camera_Setting()
@@ -341,9 +343,19 @@ public class Character_Controller : MonoBehaviour
     {
         if (playerLife <= 0)
         {
-            player_Body.SetActive(false);
+            this.player_Body.SetActive(false);
+            this.player_Body.layer = LayerMask.NameToLayer("Default"); // Default Layer
             this.GetComponent<Collider>().enabled = false;
+            pv.RPC("RPC_PlayerDie", RpcTarget.Others);
         }
+    }
+
+    [PunRPC]
+    void RPC_PlayerDie()
+    {
+        this.player_Body.SetActive(false);
+        this.player_Body.layer = LayerMask.NameToLayer("Default"); // Default Layer
+        this.GetComponent<Collider>().enabled = false;
     }
 
     private void Camera_Change()

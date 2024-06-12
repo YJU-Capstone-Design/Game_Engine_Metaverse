@@ -198,7 +198,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   rb: {fileID: 0}
   photonManager: {fileID: 0}
-  photonView: {fileID: 0}
+  pv: {fileID: 0}
   photonTransformView: {fileID: 0}
   uiManager: {fileID: 0}
   player_Body: {fileID: 2374430763718696840}
