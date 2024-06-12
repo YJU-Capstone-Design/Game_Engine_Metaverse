@@ -200,7 +200,7 @@ public class Killer : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position + new Vector3(0, 1.5f, 0), transform.forward, out hit, 5f, LayerMask.GetMask("Player")))
             {
-                if (hit.transform.gameObject == target)
+                if (hit.transform.gameObject == target && !isAtk)
                 {
                     if (Vector3.Distance(transform.position, target.transform.position) < 1f && !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                     {
@@ -211,7 +211,7 @@ public class Killer : MonoBehaviour
                     }
                 }
             }
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
             {
                 isAtk = false;
             }
