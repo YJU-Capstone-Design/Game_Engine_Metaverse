@@ -5983,8 +5983,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 822707885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.51, y: 0.2}
-  m_AnchorMax: {x: 0.53, y: 0.25}
+  m_AnchorMin: {x: 0.51, y: 0.17}
+  m_AnchorMax: {x: 0.53, y: 0.22}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -31387,7 +31387,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2059845988}
         m_TargetAssemblyTypeName: PhotonManager, Assembly-CSharp
-        m_MethodName: ExitGameButton
+        m_MethodName: DescriptionBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -47205,7 +47205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1226716822
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55128,13 +55128,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448177479}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -55192,8 +55192,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 822707885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
-  m_AnchorMin: {x: 0.47, y: 0.2}
-  m_AnchorMax: {x: 0.49, y: 0.25}
+  m_AnchorMin: {x: 0.47, y: 0.17}
+  m_AnchorMax: {x: 0.49, y: 0.22}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -0.0000019073486, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -55719,7 +55719,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.26, y: 0.87}
   m_AnchorMax: {x: 0.48, y: 0.95}
-  m_AnchoredPosition: {x: 0.0000019073486, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1459925111
@@ -55785,13 +55785,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459925109}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -76312,7 +76312,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a97afcabb87374d4599f5b243a954cb1, type: 3}
   - {fileID: 21300000, guid: 5870831633c168341ba96d805848c933, type: 3}
   - {fileID: 21300000, guid: 8b0cebb9d1a4d3d47852ce271e165b2b, type: 3}
-  desPageBtn: {fileID: 0}
+  desPageBtn: {fileID: 822707884}
   lobbyCanvas: {fileID: 1628897428}
   lobbyUIManager: {fileID: 1667391957}
   inGameCanvas: {fileID: 691149442}

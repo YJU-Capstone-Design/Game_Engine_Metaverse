@@ -91,6 +91,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         }
 
         SetPlayerList();
+
+        // 게임 시작화면 게임설명 버튼 종료
+        if (startCanvas.activeInHierarchy)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                descriptionUI.SetActive(false);
+                descriptionMainImg.sprite = descriptionImg[0];
+                desPageBtn.SetActive(false);
+            }
+        }
     }
 
     // 포톤 서버에 접속 후 호출되는 콜백 함수
