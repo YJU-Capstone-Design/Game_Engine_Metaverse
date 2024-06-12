@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
@@ -48,6 +49,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     [Header("# Start UI")]
     public GameObject startCanvas;
     public TMP_InputField userIDInput;
+    [SerializeField] GameObject descriptionUI;
+    [SerializeField] Image descriptionMainImg;
+    [SerializeField] Sprite[] descriptionImg;
+    [SerializeField] GameObject desPageBtn;
 
     [Header("# Common UI")]
     public GameObject lobbyCanvas;
@@ -285,6 +290,34 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         partyList = new List<GameObject>();
         partyPeopleNum = "1 / 1";
         maxPeopleNumText.text = "1";
+    }
+
+    // 시작화면 게임 설명 버튼
+    public void DescriptionBtn()
+    {
+        descriptionUI.SetActive(true);
+        OperOperatingBtn();
+    }
+
+    // 게임 조작법 버튼
+    public void OperOperatingBtn()
+    {
+        descriptionMainImg.sprite = descriptionImg[0];
+        desPageBtn.SetActive(false);
+    }
+
+    // 게임 설명 버튼
+    public void GameDesBtn()
+    {
+        descriptionMainImg.sprite = descriptionImg[1];
+        desPageBtn.SetActive(true);
+    }
+
+    // 게임 설명 페이지 버튼
+    public void GameDesPageBtn(int num)
+    {
+        if(num == 1) { descriptionMainImg.sprite = descriptionImg[1]; }
+        else if(num == 2) { descriptionMainImg.sprite = descriptionImg[2]; }
     }
 
     // 파티 매칭 시스템으로 방(파티) 만들기
