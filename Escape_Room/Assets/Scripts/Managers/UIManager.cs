@@ -22,6 +22,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] List<GameObject> hintButtons; // 힌트 버튼들
     bool getSchoolsupplies = false;
     bool breakLock = false;
+    [SerializeField] GameObject[] particles; // 힌트 사용 후 활성화 될 파티클
 
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
@@ -817,15 +818,20 @@ public class UIManager : Singleton<UIManager>
         // 힌트 사용 로직 필요
         if(photonManager.hintCount == 2)
         {
+            // 옷장
             hintObjects[0].layer = 6;
 
             // 파티클 오브젝트 활성화 필요
+            particles[0].SetActive(true);
+            particles[1].SetActive(true);
         }
         else if(photonManager.hintCount == 1)
         {
+            // 플레이어 가방
             hintObjects[1].layer = 6;
 
             // 파티클 오브젝트 활성화 필요
+            particles[2].SetActive(true);
         }
 
         photonManager.hintCount--;
@@ -840,6 +846,8 @@ public class UIManager : Singleton<UIManager>
         {
             hintButton.SetActive(true); ;
         }
+
+        particles[2].SetActive(false); // 파티클 비활성화
     }
 
     
