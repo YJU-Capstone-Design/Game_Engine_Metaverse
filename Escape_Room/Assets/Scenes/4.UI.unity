@@ -51964,8 +51964,7 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7a2c0b18d3d81384a9318118e5c1c9ae, type: 2}
-    m_RemovedComponents:
-    - {fileID: 81782550688079304, guid: 42ded4a9b41e76d46bb90a3e35072cf7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4544684978024906, guid: 42ded4a9b41e76d46bb90a3e35072cf7,
@@ -73907,7 +73906,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955297622}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &1955297624
 Camera:
   m_ObjectHideFlags: 0

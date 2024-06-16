@@ -1,0 +1,23 @@
+메타버스 사운드
+
+배경음 
+메인 씬 
+BgSound1
+->Silent Hill 2 OST - True
+BgSound2
+->착신아리 오르골 커버 One Missed call Music Box
+대기방 
+->Waiting room_BG
+
+효과음
+잠금 실패 -> LockFail
+버튼음 1,2 -> Button1,2
+금고 열고 닫기 -> Safe_Open, Safe_Close
+옷장 열고 닫기 -> Closet_Open, Closet_Close
+냉장고 열고 닫기 -> Refrigerator_Open, Refrigerator_Close
+플레이어 걷기 -> Player_Idle, 달리기 -> Player_Run
+살인마 걷기 -> Enemy_Idle, 달리기 -> Enemy_Run
+잠금해제 -> DoorOpen1,2,3
+살인마 출현 -> DoorBell
+
+
