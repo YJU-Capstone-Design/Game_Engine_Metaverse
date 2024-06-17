@@ -54,6 +54,7 @@ public class DialLock : MonoBehaviour
 
         // SFX Sound
         AudioManager.Instance.SFX(0);
+        Debug.Log("Dial Left Button");
     }
 
     public void RightButton(int index)
@@ -70,5 +71,6 @@ public class DialLock : MonoBehaviour
 
         // SFX Sound
         AudioManager.Instance.SFX(0);
+        Debug.Log("Dial Right Button");
     }
 }
