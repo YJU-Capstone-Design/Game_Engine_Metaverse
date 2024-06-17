@@ -341,6 +341,9 @@ public class UIManager : Singleton<UIManager>
             case "Remote":
                 narrationText.text = narration.remote;
                 break;
+            case "GetUSB":
+                narrationText.text = narration.getUSB;
+                break;
             case "LivingRoomTV":
                 if (!getUSB)
                 {
@@ -648,6 +651,9 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = false;
 
+        // UI 비활성화
+        CloseAllUI();
+
         // 초기화
         switch (name)
         {
@@ -656,6 +662,9 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "Button":
                 ButtonLockSetting();
+                // SFX Sound
+                audioManager.SFX(16);
+                OpenNarration("GetUSB");
                 break;
             case "Dial":
                 DialLockSetting();
@@ -667,9 +676,6 @@ public class UIManager : Singleton<UIManager>
                 DoorLockSetting();
                 break;
         }
-
-        // UI 비활성화
-        CloseAllUI();
 
         yield return new WaitForSeconds(1);
 
@@ -739,9 +745,6 @@ public class UIManager : Singleton<UIManager>
                 activeObjects[1].GetComponent<Collider>().enabled = false;
                 // TV 키패드 활성화
                 getUSB = true;
-
-                // SFX Sound
-                audioManager.SFX(16);
                 break;
             case "Dial":
                 activeObjects[6].SetActive(false); // 현관 가벽 비활성화

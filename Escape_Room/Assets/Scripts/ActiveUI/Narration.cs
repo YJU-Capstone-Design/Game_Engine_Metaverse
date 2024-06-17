@@ -28,6 +28,7 @@ public class Narration : MonoBehaviour
     public string hint; // 힌트
     public string hintZero; // 힌트를 다 사용
     public string remote; // 리모컨
+    public string getUSB; // USB 획득
     public string livingroomTV_1; // USB 획득 전 거실 TV
     public string livingroomTV_2; // USB 획득 후 거실 TV
     public string whiteBoard; // 화이트보드
@@ -59,6 +60,7 @@ public class Narration : MonoBehaviour
         storageCloset = "방향 자물쇠의 힌트가 적혀있는 쪽지가 있다.\nAA 건전지 3개를 구매한 영수증이다.";
         hintZero = "사용 가능한 힌트 횟수를 다 사용하셨습니다.";
         remote = "눌러봤지만 아무런 반응이 없다.";
+        getUSB = "금고 안에서 USB를 발견했다. TV에 연결해서 내용을 확인할 수 있을 거 같다.";
         livingroomTV_1 = "전원은 들어오지만 화면에 반응은 없다.";
         livingroomTV_2 = "USB를 연결할 수 있을 것 같다.\n연결을 원하시면 Enter를 눌러주십시오...";
         whiteBoard = "피해자들의 사진인 것 같다. 모든 사진에는 X 표시가 되어있다. \n자세히 확인하고 싶으시면 Enter를 눌러주십시오...";
