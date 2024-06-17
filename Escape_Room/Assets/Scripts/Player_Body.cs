@@ -40,6 +40,7 @@ public class Player_Body : MonoBehaviour
             if (obj.gameObject == weapon)
             {
                 parent.playerLife -= 1;
+                UIManager.Instance.playerLife[parent.playerLife].SetActive(false);
                 Debug.Log("Player Life = " + parent.playerLife);
             }
         }

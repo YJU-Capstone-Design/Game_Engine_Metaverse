@@ -136,7 +136,6 @@ public class Character_Controller : MonoBehaviourPunCallbacks
             {
                 if (uiManager.interacting || LobbyUIManager.Instance.interacting)
                 {
-                    Debug.Log("b");
                     speed_Walk = 0;
                     speed_Run = 0;
                     rb.velocity = Vector3.zero;
@@ -145,7 +144,6 @@ public class Character_Controller : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    Debug.Log("a");
                     speed_Walk = 3f;
                     speed_Run = 6f;
 

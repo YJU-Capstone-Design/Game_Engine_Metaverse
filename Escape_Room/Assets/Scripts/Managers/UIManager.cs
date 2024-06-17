@@ -31,6 +31,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject activeObjectButton;
     public TextMeshProUGUI activeObjectName;
     public bool interacting = false; // 현재 상호작용 중인지 여부
+    public GameObject[] playerLife; // 플레이어 생명(하트) UI
 
     [Header("# Direction Lock")]
     public List<string> dirLockInput;
@@ -242,6 +243,11 @@ public class UIManager : Singleton<UIManager>
     public void InGameSetting()
     {
         playTime = 900; // 15min
+
+        foreach(GameObject life in playerLife)
+        {
+            life.SetActive(true);
+        }
 
         foreach (GameObject activeObj in activeObjects)
         {
