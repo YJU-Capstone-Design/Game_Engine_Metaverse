@@ -557,6 +557,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             // 로딩 화면 활성화
             loadingUI.SetActive(true);
+
+            AudioManager.Instance.bgmAudio.Stop();
         }
         else
         {

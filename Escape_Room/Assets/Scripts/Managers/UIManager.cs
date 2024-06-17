@@ -35,6 +35,7 @@ public class UIManager : Singleton<UIManager>
     [Header("# Direction Lock")]
     public List<string> dirLockInput;
     string[] dirLockAnswer; // 방향 자물쇠 정답
+    bool checkDirectioin = false;
 
     [Header("# Button Lock")]
     public List<int> btnLockInput;
@@ -100,8 +101,10 @@ public class UIManager : Singleton<UIManager>
     private void Update()
     {
         // 방향 자물쇠 입력 값이 4개 일 경우 정답 확인
-        if (dirLockInput.Count == 4)
+        if (dirLockInput.Count == 4 && !checkDirectioin)
         {
+            Debug.Log(checkDirectioin);
+            checkDirectioin = true;
             CheckLockAnswer("Direction");
         }
 
@@ -373,6 +376,8 @@ public class UIManager : Singleton<UIManager>
 
         // 방향 자물쇠 정답 세팅 상7, 우3, 하2 로 변경해야 됨.
         dirLockAnswer = new string[4] { "Up", "Down", "Right", "Left" };
+
+        checkDirectioin = false;
     }
 
     void ButtonLockSetting()
@@ -406,6 +411,8 @@ public class UIManager : Singleton<UIManager>
     // 자물쇠 정답 확인
     public void CheckLockAnswer(string name)
     {
+        Debug.Log("Check Lock");
+
         // 방향 자물쇠
         if (name == "Direction")
         {
@@ -426,6 +433,7 @@ public class UIManager : Singleton<UIManager>
 
                     // 성공 로직
                     StartCoroutine(SuccessLock("Direction"));
+                    break;
                 }
             }
         }
@@ -542,6 +550,7 @@ public class UIManager : Singleton<UIManager>
         {
             case "Direction":
                 dirLockInput.Clear(); // 입력 값 초기화
+                checkDirectioin = false;
                 break;
             case "Button":
                 btnLockInput.Clear();
@@ -616,6 +625,17 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
+        switch (name)
+        {
+            case "Direction":
+            case "Button":
+            case "Dial":
+            case "TV":
+                // SFX Sound
+                audioManager.SFX(5);
+                break;
+        }
+
         yield return new WaitForSeconds(1);
 
         isCheckAnswer = false;
@@ -638,12 +658,7 @@ public class UIManager : Singleton<UIManager>
             case "DoorLock":
                 DoorLockSetting();
                 break;
-            default:
-                break;
         }
-
-        // SFX Sound
-        audioManager.SFX(5);
 
         // UI 비활성화
         CloseAllUI();
@@ -664,6 +679,9 @@ public class UIManager : Singleton<UIManager>
         isCheckAnswer = true;
 
         yield return new WaitForSeconds(1);
+
+        // 방향 자물쇠
+        checkDirectioin = false;
 
         isCheckAnswer = false;
 
@@ -718,7 +736,7 @@ public class UIManager : Singleton<UIManager>
                 audioManager.SFX(16);
                 break;
             case "Dial":
-                activeObjects[5].SetActive(false); // 현관 가벽 비활성화
+                activeObjects[6].SetActive(false); // 현관 가벽 비활성화
                 narration.refrigerator = "냉장고 아래 칸에 무언가 들어있는 거 같다.\n아래 칸을 살펴보길 원하시면 Enter를 눌러주십시오...";
 
                 // SFX Sound
@@ -727,7 +745,7 @@ public class UIManager : Singleton<UIManager>
             case "Key":
                 break;
             case "TV":
-                activeObjects[6].SetActive(false); // 주방 가벽 비활성화
+                activeObjects[5].SetActive(false); // 주방 가벽 비활성화
                 break;
             case "DoorLock":
                 // 현관문 열리기
@@ -892,6 +910,7 @@ public class UIManager : Singleton<UIManager>
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Button Sound");
     }
 
     // Active UI 를 껐을 시, 초기화가 필요한 오브젝트들 초기화

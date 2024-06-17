@@ -41,9 +41,6 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             coroutine = StartCoroutine(ControlJoystickLever(eventData));
         }
-
-        // SFX Sound
-        AudioManager.Instance.SFX(0);
     }
 
     IEnumerator ControlJoystickLever(PointerEventData eventData)
@@ -78,6 +75,9 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         else if (clampedDir.x < -35) { UIManager.Instance.dirLockInput.Add("Left"); }
         else if (clampedDir.y > 35) { UIManager.Instance.dirLockInput.Add("Up"); }
         else if (clampedDir.y < -35) { UIManager.Instance.dirLockInput.Add("Down"); }
+
+        // SFX Sound
+        AudioManager.Instance.SFX(0);
 
         // ¿øÀ§Ä¡
         stick.anchoredPosition = Vector2.zero;
