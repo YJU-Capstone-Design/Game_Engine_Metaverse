@@ -162,6 +162,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Make Room Button");
     }
 
     void MakeParty()
@@ -281,6 +282,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Party Page Button");
     }
 
     // 페이지에 맞게 리스트를 활성화 함수

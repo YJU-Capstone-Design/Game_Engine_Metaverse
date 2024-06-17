@@ -27,7 +27,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("# Player Info")]
     [SerializeField] TextMeshProUGUI timerText;
-    public float playTime; 
+    public float playTime;
     public GameObject activeObjectButton;
     public TextMeshProUGUI activeObjectName;
     public bool interacting = false; // 현재 상호작용 중인지 여부
@@ -118,12 +118,12 @@ public class UIManager : Singleton<UIManager>
             {
                 clueNote.SetActive(false);
 
-                foreach(GameObject clueNote in victimClueNotes)
+                foreach (GameObject clueNote in victimClueNotes)
                 {
                     clueNote.SetActive(false);
                 }
             }
-            else if(narrationBox.activeInHierarchy && activeUIChildren[19].activeInHierarchy) // 냉장고 서랍칸
+            else if (narrationBox.activeInHierarchy && activeUIChildren[19].activeInHierarchy) // 냉장고 서랍칸
             {
                 narrationBox.SetActive(false);
                 backGroundImg.SetActive(false);
@@ -135,11 +135,11 @@ public class UIManager : Singleton<UIManager>
         }
 
         // 상호작용 가능한 오브젝트 버튼이 활성화 되었을 때
-        if(activeObjectButton.activeInHierarchy)
+        if (activeObjectButton.activeInHierarchy)
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                OpenNarration(activeObjectName.text); 
+                OpenNarration(activeObjectName.text);
             }
         }
 
@@ -165,7 +165,7 @@ public class UIManager : Singleton<UIManager>
                     activeUIChildren[12].SetActive(true); // 열쇠 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
                 }
-                else if(narrationText.text == narration.deadBodyBag)
+                else if (narrationText.text == narration.deadBodyBag)
                 {
                     activeUIChildren[5].SetActive(true); // 지갑 UI 활성화
                     OpenNarration("Wallet");
@@ -183,7 +183,7 @@ public class UIManager : Singleton<UIManager>
                     interacting = false;
                     CloseAllUI();
                 }
-                else if(narrationText.text == narration.livingroomTV_2)
+                else if (narrationText.text == narration.livingroomTV_2)
                 {
                     connetUSB = true;
                     activeUIChildren[16].SetActive(true); // TV/Remote UI 활성화
@@ -196,12 +196,12 @@ public class UIManager : Singleton<UIManager>
                     narrationBox.SetActive(false);
                     pv.RPC("UsingLock", RpcTarget.All, "DoorLock");
                 }
-                else if(narrationText.text == narration.whiteBoard)
+                else if (narrationText.text == narration.whiteBoard)
                 {
                     activeUIChildren[18].SetActive(true); // WhiteBoard UI 활성화
                     narrationBox.SetActive(false);
                 }
-                else if(narrationText.text == narration.refrigerator && !activeObjects[5].activeInHierarchy)
+                else if (narrationText.text == narration.refrigerator && !activeObjects[5].activeInHierarchy)
                 {
                     activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
                     narrationBox.SetActive(false);
@@ -213,7 +213,7 @@ public class UIManager : Singleton<UIManager>
                     CloseAllUI();
                 }
             }
-            else if(narrationText.text == narration.refrigerator)
+            else if (narrationText.text == narration.refrigerator)
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
                 {
@@ -221,7 +221,7 @@ public class UIManager : Singleton<UIManager>
                     narrationBox.SetActive(false);
                     pv.RPC("UsingLock", RpcTarget.All, "Dial");
                 }
-                else if(Input.GetKeyDown(KeyCode.Alpha2) ||  Input.GetKeyDown(KeyCode.Keypad2))
+                else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
                 {
                     activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
                     narrationBox.SetActive(false);
@@ -243,7 +243,7 @@ public class UIManager : Singleton<UIManager>
     {
         playTime = 900; // 15min
 
-        foreach(GameObject activeObj in activeObjects)
+        foreach (GameObject activeObj in activeObjects)
         {
             activeObj.GetComponent<Collider>().enabled = true;
         }
@@ -253,13 +253,13 @@ public class UIManager : Singleton<UIManager>
     [PunRPC]
     void Timer(float time)
     {
-        if(time > 0)
+        if (time > 0)
         {
             int minute = (int)(time / 60);
             int second = (int)(time % 60);
 
             timerText.text = $"{minute} : {second}";
-        } 
+        }
         else
         {
             time = 0;
@@ -342,11 +342,11 @@ public class UIManager : Singleton<UIManager>
                 narrationText.text = narration.remote;
                 break;
             case "LivingRoomTV":
-                if(!getUSB)
+                if (!getUSB)
                 {
                     narrationText.text = narration.livingroomTV_1;
                 }
-                else if(getUSB)
+                else if (getUSB)
                 {
                     narrationText.text = narration.livingroomTV_2;
                 }
@@ -398,7 +398,7 @@ public class UIManager : Singleton<UIManager>
     {
         tvInput = new List<string>();
         tvAnswer = "12";
-        tvInputText.text = ""; 
+        tvInputText.text = "";
     }
 
     void DoorLockSetting()
@@ -496,7 +496,7 @@ public class UIManager : Singleton<UIManager>
 
                     break;
                 }
-                
+
                 if (i == 2 && dialLockInput[dialLockInput.Count - 1] == dialLockAnswer[dialLockInput.Count - 1])
                 {
                     Debug.Log("성공");
@@ -506,9 +506,9 @@ public class UIManager : Singleton<UIManager>
                 }
             }
         }
-        else if(name == "TV")
+        else if (name == "TV")
         {
-            if(tvInputText.text == tvAnswer)
+            if (tvInputText.text == tvAnswer)
             {
                 Debug.Log("성공");
 
@@ -524,7 +524,7 @@ public class UIManager : Singleton<UIManager>
                 StartCoroutine(FailLock());
             }
         }
-        else if(name == "DoorLock")
+        else if (name == "DoorLock")
         {
             if (doorLockInputText.text == doorLockAnswer)
             {
@@ -543,8 +543,9 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    // 방자물쇠 값 초기화
-    public void ResetInput(string lockName)
+
+    // 모든 자물쇠 값 초기화 함수
+    void ResetInput(string lockName)
     {
         switch (lockName)
         {
@@ -579,9 +580,16 @@ public class UIManager : Singleton<UIManager>
                 DoorLockSetting();
                 break;
         }
+    }
+
+    // 자물쇠 Reset 버튼
+    public void ResetInputBtn(string name)
+    {
+        ResetInput(name);
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Reset Lock Button");
     }
 
     // 버튼 자물쇠 확인 버튼 애니메이션
@@ -599,7 +607,7 @@ public class UIManager : Singleton<UIManager>
     // 열쇠 자물쇠 Key 버튼
     public void UseKeyButton(bool answer)
     {
-        if(answer)
+        if (answer)
         {
             Debug.Log("열쇠 자물쇠 성공");
 
@@ -608,7 +616,7 @@ public class UIManager : Singleton<UIManager>
 
             // 성공 로직
             StartCoroutine(SuccessLock("Key"));
-        } 
+        }
         else
         {
             Debug.Log("열쇠 자물쇠 실패");
@@ -858,7 +866,7 @@ public class UIManager : Singleton<UIManager>
         }
 
         // 힌트 사용 로직 필요
-        if(photonManager.hintCount == 2)
+        if (photonManager.hintCount == 2)
         {
             // 옷장
             hintObjects[0].layer = 6;
@@ -867,7 +875,7 @@ public class UIManager : Singleton<UIManager>
             particles[0].SetActive(true);
             particles[1].SetActive(true);
         }
-        else if(photonManager.hintCount == 1)
+        else if (photonManager.hintCount == 1)
         {
             // 플레이어 가방
             hintObjects[1].layer = 6;
@@ -884,7 +892,7 @@ public class UIManager : Singleton<UIManager>
     {
         getSchoolsupplies = true;
 
-        foreach(GameObject hintButton in hintButtons)
+        foreach (GameObject hintButton in hintButtons)
         {
             hintButton.SetActive(true); ;
         }
@@ -892,7 +900,7 @@ public class UIManager : Singleton<UIManager>
         particles[2].SetActive(false); // 파티클 비활성화
     }
 
-    
+
 
     // 인게임 힌트 버튼
     public void HintButton()
@@ -910,7 +918,7 @@ public class UIManager : Singleton<UIManager>
 
         // SFX Sound
         audioManager.SFX(0);
-        Debug.Log("Button Sound");
+        Debug.Log("Hint Button Sound");
     }
 
     // Active UI 를 껐을 시, 초기화가 필요한 오브젝트들 초기화
@@ -929,9 +937,12 @@ public class UIManager : Singleton<UIManager>
         }
         else if (obj.name.Contains("Lock"))
         {
+            // 모든 자물쇠 초기화
             ResetInput("Direction");
             ResetInput("Button");
-            // 다른 자물쇠 Input 도 필요
+            ResetInput("Dial");
+            ResetInput("TV");
+            ResetInput("DoorLock");
         }
         else if (obj.name.Contains("Wallet"))
         {
@@ -943,122 +954,123 @@ public class UIManager : Singleton<UIManager>
 
             obj.transform.GetChild(1).GetComponent<Button>().enabled = true; // 신분증 버튼 기능 활성화 
         }
-    }
+        }
 
-    // 문제 버튼 클릭 이벤트
-    public void ClickAnswer(int index)
-    {
-        for (int i = 0; i < answerBtns.Length; i++)
+        // 문제 버튼 클릭 이벤트
+        public void ClickAnswer(int index)
         {
-            Image btnImage;
-            TextMeshProUGUI text;
-
-            if (i == index)
+            for (int i = 0; i < answerBtns.Length; i++)
             {
-                btnImage = answerBtns[index].GetComponent<Image>();
-                text = answerBtns[index].transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+                Image btnImage;
+                TextMeshProUGUI text;
 
-                btnImage.sprite = btnSprites[1];
-                text.color = Color.black;
+                if (i == index)
+                {
+                    btnImage = answerBtns[index].GetComponent<Image>();
+                    text = answerBtns[index].transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+                    btnImage.sprite = btnSprites[1];
+                    text.color = Color.black;
+                }
+                else
+                {
+                    btnImage = answerBtns[i].GetComponent<Image>();
+                    text = answerBtns[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+                    btnImage.sprite = btnSprites[0];
+                    text.color = Color.white;
+                }
             }
-            else
+        }
+
+        // 지갑 애니메이션
+        public void CheckIDCard(GameObject obj)
+        {
+            Animator anim = obj.GetComponent<Animator>();
+
+            if (anim != null && !narrationBox.activeInHierarchy)
             {
-                btnImage = answerBtns[i].GetComponent<Image>();
-                text = answerBtns[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+                foreach (GameObject wallet in walletObjs)
+                {
+                    anim = wallet.GetComponent<Animator>();
+                    anim.SetBool("Click", true);
+                }
 
-                btnImage.sprite = btnSprites[0];
-                text.color = Color.white;
+                obj.GetComponent<Button>().enabled = false; // 버튼 기능은 비활성화 
             }
         }
-    }
 
-    // 지갑 애니메이션
-    public void CheckIDCard(GameObject obj)
-    {
-        Animator anim = obj.GetComponent<Animator>();
-
-        if (anim != null && !narrationBox.activeInHierarchy)
+        // 게임 시작 후 Lobby 로 돌아가는 버튼 재확인 UI
+        public void OpenBackToLobbyUI()
         {
-            foreach (GameObject wallet in walletObjs)
+            activeUIChildren[15].SetActive(true);
+
+            interacting = true;
+
+            // SFX Sound
+            audioManager.SFX(0);
+            Debug.Log("Open Back To Lobby Button");
+        }
+
+        // 모든 UI 종료 버튼
+        public void CloseAllUI()
+        {
+            foreach (GameObject obj in activeUIChildren)
             {
-                anim = wallet.GetComponent<Animator>();
-                anim.SetBool("Click", true);
+                if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+
+                activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
             }
 
-            obj.GetComponent<Button>().enabled = false; // 버튼 기능은 비활성화 
-        }
-    }
+            interacting = false;
 
-    // 게임 시작 후 Lobby 로 돌아가는 버튼 재확인 UI
-    public void OpenBackToLobbyUI()
-    {
-        activeUIChildren[15].SetActive(true);
+            narrationText.text = "";
 
-        interacting = true;
-
-        // SFX Sound
-        audioManager.SFX(0);
-    }
-
-    // 모든 UI 종료 버튼
-    public void CloseAllUI()
-    {
-        foreach (GameObject obj in activeUIChildren)
-        {
-            if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
-
-            activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
+            for (int i = 0; i < 5; i++)
+            {
+                activeObjects[i].layer = 6;
+            }
         }
 
-        interacting = false;
-
-        narrationText.text = "";
-
-        for(int i = 0; i < 5; i++)
+        IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
         {
-            activeObjects[i].layer = 6;
-        }
-    }
+            Vector3 velocity = Vector3.zero;
 
-    IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
-    {
-        Vector3 velocity = Vector3.zero;
+            target.anchorMin = currentMin;
+            target.anchorMax = currentMax;
 
-        target.anchorMin = currentMin;
-        target.anchorMax = currentMax;
+            float offset = 0.01f;
 
-        float offset = 0.01f;
+            while (nextMin.x - offset >= target.anchorMin.x && nextMax.x - offset >= target.anchorMax.x)
+            {
+                target.anchorMin
+                    = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
 
-        while (nextMin.x - offset >= target.anchorMin.x && nextMax.x - offset >= target.anchorMax.x)
-        {
-            target.anchorMin
-                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
+                target.anchorMax
+                    = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
 
-            target.anchorMax
-                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
+                yield return null;
+            }
+
+            target.anchorMin = nextMin;
+            target.anchorMax = nextMax;
+
+            yield return new WaitForSeconds(0.1f);
+
+            while (nextMin.x + offset <= target.anchorMin.x && nextMax.x + offset <= target.anchorMax.x)
+            {
+                target.anchorMin
+                    = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
+
+                target.anchorMax
+                    = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
+
+                yield return null;
+            }
+
+            target.anchorMin = currentMin;
+            target.anchorMax = currentMax;
 
             yield return null;
         }
-
-        target.anchorMin = nextMin;
-        target.anchorMax = nextMax;
-
-        yield return new WaitForSeconds(0.1f);
-
-        while (nextMin.x + offset <= target.anchorMin.x && nextMax.x + offset <= target.anchorMax.x)
-        {
-            target.anchorMin
-                = Vector3.SmoothDamp(target.anchorMin, nextMin, ref velocity, time);
-
-            target.anchorMax
-                = Vector3.SmoothDamp(target.anchorMax, nextMax, ref velocity, time);
-
-            yield return null;
-        }
-
-        target.anchorMin = currentMin;
-        target.anchorMax = currentMax;
-
-        yield return null;
     }
-}

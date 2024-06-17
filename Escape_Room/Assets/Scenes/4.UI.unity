@@ -8143,7 +8143,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 25866298}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ResetInput
+        m_MethodName: ResetInputBtn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11927,7 +11927,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 25866298}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ResetInput
+        m_MethodName: ResetInputBtn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18305,7 +18305,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 25866298}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ResetInput
+        m_MethodName: ResetInputBtn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31135,7 +31135,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 25866298}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ResetInput
+        m_MethodName: ResetInputBtn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -55583,7 +55583,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2059845988}
         m_TargetAssemblyTypeName: PhotonManager, Assembly-CSharp
-        m_MethodName: OperOperatingBtn
+        m_MethodName: OperatingBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -79178,7 +79178,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 25866298}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ResetInput
+        m_MethodName: ResetInputBtn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

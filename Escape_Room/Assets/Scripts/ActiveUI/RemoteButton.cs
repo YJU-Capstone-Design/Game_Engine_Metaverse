@@ -54,6 +54,7 @@ public class RemoteButton : MonoBehaviour
 
         // SFX Sound
         AudioManager.Instance.SFX(0);
+        Debug.Log("Remote Button");
 
         StartCoroutine(EnableImage());
     }

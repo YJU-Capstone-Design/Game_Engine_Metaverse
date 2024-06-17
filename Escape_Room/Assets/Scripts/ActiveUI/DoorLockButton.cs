@@ -63,6 +63,7 @@ public class DoorLockButton : MonoBehaviour
 
             // SFX Sound
             AudioManager.Instance.SFX(0);
+            Debug.Log("DoorLock Handle");
         }
     }
 

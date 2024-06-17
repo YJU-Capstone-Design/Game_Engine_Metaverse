@@ -78,6 +78,7 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         // SFX Sound
         AudioManager.Instance.SFX(0);
+        Debug.Log("Direction Button");
 
         // ¿øÀ§Ä¡
         stick.anchoredPosition = Vector2.zero;

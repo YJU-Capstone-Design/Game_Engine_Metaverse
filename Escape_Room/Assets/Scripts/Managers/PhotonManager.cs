@@ -271,6 +271,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Join Game Button");
     }
 
     // 게임 시작 함수
@@ -320,20 +321,22 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public void DescriptionBtn()
     {
         descriptionUI.SetActive(true);
-        OperOperatingBtn();
+        OperatingBtn();
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Decription Button");
     }
 
     // 게임 조작법 버튼
-    public void OperOperatingBtn()
+    public void OperatingBtn()
     {
         descriptionMainImg.sprite = descriptionImg[0];
         desPageBtn.SetActive(false);
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Operating Button");
     }
 
     // 게임 설명 버튼
@@ -344,6 +347,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Game Des Button");
     }
 
     // 게임 설명 페이지 버튼
@@ -354,6 +358,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Game Des Page Button");
     }
 
     // 파티 매칭 시스템으로 방(파티) 만들기
@@ -364,6 +369,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Make Party Button");
 
         return partyList;
     }
@@ -385,6 +391,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("SetPeople Num Button");
     }
 
     // 파티 탈퇴 버튼
@@ -401,6 +408,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Left party Button");
     }
 
     public void GameStartButton()
@@ -411,6 +419,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Game Start Button");
     }
 
     [PunRPC]
@@ -593,6 +602,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Back to Lobby Button");
 
         UIManager.Instance.CloseAllUI();
         inGameCanvas.SetActive(false);
@@ -615,6 +625,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         // SFX Sound
         audioManager.SFX(0);
+        Debug.Log("Exit Gmae Button");
 
         Application.Quit();
     }
