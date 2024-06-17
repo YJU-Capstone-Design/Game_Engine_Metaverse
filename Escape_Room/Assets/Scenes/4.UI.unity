@@ -45796,7 +45796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1190277073
 RectTransform:
   m_ObjectHideFlags: 0
@@ -59786,7 +59786,7 @@ GameObject:
   - component: {fileID: 1558702826}
   - component: {fileID: 1558702825}
   m_Layer: 5
-  m_Name: SettingMAin
+  m_Name: SettingMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61983,7 +61983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1628897429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63693,6 +63693,7 @@ MonoBehaviour:
   - {fileID: 694501149}
   playerNameBoxList: []
   playerNameBoxParent: {fileID: 100648857}
+  interacting: 0
   miniPartyUI: {fileID: 1649065495}
   miniPartyUITitle: {fileID: 782179866}
   partyPlayerListParent: {fileID: 1572929097}
