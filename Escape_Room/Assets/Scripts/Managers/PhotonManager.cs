@@ -51,7 +51,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     [Header("# Start UI")]
     public GameObject startCanvas;
     public TMP_InputField userIDInput;
-    [SerializeField] GameObject descriptionUI;
+    public GameObject descriptionUI;
     [SerializeField] Image descriptionMainImg;
     [SerializeField] Sprite[] descriptionImg;
     [SerializeField] GameObject desPageBtn;
@@ -180,6 +180,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // Lobby UI 활성화
             lobbyCanvas.SetActive(true);
             lobbyUIManager.gameObject.SetActive(true);
+            lobbyUIManager.interacting = false;
 
             // InGameCanvas UI 비활성화
             inGameCanvas.SetActive(false);
@@ -198,6 +199,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // Lobby UI 비활성화
             lobbyCanvas.SetActive(false);
             lobbyUIManager.gameObject.SetActive(false);
+            lobbyUIManager.interacting = false;
 
             // 힌트 횟수 초기화
             hintCount = 2;
@@ -326,6 +328,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         // SFX Sound
         audioManager.SFX(0);
         Debug.Log("Decription Button");
+
+        if (lobbyCanvas.activeInHierarchy)
+        {
+            lobbyUIManager.interacting = true;
+            Debug.Log("");
+        }
     }
 
     // 게임 조작법 버튼
@@ -339,7 +347,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         Debug.Log("Operating Button");
     }
 
-    // 게임 설명 버튼
+    // 게임 설명 UI 안의 게임 설명 버튼
     public void GameDesBtn()
     {
         descriptionMainImg.sprite = descriptionImg[1];

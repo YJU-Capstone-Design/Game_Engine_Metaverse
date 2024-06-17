@@ -15,6 +15,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     [SerializeField] RectTransform[] partyListPos; // 파티 리스트들 Position 값
     public List<GameObject> playerNameBoxList;
     public Transform playerNameBoxParent;
+    public bool interacting = false;
 
     [Header("# mini Party UI")]
     public GameObject miniPartyUI; // 파티 생성/참여 후 화면에 표시될 mini 파티 UI
@@ -55,6 +56,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             CloseAllUI();
+
+            interacting = false;
         }
 
         // playerNameBoxList 실시간 최신화 
@@ -76,6 +79,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                 // 페이지 수 동기화
                 CheckPartyPageLength();
             }
+
+            interacting = true;
         }
 
         // 만들어진 방 list 들 position 값 조정
@@ -129,6 +134,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             if(photonManager.partyList.Count == 0)
             {
                 MakeParty();
+
+                interacting = false;
             } 
             else
             {

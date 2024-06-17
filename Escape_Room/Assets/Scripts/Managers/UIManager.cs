@@ -692,6 +692,9 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
+        // SFX Sound
+        audioManager.SFX(2);
+
         yield return new WaitForSeconds(1);
 
         // 방향 자물쇠
@@ -704,8 +707,6 @@ public class UIManager : Singleton<UIManager>
 
         // 실패 시 제한시간 30초 감소
         pv.RPC("ReduceTime", RpcTarget.MasterClient);
-
-        // SFX Sound
     }
 
     public void BreakLockButton(string name)

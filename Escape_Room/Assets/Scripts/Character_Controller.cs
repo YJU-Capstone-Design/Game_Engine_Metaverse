@@ -134,8 +134,18 @@ public class Character_Controller : MonoBehaviourPunCallbacks
             // Player code
             if (uiManager != null) // 상호 작용 중이지 않을 경우에만 움직임 가능
             {
-                if (!uiManager.interacting)
+                if (uiManager.interacting || LobbyUIManager.Instance.interacting)
                 {
+                    Debug.Log("b");
+                    speed_Walk = 0;
+                    speed_Run = 0;
+                    rb.velocity = Vector3.zero;
+                    animator.SetBool("Walk", false);
+                    animator.SetBool("Run", false);
+                }
+                else
+                {
+                    Debug.Log("a");
                     speed_Walk = 3f;
                     speed_Run = 6f;
 
@@ -144,14 +154,6 @@ public class Character_Controller : MonoBehaviourPunCallbacks
                     // Camera code
                     Camera_Change();
                     Camera_Rotate();
-                }
-                else
-                {
-                    speed_Walk = 0;
-                    speed_Run = 0;
-                    rb.velocity = Vector3.zero;
-                    animator.SetBool("Walk", false);
-                    animator.SetBool("Run", false);
                 }
             }
             else
