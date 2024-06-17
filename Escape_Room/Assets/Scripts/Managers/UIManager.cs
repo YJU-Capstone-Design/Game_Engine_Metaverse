@@ -10,6 +10,7 @@ public class UIManager : Singleton<UIManager>
 {
     public PhotonManager photonManager;
     public PhotonView pv;
+    public AudioManager audioManager;
 
     [Header("# UI Boxs")]
     [SerializeField] List<GameObject> activeUIChildren;
@@ -569,6 +570,9 @@ public class UIManager : Singleton<UIManager>
                 DoorLockSetting();
                 break;
         }
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 버튼 자물쇠 확인 버튼 애니메이션
@@ -638,15 +642,18 @@ public class UIManager : Singleton<UIManager>
                 break;
         }
 
+        // SFX Sound
+        audioManager.SFX(5);
+
         // UI 비활성화
         CloseAllUI();
+
+        yield return new WaitForSeconds(1);
 
         // 성공 결과 (포톤)
         pv.RPC("OpenDoor", RpcTarget.All, name);
 
         interacting = false;
-
-        // 사운드도 필요
     }
 
     // 문제 해결 실패 시 실행되는 함수
@@ -665,6 +672,8 @@ public class UIManager : Singleton<UIManager>
 
         // 실패 시 제한시간 30초 감소
         pv.RPC("ReduceTime", RpcTarget.MasterClient);
+
+        // SFX Sound
     }
 
     public void BreakLockButton(string name)
@@ -696,15 +705,24 @@ public class UIManager : Singleton<UIManager>
                 doorAnim = doors[0].GetComponent<Animator>();
                 doorAnim.SetBool("open", true);
                 activeObjects[0].GetComponent<Collider>().enabled = false;
+
+                // SFX Sound
+                audioManager.SFX(6);
                 break;
             case "Button":
                 activeObjects[1].GetComponent<Collider>().enabled = false;
                 // TV 키패드 활성화
                 getUSB = true;
+
+                // SFX Sound
+                audioManager.SFX(16);
                 break;
             case "Dial":
                 activeObjects[5].SetActive(false); // 현관 가벽 비활성화
                 narration.refrigerator = "냉장고 아래 칸에 무언가 들어있는 거 같다.\n아래 칸을 살펴보길 원하시면 Enter를 눌러주십시오...";
+
+                // SFX Sound
+                audioManager.SFX(14);
                 break;
             case "Key":
                 break;
@@ -716,6 +734,9 @@ public class UIManager : Singleton<UIManager>
                 doorAnim = doors[1].GetComponent<Animator>();
                 doorAnim.Play("Opening 1");
                 activeObjects[4].GetComponent<Collider>().enabled = false;
+
+                // SFX Sound
+                audioManager.SFX(7);
                 break;
         }
     }
@@ -799,6 +820,9 @@ public class UIManager : Singleton<UIManager>
                 break;
 
         }
+
+        // SFX Sound
+        audioManager.SFX(14);
     }
 
     // 힌트 사용
@@ -865,6 +889,9 @@ public class UIManager : Singleton<UIManager>
         {
             OpenNarration("HintZero");
         }
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // Active UI 를 껐을 시, 초기화가 필요한 오브젝트들 초기화
@@ -949,6 +976,9 @@ public class UIManager : Singleton<UIManager>
         activeUIChildren[15].SetActive(true);
 
         interacting = true;
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 모든 UI 종료 버튼

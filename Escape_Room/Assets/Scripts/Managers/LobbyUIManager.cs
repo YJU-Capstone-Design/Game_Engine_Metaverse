@@ -29,6 +29,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
     public PhotonManager photonManager;
     PhotonView pv;
+    public AudioManager audioManager;
 
     private void Awake()
     {
@@ -158,6 +159,9 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                 }
             }
         }
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     void MakeParty()
@@ -274,6 +278,9 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
         // 페이지에 맞게 리스트 활성화
         SetActivePartyList();
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 페이지에 맞게 리스트를 활성화 함수

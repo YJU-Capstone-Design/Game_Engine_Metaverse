@@ -41,6 +41,9 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             coroutine = StartCoroutine(ControlJoystickLever(eventData));
         }
+
+        // SFX Sound
+        AudioManager.Instance.SFX(0);
     }
 
     IEnumerator ControlJoystickLever(PointerEventData eventData)

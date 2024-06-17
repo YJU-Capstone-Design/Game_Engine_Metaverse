@@ -15,6 +15,8 @@ using WebSocketSharp;
 
 public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 CallBack 함수를 쓸 수 있음.
 {
+    public AudioManager audioManager;
+
     [Header("# Photon")]
     private readonly string version = "1.0f"; // 버전
     string roomName;
@@ -182,6 +184,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             // InGameCanvas UI 비활성화
             inGameCanvas.SetActive(false);
             inGameUIManager.gameObject.SetActive(false);
+
+            // BGM
+            audioManager.bgmAudio.clip = audioManager.bgmClips[0];
+            audioManager.bgmAudio.Play();
         } 
         else
         {
@@ -198,6 +204,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             // 세팅 초기화
             UIManager.Instance.InGameSetting();
+
+            // BGM
+            audioManager.bgmAudio.clip = audioManager.bgmClips[1];
+            audioManager.bgmAudio.Play();
         }
 
         // 캐릭터 생성
@@ -258,6 +268,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             JoinGame();
         }
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 게임 시작 함수
@@ -308,6 +321,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         descriptionUI.SetActive(true);
         OperOperatingBtn();
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 게임 조작법 버튼
@@ -315,6 +331,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         descriptionMainImg.sprite = descriptionImg[0];
         desPageBtn.SetActive(false);
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 게임 설명 버튼
@@ -322,6 +341,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         descriptionMainImg.sprite = descriptionImg[1];
         desPageBtn.SetActive(true);
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 게임 설명 페이지 버튼
@@ -329,6 +351,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         if(num == 1) { descriptionMainImg.sprite = descriptionImg[1]; }
         else if(num == 2) { descriptionMainImg.sprite = descriptionImg[2]; }
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 파티 매칭 시스템으로 방(파티) 만들기
@@ -336,6 +361,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         GameObject partyList = PhotonNetwork.Instantiate(partyListPrefab.name, transform.position, Quaternion.identity);
         myPartyMaxPeople = maxPeopleNum;
+
+        // SFX Sound
+        audioManager.SFX(0);
 
         return partyList;
     }
@@ -354,6 +382,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         maxPeopleNumText.text = maxPeopleNum.ToString(); // 파티 인원 수를 설정할 때 보이는 UI
         partyPeopleNum = $"{1} / {maxPeopleNum}"; // 생성될 list 에 대입시켜줄 값을 저장하는 문자열 -> 1 은 기본값
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     // 파티 탈퇴 버튼
@@ -367,6 +398,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         // myParty 초기화
         myParty = null;
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     public void GameStartButton()
@@ -374,6 +408,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         roomName = myPlayer.ViewID.ToString(); // 새로 만들 Room 이름 설정
 
         pv.RPC("GameStart", RpcTarget.All, this.roomName, this.myPlayer.name);
+
+        // SFX Sound
+        audioManager.SFX(0);
     }
 
     [PunRPC]
@@ -552,6 +589,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         roomName = "Lobby";
 
+        // SFX Sound
+        audioManager.SFX(0);
+
         UIManager.Instance.CloseAllUI();
         inGameCanvas.SetActive(false);
 
@@ -571,6 +611,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 게임 종료 버튼
     public void ExitGameButton()
     {
+        // SFX Sound
+        audioManager.SFX(0);
+
         Application.Quit();
     }
 }

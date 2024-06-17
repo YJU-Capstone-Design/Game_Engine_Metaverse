@@ -47,6 +47,9 @@ public class DoorLockButton : MonoBehaviour
             Debug.Log("anim");
             anim.SetBool("check", true);
             StartCoroutine(HandleAnimation());
+
+            // SFX Sound
+            AudioManager.Instance.SFX(5);
         }
         else
         {
@@ -57,6 +60,9 @@ public class DoorLockButton : MonoBehaviour
         if(!gameObject.name.Contains("Handle"))
         {
             StartCoroutine(EnableImage());
+
+            // SFX Sound
+            AudioManager.Instance.SFX(0);
         }
     }
 

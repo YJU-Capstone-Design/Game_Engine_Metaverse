@@ -8,10 +8,12 @@ public class ButtonLock : MonoBehaviour
     public GameObject upButton;
 
     UIManager uiManager;
+    AudioManager audioManager;
 
     private void Awake()
     {
         uiManager = UIManager.Instance;
+        audioManager = AudioManager.Instance;
 
         upButton.SetActive(true);
         downButton.SetActive(false);
@@ -40,5 +42,8 @@ public class ButtonLock : MonoBehaviour
 
             if(!uiManager.btnLockInput.Contains(num)) { uiManager.btnLockInput.Add(num); }
         }
+
+        // SFX Sound
+        audioManager.SFX(14);
     }
 }

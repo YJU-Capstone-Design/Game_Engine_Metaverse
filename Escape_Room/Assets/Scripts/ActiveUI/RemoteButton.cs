@@ -52,6 +52,9 @@ public class RemoteButton : MonoBehaviour
             uiManager.tvInputText.text = string.Join("", uiManager.tvInput);
         }
 
+        // SFX Sound
+        AudioManager.Instance.SFX(0);
+
         StartCoroutine(EnableImage());
     }
 

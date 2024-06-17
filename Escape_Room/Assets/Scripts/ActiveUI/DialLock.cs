@@ -51,6 +51,9 @@ public class DialLock : MonoBehaviour
         rightNumText.text = rightNum.ToString();
 
         UIManager.Instance.dialLockInput[index] = middleNum;
+
+        // SFX Sound
+        AudioManager.Instance.SFX(0);
     }
 
     public void RightButton(int index)
@@ -64,5 +67,8 @@ public class DialLock : MonoBehaviour
         rightNumText.text = rightNum.ToString();
 
         UIManager.Instance.dialLockInput[index] = middleNum;
+
+        // SFX Sound
+        AudioManager.Instance.SFX(0);
     }
 }
