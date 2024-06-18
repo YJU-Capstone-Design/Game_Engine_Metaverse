@@ -15,6 +15,7 @@ public class Character_Controller : MonoBehaviourPunCallbacks
     [SerializeField] private PhotonView pv;
     [SerializeField] private PhotonTransformView photonTransformView;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] AudioSource playerAudioSource;
 
     [Header("Parts")]
     // Insert "Body" Object
@@ -39,6 +40,11 @@ public class Character_Controller : MonoBehaviourPunCallbacks
     [Header("Status")]
     public int playerLife = 3;
 
+    [Header("Sound")]
+    [SerializeField] AudioClip walkSound;
+    [SerializeField] AudioClip runSound;
+
+
     // Concealed variable
     // Player Position
     private float pos_X, pos_Z;
@@ -59,6 +65,7 @@ public class Character_Controller : MonoBehaviourPunCallbacks
         photonManager = LobbyUIManager.Instance.photonManager;
         pv = GetComponent<PhotonView>();
         photonTransformView = GetComponent<PhotonTransformView>();
+        playerAudioSource = GetComponent<AudioSource>();
 
         if (photonView.IsMine)
         {
@@ -202,6 +209,9 @@ public class Character_Controller : MonoBehaviourPunCallbacks
                 {
                     transform.Translate(moveDir.normalized * speed_Run * Time.deltaTime);
                 }
+
+                // 사운드
+                StartCoroutine(PlaySound("Run"));
             }
             else // !isRun
             {
@@ -216,6 +226,9 @@ public class Character_Controller : MonoBehaviourPunCallbacks
                 {
                     transform.Translate(moveDir.normalized * speed_Walk * Time.deltaTime);
                 }
+
+                // 사운드
+                StartCoroutine(PlaySound("Walk"));
             }
         }
         else // !isMove
@@ -224,6 +237,10 @@ public class Character_Controller : MonoBehaviourPunCallbacks
             animator.SetBool("Walk", false);
             rb.velocity = Vector3.zero;
             player_Body.transform.localRotation = Quaternion.Euler(new Vector3(0, camera_Rotation.localEulerAngles.y, 0));
+
+            // 사운드
+            playerAudioSource.Stop();
+            playerAudioSource.clip = null;
         }
     }
 
@@ -393,4 +410,31 @@ public class Character_Controller : MonoBehaviourPunCallbacks
     }
 
     /* -------------------------------------------------- */
+
+    // 사운드
+    IEnumerator PlaySound(string state)
+    {
+        if(state == "Walk")
+        {
+            if(playerAudioSource.clip != walkSound)
+            {
+                playerAudioSource.Stop();
+                playerAudioSource.clip = null;
+                playerAudioSource.clip = walkSound;
+                playerAudioSource.Play();
+            }
+        }
+        else if(state == "Run")
+        {
+            if (playerAudioSource.clip != runSound)
+            {
+                playerAudioSource.Stop();
+                playerAudioSource.clip = null;
+                playerAudioSource.clip = runSound;
+                playerAudioSource.Play();
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+    }
 }
