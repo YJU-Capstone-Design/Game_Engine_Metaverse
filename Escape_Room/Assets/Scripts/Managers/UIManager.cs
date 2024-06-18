@@ -131,7 +131,20 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                CloseAllUI();
+                for (int i = 0; i < activeUIChildren.Count; i++)
+                {
+                    if (activeUIChildren[i].activeInHierarchy)
+                    {
+                        CloseAllUI();
+                        break;
+                    }
+
+                    // 마지막 번호
+                    if (activeUIChildren.Count - 1 == i)
+                    {
+                        photonManager.SettingBtn();
+                    }
+                }
             }
         }
 
@@ -244,9 +257,12 @@ public class UIManager : Singleton<UIManager>
     {
         playTime = 900; // 15min
 
-        foreach(GameObject life in playerLife)
+        if (playerLife[0].activeInHierarchy)
         {
-            life.SetActive(true);
+            foreach (GameObject life in playerLife)
+            {
+                life.SetActive(true);
+            }
         }
 
         foreach (GameObject activeObj in activeObjects)
@@ -1008,18 +1024,6 @@ public class UIManager : Singleton<UIManager>
 
                 obj.GetComponent<Button>().enabled = false; // 버튼 기능은 비활성화 
             }
-        }
-
-        // 게임 시작 후 Lobby 로 돌아가는 버튼 재확인 UI
-        public void OpenBackToLobbyUI()
-        {
-            activeUIChildren[15].SetActive(true);
-
-            interacting = true;
-
-            // SFX Sound
-            audioManager.SFX(0);
-            Debug.Log("Open Back To Lobby Button");
         }
 
         // 모든 UI 종료 버튼

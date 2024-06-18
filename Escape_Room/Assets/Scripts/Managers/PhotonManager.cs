@@ -63,6 +63,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public UIManager inGameUIManager;
     public GameObject loadingUI;
     public Animator loadingFadeAnim;
+    public GameObject generalBtns; // 게임 설정 창 일반 버튼
+    public GameObject[] reCheckUI; // 종료/로비 재확인 UI 창
 
     [Header("# InGame")]
     public int hintCount;
@@ -319,56 +321,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         maxPeopleNumText.text = "1";
     }
 
-    // 시작화면 게임 설명 버튼
-    public void DescriptionBtn()
-    {
-        descriptionUI.SetActive(true);
-        OperatingBtn();
-
-        // SFX Sound
-        audioManager.SFX(0);
-        Debug.Log("Decription Button");
-
-        if (lobbyCanvas.activeInHierarchy)
-        {
-            lobbyUIManager.interacting = true;
-            Debug.Log("");
-        }
-    }
-
-    // 게임 조작법 버튼
-    public void OperatingBtn()
-    {
-        descriptionMainImg.sprite = descriptionImg[0];
-        desPageBtn.SetActive(false);
-
-        // SFX Sound
-        audioManager.SFX(0);
-        Debug.Log("Operating Button");
-    }
-
-    // 게임 설명 UI 안의 게임 설명 버튼
-    public void GameDesBtn()
-    {
-        descriptionMainImg.sprite = descriptionImg[1];
-        desPageBtn.SetActive(true);
-
-        // SFX Sound
-        audioManager.SFX(0);
-        Debug.Log("Game Des Button");
-    }
-
-    // 게임 설명 페이지 버튼
-    public void GameDesPageBtn(int num)
-    {
-        if(num == 1) { descriptionMainImg.sprite = descriptionImg[1]; }
-        else if(num == 2) { descriptionMainImg.sprite = descriptionImg[2]; }
-
-        // SFX Sound
-        audioManager.SFX(0);
-        Debug.Log("Game Des Page Button");
-    }
-
     // 파티 매칭 시스템으로 방(파티) 만들기
     public GameObject MakePartyRoom()
     {
@@ -603,6 +555,86 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         }
     }
 
+    // 시간 감소 함수
+    [PunRPC]
+    void TimeLimit()
+    {
+        UIManager.Instance.playTime -= Time.deltaTime;
+    }
+
+
+    // -----------------------------------------------------------------------------------------------
+
+
+    // 시작화면 게임 설정 버튼
+    public void SettingBtn()
+    {
+        descriptionUI.SetActive(true);
+        OperatingBtn();
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("Decription Button");
+
+        if (lobbyCanvas.activeInHierarchy)
+        {
+            lobbyUIManager.interacting = true;
+            Debug.Log("");
+        }
+    }
+
+    // 게임 세팅 UI 안의게임 조작법 버튼
+    public void OperatingBtn()
+    {
+        descriptionMainImg.sprite = descriptionImg[0];
+        desPageBtn.SetActive(false);
+
+        // 일반 버튼
+        if(lobbyCanvas.activeInHierarchy || inGameCanvas.activeInHierarchy)
+        {
+            generalBtns.SetActive(true);
+        }
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("Operating Button");
+    }
+
+    // 게임 세팅 UI 안의 게임 사운드 버튼
+    public void SoundBtn()
+    {
+        descriptionMainImg.sprite = descriptionImg[1];
+        desPageBtn.SetActive(false);
+        generalBtns.SetActive(false);
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("Sound Button");
+    }
+
+    // 게임 세팅 UI 안의 게임 설명 버튼
+    public void GameDesBtn()
+    {
+        descriptionMainImg.sprite = descriptionImg[2];
+        desPageBtn.SetActive(true);
+        generalBtns.SetActive(false);
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("Game Des Button");
+    }
+
+    // 게임 세팅 UI 안의 게임 설명 페이지 버튼
+    public void GameDesPageBtn(int num)
+    {
+        if (num == 1) { descriptionMainImg.sprite = descriptionImg[2]; }
+        else if (num == 2) { descriptionMainImg.sprite = descriptionImg[3]; }
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("Game Des Page Button");
+    }
+
     // 게임 시작 후 Lobby 로 돌아가는 버튼 로직 -> UI 오픈은 UIManager 스크립트에 제작
     public void BackToLobby()
     {
@@ -621,13 +653,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         StartCoroutine("Loading", true);
     }
 
-    // 시간 감소 함수
-    [PunRPC]
-    void TimeLimit()
-    {
-        UIManager.Instance.playTime -= Time.deltaTime;
-    }
-
     // 게임 종료 버튼
     public void ExitGameButton()
     {
@@ -637,4 +662,55 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
         Application.Quit();
     }
+
+    // 게임 시작 후 Lobby 로 돌아가는 버튼 재확인 UI
+    public void OpenBackToLobbyUI()
+    {
+        reCheckUI[0].SetActive(true);
+
+        if(inGameCanvas.activeInHierarchy)
+        {
+            inGameUIManager.interacting = true;
+        }
+        else if(lobbyCanvas.activeInHierarchy)
+        {
+            lobbyUIManager.interacting = true;
+        }
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("Open Back To Lobby Button");
+    }
+
+    // 게임 시작 후 게임 종료 버튼 재확인 UI
+    public void OpenExitGameUI()
+    {
+        reCheckUI[1].SetActive(true);
+
+        if (inGameCanvas.activeInHierarchy)
+        {
+            inGameUIManager.interacting = true;
+        }
+        else if (lobbyCanvas.activeInHierarchy)
+        {
+            lobbyUIManager.interacting = true;
+        }
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("Open Exit Button");
+    }
+
+    // 재확인 UI 닫기 버튼
+    public void CloseReCheckUI()
+    {
+        reCheckUI[0].SetActive(false);
+        reCheckUI[1].SetActive(false);
+
+        // SFX Sound
+        audioManager.SFX(0);
+        Debug.Log("CloseReCheckUI Button");
+    }
 }
+
+

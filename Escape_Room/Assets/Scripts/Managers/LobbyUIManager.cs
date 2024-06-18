@@ -42,7 +42,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         // 페이지 수 동기화
         CheckPartyPageLength();
 
-        foreach(GameObject obj in activeUIBoxs)
+        foreach (GameObject obj in activeUIBoxs)
         {
             obj.SetActive(false);
         }
@@ -55,13 +55,26 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         // 켜져있는 오브젝트 꺼짐
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            CloseAllUI();
+            for(int i = 0; i < activeUIBoxs.Length; i++)
+            {
+                if (activeUIBoxs[i].activeInHierarchy)
+                {
+                    CloseAllUI();
+                    interacting = false;
+                    break;
+                }
 
-            interacting = false;
+                // 마지막 번호
+                if(!activeUIBoxs[4].activeInHierarchy)
+                {
+                    Debug.Log(i);
+                    photonManager.SettingBtn();
+                }
+            }
         }
 
         // playerNameBoxList 실시간 최신화 
-        for(int i = 0; i < playerNameBoxList.Count; i++)
+        for (int i = 0; i < playerNameBoxList.Count; i++)
         {
             if (playerNameBoxList[i] == null) { playerNameBoxList.Remove(playerNameBoxList[i]); }
         }
@@ -90,13 +103,13 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         }
 
         // 생성된 mini 파티 UI 의 PartyPlayerList Position 값 조정
-        if(partyPlayerList.Count > 0)
+        if (partyPlayerList.Count > 0)
         {
             SetPlayerListPos();
         }
 
         // mini 파티 UI 인원 수 실시간 최신화
-        if(photonManager.myParty != null)
+        if (photonManager.myParty != null)
         {
             SynchronizationPartyPeopleNum(photonManager.myParty.listPeopleNumText.text);
         }
@@ -108,7 +121,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         }
         else // 파티에 포함되지 않을 경우
         {
-            if(partyPlayerList.Count > 0)
+            if (partyPlayerList.Count > 0)
             {
                 foreach (GameObject playerName in partyPlayerList)
                 {
@@ -131,12 +144,12 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         else if (index == 1) // 방 만들기 창
         {
             // 한사람당 파티는 하나만 생성 가능
-            if(photonManager.partyList.Count == 0)
+            if (photonManager.partyList.Count == 0)
             {
                 MakeParty();
 
                 interacting = false;
-            } 
+            }
             else
             {
                 bool joinedParty = false;
@@ -174,9 +187,9 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
     void MakeParty()
     {
-        foreach(GameObject lobbyUI in activeUIBoxs)
+        foreach (GameObject lobbyUI in activeUIBoxs)
         {
-            if(lobbyUI.activeInHierarchy)
+            if (lobbyUI.activeInHierarchy)
             {
                 lobbyUI.SetActive(false);
             }
@@ -184,7 +197,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
 
         photonManager.MakePartyRoom(); // 리스트 만드는 함수 호출
         SetActivePartyList(); // 리스트 활성화 세팅
-        
+
         // 페이지 수 동기화
         CheckPartyPageLength();
 
@@ -193,7 +206,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
         gameStartButton.SetActive(true);
 
         // Player NameBox 를 mini 파티 UI 로 가져오기
-        for(int i = 0; i < playerNameBoxList.Count; i++)
+        for (int i = 0; i < playerNameBoxList.Count; i++)
         {
             PhotonView playerNameBoxPV = playerNameBoxList[i].GetComponent<PhotonView>();
 
@@ -217,7 +230,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     // 만들어진 방 list 들 위치 조정
     void SetListPos()
     {
-        for(int i = 0; i < photonManager.partyList.Count; i++)
+        for (int i = 0; i < photonManager.partyList.Count; i++)
         {
             int index = i % 8;
 
@@ -279,7 +292,7 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     public void PartyPageButton(string dir)
     {
         if (dir == "Right") { partyPageCount = (partyPageCount == photonManager.partyPageLength ? photonManager.partyPageLength : ++partyPageCount); }
-        else if(dir == "Left") { partyPageCount = (partyPageCount == 1 ? 1 : --partyPageCount); }
+        else if (dir == "Left") { partyPageCount = (partyPageCount == 1 ? 1 : --partyPageCount); }
 
         // 페이지 수 동기화
         CheckPartyPageLength();
@@ -312,14 +325,8 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
     void CheckPartyPageLength()
     {
         photonManager.partyPageLength = (photonManager.partyList.Count % 8 == 0 ? photonManager.partyList.Count / 8 : photonManager.partyList.Count / 8 + 1);
-        if(photonManager.partyPageLength == 0) { photonManager.partyPageLength = 1; }
+        if (photonManager.partyPageLength == 0) { photonManager.partyPageLength = 1; }
         photonManager.pageCountText.text = $"{partyPageCount} / {photonManager.partyPageLength}";
-    }
-
-    // 게임 종료 재확인 UI 활성화
-    public void OpenExitGameUI()
-    {
-        activeUIBoxs[3].SetActive(true);
     }
 
     public void CloseAllUI()
