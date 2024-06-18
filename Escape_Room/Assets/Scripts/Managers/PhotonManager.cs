@@ -19,7 +19,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     [Header("# Photon")]
     private readonly string version = "1.0f"; // 버전
-    string roomName;
+    [SerializeField] string roomName;
+    [SerializeField] int roomNumber = 0; // roomName 중복 방지를 위해 난수 생성 후 roomName 에 붙이는 용도
+    [SerializeField] List<int> roomNums; // 이미 생성된 roomNumber 저장용
 
     [Header("# Prefab")]
     public GameObject playerPrefab;
@@ -77,6 +79,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         inGameCanvas.SetActive(false);
         loadingUI.SetActive(false);
         loadingFadeAnim.gameObject.SetActive(false);
+        roomNums = new List<int>();
     }
 
     private void Update()
@@ -379,7 +382,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         roomName = myPlayer.ViewID.ToString(); // 새로 만들 Room 이름 설정
 
-        pv.RPC("GameStart", RpcTarget.All, this.roomName, this.myPlayer.name);
+        if(roomNums.Count > 0)
+        {
+            while (roomNums.Contains(roomNumber))
+            {
+                roomNumber = UnityEngine.Random.Range(1, 10000);
+            }
+        }
+        else
+        {
+            roomNumber = UnityEngine.Random.Range(1, 10000);
+        }
+
+        pv.RPC("GameStart", RpcTarget.AllBuffered, this.roomName, this.myPlayer.name , roomNumber);
 
         // SFX Sound
         audioManager.SFX(0);
@@ -388,12 +403,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
     [PunRPC]
     // 게임 시작 버튼
-    public void GameStart(string roomName, string bossName)
+    public void GameStart(string roomName, string bossName, int roomNumber)
     {
+        roomNums.Add(roomNumber);
+
         // 자신의 파티에 게임을 시작한 사람이 있을 경우에만 작동
         if (myParty.partyPlayerIDList.Contains(int.Parse(roomName)))
         {
-            this.roomName = roomName + bossName; // 참가할 Room 이름 설정
+            this.roomName = roomName + bossName + roomNumber.ToString(); // 참가할 Room 이름 설정
 
             pv.RPC("LeftPhoton", RpcTarget.All, myPlayer.ViewID / 1000, true); // 본인과 관련된 데이터들 삭제
 

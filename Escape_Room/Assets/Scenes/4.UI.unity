@@ -1337,6 +1337,7 @@ MonoBehaviour:
   - {fileID: 737587750}
   - {fileID: 728199209}
   - {fileID: 1719168015}
+  - {fileID: 266583842}
   hintObjects:
   - {fileID: 1650825419}
   - {fileID: 1375758222}
@@ -1447,7 +1448,8 @@ MonoBehaviour:
   wallClock: 
   kitchenKnife: 
   WallTV: 
-  keyLock: 
+  keyLock_1: 
+  keyLock_2: 
   directionLock: 
   dialLock: 
   buttonLock: 
@@ -10672,7 +10674,7 @@ GameObject:
   - component: {fileID: 266583845}
   - component: {fileID: 266583844}
   m_Layer: 6
-  m_Name: Cube
+  m_Name: KeyLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60799,7 +60801,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1559304918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79229,6 +79231,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 1341909423}
+  roomName: 
+  roomNumber: 0
+  roomNums: 
   playerPrefab: {fileID: 248822274323737384, guid: 1240681f9cf624840b5ae8911b61fafe,
     type: 3}
   partyListPrefab: {fileID: 5536942418615512625, guid: 46a8b320cd320ce479749617ee1a9fca,
