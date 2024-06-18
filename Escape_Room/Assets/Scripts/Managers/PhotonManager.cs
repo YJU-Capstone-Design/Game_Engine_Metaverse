@@ -51,9 +51,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     [Header("# Start UI")]
     public GameObject startCanvas;
     public TMP_InputField userIDInput;
-    public GameObject descriptionUI;
-    [SerializeField] Image descriptionMainImg;
-    [SerializeField] Sprite[] descriptionImg;
+    public GameObject settingUI;
+    [SerializeField] Image settingMainImg;
+    [SerializeField] Sprite[] settingSprites;
     [SerializeField] GameObject desPageBtn;
 
     [Header("# Common UI")]
@@ -97,13 +97,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         SetPlayerList();
 
         // 게임 설명 UI ESC 종료
-        if (descriptionUI.activeInHierarchy)
+        if (settingUI.activeInHierarchy)
         {
             if(Input.GetKeyDown(KeyCode.Escape))
             {
-                descriptionUI.SetActive(false);
-                descriptionMainImg.sprite = descriptionImg[0];
-                desPageBtn.SetActive(false);
+                if(!lobbyCanvas.activeInHierarchy && !inGameCanvas.activeInHierarchy)
+                {
+                    settingUI.SetActive(false);
+                    settingMainImg.sprite = settingSprites[0];
+                    desPageBtn.SetActive(false);
+                }
             }
         }
     }
@@ -569,24 +572,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 시작화면 게임 설정 버튼
     public void SettingBtn()
     {
-        descriptionUI.SetActive(true);
+        settingUI.SetActive(true);
         OperatingBtn();
 
         // SFX Sound
         audioManager.SFX(0);
-        Debug.Log("Decription Button");
-
-        if (lobbyCanvas.activeInHierarchy)
-        {
-            lobbyUIManager.interacting = true;
-            Debug.Log("");
-        }
+        Debug.Log("Setting Button");
     }
+
 
     // 게임 세팅 UI 안의게임 조작법 버튼
     public void OperatingBtn()
     {
-        descriptionMainImg.sprite = descriptionImg[0];
+        settingMainImg.sprite = settingSprites[0];
         desPageBtn.SetActive(false);
 
         // 일반 버튼
@@ -603,7 +601,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 게임 세팅 UI 안의 게임 사운드 버튼
     public void SoundBtn()
     {
-        descriptionMainImg.sprite = descriptionImg[1];
+        settingMainImg.sprite = settingSprites[1];
         desPageBtn.SetActive(false);
         generalBtns.SetActive(false);
 
@@ -615,7 +613,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 게임 세팅 UI 안의 게임 설명 버튼
     public void GameDesBtn()
     {
-        descriptionMainImg.sprite = descriptionImg[2];
+        settingMainImg.sprite = settingSprites[2];
         desPageBtn.SetActive(true);
         generalBtns.SetActive(false);
 
@@ -627,8 +625,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 게임 세팅 UI 안의 게임 설명 페이지 버튼
     public void GameDesPageBtn(int num)
     {
-        if (num == 1) { descriptionMainImg.sprite = descriptionImg[2]; }
-        else if (num == 2) { descriptionMainImg.sprite = descriptionImg[3]; }
+        if (num == 1) { settingMainImg.sprite = settingSprites[2]; }
+        else if (num == 2) { settingMainImg.sprite = settingSprites[3]; }
 
         // SFX Sound
         audioManager.SFX(0);
@@ -644,8 +642,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         audioManager.SFX(0);
         Debug.Log("Back to Lobby Button");
 
-        UIManager.Instance.CloseAllUI();
-        inGameCanvas.SetActive(false);
+        if(inGameCanvas.activeInHierarchy)
+        {
+            UIManager.Instance.CloseAllUI();
+            inGameCanvas.SetActive(false);
+        }
+
+        foreach (GameObject UI in lobbyUIManager.activeUIBoxs)
+        {
+            UI.SetActive(false);
+        }
 
         PhotonNetwork.LeaveRoom();
 

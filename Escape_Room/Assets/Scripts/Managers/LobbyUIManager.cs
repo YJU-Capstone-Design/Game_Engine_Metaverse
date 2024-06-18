@@ -65,12 +65,16 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
                 }
 
                 // 마지막 번호
-                if(!activeUIBoxs[4].activeInHierarchy)
+                if(i == (activeUIBoxs.Length - 1) && !activeUIBoxs[4].activeInHierarchy)
                 {
                     Debug.Log(i);
                     photonManager.SettingBtn();
                 }
             }
+
+            // SFX Sound
+            audioManager.SFX(0);
+            Debug.Log("Setting Button");
         }
 
         // playerNameBoxList 실시간 최신화 
@@ -94,6 +98,10 @@ public class LobbyUIManager : Singleton<LobbyUIManager>
             }
 
             interacting = true;
+
+            // SFX Sound
+            audioManager.SFX(0);
+            Debug.Log("Setting Button");
         }
 
         // 만들어진 방 list 들 position 값 조정

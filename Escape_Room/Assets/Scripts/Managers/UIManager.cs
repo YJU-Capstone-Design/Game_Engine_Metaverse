@@ -146,6 +146,10 @@ public class UIManager : Singleton<UIManager>
                     }
                 }
             }
+
+            // SFX Sound
+            audioManager.SFX(0);
+            Debug.Log("Setting Button");
         }
 
         // 상호작용 가능한 오브젝트 버튼이 활성화 되었을 때
@@ -154,6 +158,10 @@ public class UIManager : Singleton<UIManager>
             if (Input.GetKeyDown(KeyCode.F))
             {
                 OpenNarration(activeObjectName.text);
+
+                // SFX Sound
+                audioManager.SFX(0);
+                Debug.Log("Setting Button");
             }
         }
 
@@ -226,6 +234,10 @@ public class UIManager : Singleton<UIManager>
 
                     CloseAllUI();
                 }
+
+                // SFX Sound
+                audioManager.SFX(0);
+                Debug.Log("Setting Button");
             }
             else if (narrationText.text == narration.refrigerator)
             {
@@ -234,11 +246,19 @@ public class UIManager : Singleton<UIManager>
                     activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
                     pv.RPC("UsingLock", RpcTarget.All, "Dial");
+
+                    // SFX Sound
+                    audioManager.SFX(0);
+                    Debug.Log("Setting Button");
                 }
                 else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
                 {
                     activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
                     narrationBox.SetActive(false);
+
+                    // SFX Sound
+                    audioManager.SFX(0);
+                    Debug.Log("Setting Button");
                 }
             }
         }
@@ -257,12 +277,9 @@ public class UIManager : Singleton<UIManager>
     {
         playTime = 900; // 15min
 
-        if (playerLife[0].activeInHierarchy)
+        foreach (GameObject life in playerLife)
         {
-            foreach (GameObject life in playerLife)
-            {
-                life.SetActive(true);
-            }
+            life.SetActive(true);
         }
 
         foreach (GameObject activeObj in activeObjects)
