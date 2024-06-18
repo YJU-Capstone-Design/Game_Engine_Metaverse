@@ -31,4 +31,17 @@ public class AudioManager : Singleton<AudioManager>
             }
         }
     }
+
+    public void SetBGMVolume(float volume)
+    {
+        bgmAudio.volume = volume;
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        foreach(AudioSource sfxAudio in sfxAudios)
+        {
+            sfxAudio.volume = volume;
+        }
+    }
 }

@@ -65,6 +65,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     public Animator loadingFadeAnim;
     public GameObject generalBtns; // 게임 설정 창 일반 버튼
     public GameObject[] reCheckUI; // 종료/로비 재확인 UI 창
+    public GameObject volumeSlides;
 
     [Header("# InGame")]
     public int hintCount;
@@ -586,9 +587,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     {
         settingMainImg.sprite = settingSprites[0];
         desPageBtn.SetActive(false);
+        volumeSlides.SetActive(false);
 
         // 일반 버튼
-        if(lobbyCanvas.activeInHierarchy || inGameCanvas.activeInHierarchy)
+        if (lobbyCanvas.activeInHierarchy || inGameCanvas.activeInHierarchy)
         {
             generalBtns.SetActive(true);
         }
@@ -604,6 +606,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         settingMainImg.sprite = settingSprites[1];
         desPageBtn.SetActive(false);
         generalBtns.SetActive(false);
+        volumeSlides.SetActive(true);
 
         // SFX Sound
         audioManager.SFX(0);
@@ -616,6 +619,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         settingMainImg.sprite = settingSprites[2];
         desPageBtn.SetActive(true);
         generalBtns.SetActive(false);
+        volumeSlides.SetActive(false);
 
         // SFX Sound
         audioManager.SFX(0);
