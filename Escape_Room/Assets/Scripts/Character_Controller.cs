@@ -148,6 +148,9 @@ public class Character_Controller : MonoBehaviourPunCallbacks
                     rb.velocity = Vector3.zero;
                     animator.SetBool("Walk", false);
                     animator.SetBool("Run", false);
+
+                    playerAudioSource.Stop();
+                    playerAudioSource.clip = null;
                 }
                 else
                 {

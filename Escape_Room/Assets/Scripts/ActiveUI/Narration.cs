@@ -19,7 +19,8 @@ public class Narration : MonoBehaviour
     public string wallClock;     // 벽걸이 시계
     public string kitchenKnife;  // 식칼
     public string WallTV;        // 벽걸이 TV
-    public string keyLock;       // 열쇠 자물쇠
+    public string keyLock_1;       // 열쇠 자물쇠 (열쇠 얻기 전)
+    public string keyLock_2;       // 열쇠 자물쇠 (열쇠 얻은 후)
     public string directionLock; // 방향 자물쇠
     public string dialLock;      // 번호 자물쇠
     public string buttonLock;    // 버튼 자물쇠
@@ -52,11 +53,12 @@ public class Narration : MonoBehaviour
         wallClock = "건전지가 다 닳은 거 같다. 시각은 7:32을 가리키고 있다.";
         kitchenKnife = "피가 묻은 식칼이다. 중요한 증거품이 될 거 같다.";
         WallTV = "복현동에서 일어나는 연쇄살인 사건을 보도 하고 있다.\n지금까지 피해자는 27명인 거 같다.";
-        keyLock = "열쇠가 필요한 자물쇠다.\n열쇠를 사용하시길 원하시면 Enter를 눌러주십시오...";
+        keyLock_1 = "열쇠가 필요한 자물쇠다. 근처에서 열쇠를 찾아보자.";
+        keyLock_2 = "열쇠가 필요한 자물쇠다.\n열쇠를 사용하시길 원하시면 Enter를 눌러주십시오...";
         directionLock = "방향형 자물쇠다.\n입력을 원하시면 Enter를 눌러주십시오...";
         dialLock = "3가지 숫자를 입력하는 번호 자물쇠다.\n입력을 원하시면 Enter를 눌러주십시오...";
         buttonLock = "4가지 숫자를 입력하는 버튼 자물쇠다.\n입력을 원하시면 Enter를 눌러주십시오...";
-        key = "이걸로 열쇠형 자물쇠를 열 수 있을 거 같다.";
+        key = "열쇠 뭉치를 얻었다. 이 열쇠 뭉치로 침실 문의 자물쇠를 열 수 있을 거 같다.";
         storageCloset = "방향 자물쇠의 힌트가 적혀있는 쪽지가 있다.\nAA 건전지 3개를 구매한 영수증이다.";
         hintZero = "사용 가능한 힌트 횟수를 다 사용하셨습니다.";
         remote = "눌러봤지만 아무런 반응이 없다.";
