@@ -239,6 +239,7 @@ public class Character_Controller : MonoBehaviourPunCallbacks
         {
             // Idle State
             animator.SetBool("Walk", false);
+            animator.SetBool("Run", false);
             rb.velocity = Vector3.zero;
             player_Body.transform.localRotation = Quaternion.Euler(new Vector3(0, camera_Rotation.localEulerAngles.y, 0));
 
