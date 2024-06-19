@@ -232,6 +232,8 @@ public class Killer : MonoBehaviour
                         nma.SetDestination(transform.position);
                         animator.SetTrigger("isAtk");
                         animator.SetBool("isWalk", false);
+                        killderAudioSource.Stop();
+                        killderAudioSource.clip = null;
                     }
                 }
                 else if(hit.transform.gameObject == null)
