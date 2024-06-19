@@ -1,4 +1,5 @@
 using Photon.Pun;
+using SojaExiles;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -118,16 +119,21 @@ public class UIManager : Singleton<UIManager>
             activeObj.GetComponent<Collider>().enabled = true;
         }
 
-        foreach(GameObject door in doors)
-        {
-            door.GetComponent<Animator>().SetBool("open", false);
-        }
+        doors[0].GetComponent<Animator>().SetBool("open", false);
+        doors[1].GetComponent<opencloseDoor1>().openandclose1.Play("Closing 1");
+        doors[1].gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        doors[1].GetComponent<opencloseDoor1>().open = false;
+
+        // 파티클 비활성화
+        particles[0].SetActive(false);
+        particles[1].SetActive(false);
+        particles[2].SetActive(false);
     }
 
     private void Update()
     {
-        // 방향 자물쇠 입력 값이 4개 일 경우 정답 확인
-        if (dirLockInput.Count == 4 && !checkDirectioin)
+        // 방향 자물쇠 입력 값이 12개 일 경우 정답 확인
+        if (dirLockInput.Count == 12 && !checkDirectioin)
         {
             Debug.Log(checkDirectioin);
             checkDirectioin = true;
@@ -456,7 +462,7 @@ public class UIManager : Singleton<UIManager>
         dirLockInput = new List<string>();
 
         // 방향 자물쇠 정답 세팅 상7, 우3, 하2 로 변경해야 됨.
-        dirLockAnswer = new string[4] { "Up", "Down", "Right", "Left" };
+        dirLockAnswer = new string[12] { "Up", "Up", "Up", "Up", "Up", "Up", "Up", "Right", "Right", "Right", "Down", "Down" };
 
         checkDirectioin = false;
     }
@@ -1000,6 +1006,10 @@ public class UIManager : Singleton<UIManager>
         }
 
         particles[2].SetActive(false); // 파티클 비활성화
+
+        // 플레이어 가방
+        hintObjects[1].layer = 0;
+
     }
 
 

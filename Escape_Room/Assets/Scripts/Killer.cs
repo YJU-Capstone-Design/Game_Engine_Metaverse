@@ -175,13 +175,12 @@ public class Killer : MonoBehaviour
             if(target != null)
             {
                 // 사운드
-                StartCoroutine(PlaySound("Run"));
+                // StartCoroutine(PlaySound("Run"));
             }
             else if(target == null && !idle)
             {
                 // 사운드
-                StartCoroutine(PlaySound("Walk"));
-                Debug.Log("wander");
+                // StartCoroutine(PlaySound("Walk"));
             }
         }
     }

@@ -59,7 +59,7 @@ namespace SojaExiles
 			yield return new WaitForSeconds(.5f);
 		}
 
-		IEnumerator closing()
+		public IEnumerator closing()
 		{
 			print("you are closing the door");
 			openandclose1.Play("Closing 1");

@@ -215,7 +215,7 @@ public class Character_Controller : MonoBehaviourPunCallbacks
                 }
 
                 // 사운드
-                StartCoroutine(PlaySound("Run"));
+                // StartCoroutine(PlaySound("Run"));
             }
             else // !isRun
             {
@@ -232,7 +232,7 @@ public class Character_Controller : MonoBehaviourPunCallbacks
                 }
 
                 // 사운드
-                StartCoroutine(PlaySound("Walk"));
+                // StartCoroutine(PlaySound("Walk"));
             }
         }
         else // !isMove
@@ -244,8 +244,8 @@ public class Character_Controller : MonoBehaviourPunCallbacks
             player_Body.transform.localRotation = Quaternion.Euler(new Vector3(0, camera_Rotation.localEulerAngles.y, 0));
 
             // 사운드
-            playerAudioSource.Stop();
-            playerAudioSource.clip = null;
+            // playerAudioSource.Stop();
+            // playerAudioSource.clip = null;
         }
     }
 
