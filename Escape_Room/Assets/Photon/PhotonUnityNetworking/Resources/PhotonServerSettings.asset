@@ -72,6 +72,7 @@ MonoBehaviour:
   - TimeLimit
   - RPC_PlayerDie
   - UsingLock
+  - LoseLife
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

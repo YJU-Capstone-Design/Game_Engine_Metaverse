@@ -113,6 +113,24 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
                 }
             }
         }
+
+        // 인게임에서 모두가 남은 생명이 0 일때 강제 로비 이동
+        if(roomName != "Lobby")
+        {
+            for(int i = 0; i < playerList.Count; i++)
+            {
+                Character_Controller playerLogic = playerList[i].GetComponent<Character_Controller>();  
+
+                if(playerLogic.playerLife > 0)
+                    break;
+
+                if(i == playerList.Count - 1)
+                {
+                    BackToLobby();
+                }
+
+            }
+        }
     }
 
     // 포톤 서버에 접속 후 호출되는 콜백 함수
@@ -215,6 +233,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
 
             // 세팅 초기화
             UIManager.Instance.InGameSetting();
+            GameManager.Instance.isSpawn = false;
 
             // BGM
             audioManager.bgmAudio.clip = audioManager.bgmClips[1];
@@ -657,6 +676,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 게임 시작 후 Lobby 로 돌아가는 버튼 로직 -> UI 오픈은 UIManager 스크립트에 제작
     public void BackToLobby()
     {
+        Killer killer = FindAnyObjectByType<Killer>();
+        if (killer != null) Destroy(killer.gameObject);
+
         roomName = "Lobby";
 
         // SFX Sound

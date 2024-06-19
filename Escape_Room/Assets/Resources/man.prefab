@@ -936,6 +936,7 @@ GameObject:
   - component: {fileID: 1616738347486946319}
   - component: {fileID: 8430214248707736263}
   - component: {fileID: 4633971254506845035}
+  - component: {fileID: 9198852377327228502}
   m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
@@ -1021,6 +1022,29 @@ MonoBehaviour:
   parent: {fileID: 0}
   killer: {fileID: 0}
   weapon: {fileID: 0}
+--- !u!114 &9198852377327228502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2374430763718696840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1616738347486946319}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2393244445261020883
 GameObject:
   m_ObjectHideFlags: 0

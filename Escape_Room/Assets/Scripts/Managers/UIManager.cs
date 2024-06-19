@@ -793,7 +793,7 @@ public class UIManager : Singleton<UIManager>
         activeUIChildren[14].SetActive(false);
 
         // 실패 시 제한시간 30초 감소
-        pv.RPC("ReduceTime", RpcTarget.MasterClient);
+        pv.RPC("ReduceTime", RpcTarget.All);
     }
 
     public void BreakLockButton(string name)
