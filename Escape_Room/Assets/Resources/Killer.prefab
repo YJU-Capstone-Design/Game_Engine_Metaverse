@@ -158,10 +158,12 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   animator: {fileID: 0}
   nma: {fileID: 0}
+  killderAudioSource: {fileID: 0}
   weapon: {fileID: 0}
   sphereRadius: 5
   findRange: 120
   target: {fileID: 0}
+  targetBody: {fileID: 0}
   wanderPosition:
   - {x: 95, y: -0.5, z: -18}
   - {x: 92.5, y: -0.5, z: 0}
@@ -170,6 +172,8 @@ MonoBehaviour:
   - {x: 87.5, y: -0.5, z: -8}
   isAtk: 0
   isWander: 0
+  walkSound: {fileID: 8300000, guid: 87c6fb5b94adc674b9ffeef3110d6c6c, type: 3}
+  runSound: {fileID: 8300000, guid: ef96d126df2d7d54d8d9114540752211, type: 3}
 --- !u!136 &1844219950558992444
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -13,6 +13,10 @@ public class AudioManager : Singleton<AudioManager>
     public AudioSource[] sfxAudios;
     public AudioClip[] sfxClips;
 
+    [Header("# Player/Killer")]
+    public AudioSource playerAudio;
+    public AudioSource killerAudio;
+
     private void Awake()
     {
         sfxAudios = sfxObject.GetComponentsInChildren<AudioSource>();
@@ -43,5 +47,8 @@ public class AudioManager : Singleton<AudioManager>
         {
             sfxAudio.volume = volume;
         }
+
+        playerAudio.volume = volume;
+        killerAudio.volume = volume;
     }
 }

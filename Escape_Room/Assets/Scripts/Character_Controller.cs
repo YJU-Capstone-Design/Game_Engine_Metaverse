@@ -65,7 +65,6 @@ public class Character_Controller : MonoBehaviourPunCallbacks
         photonManager = LobbyUIManager.Instance.photonManager;
         pv = GetComponent<PhotonView>();
         photonTransformView = GetComponent<PhotonTransformView>();
-        playerAudioSource = GetComponent<AudioSource>();
 
         if (photonView.IsMine)
         {
@@ -106,6 +105,8 @@ public class Character_Controller : MonoBehaviourPunCallbacks
     {
         Camera_Setting();
         Player_Setting();
+
+        playerAudioSource = AudioManager.Instance.playerAudio;
     }
 
     private void Player_Setting()

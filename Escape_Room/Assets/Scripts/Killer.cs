@@ -11,6 +11,7 @@ public class Killer : MonoBehaviour
     public GameManager gameManager;
     [SerializeField] private Animator animator;
     [SerializeField] private NavMeshAgent nma;
+    [SerializeField] AudioSource killderAudioSource;
 
     [Header("Setting")]
     public GameObject weapon;
@@ -29,9 +30,16 @@ public class Killer : MonoBehaviour
     [SerializeField] protected bool isAtk = false;
     [SerializeField] private bool isWander = false;
 
+    [Header("Sound")]
+    bool idle = false;
+    [SerializeField] AudioClip walkSound;
+    [SerializeField] AudioClip runSound;
+
     private void Start()
     {
         Killer_Init();
+
+        killderAudioSource = AudioManager.Instance.killerAudio;
     }
 
     private void Killer_Init()
@@ -163,6 +171,18 @@ public class Killer : MonoBehaviour
                     StartCoroutine(Wander());
                 }
             }
+
+            if(target != null)
+            {
+                // 사운드
+                StartCoroutine(PlaySound("Run"));
+            }
+            else if(target == null && !idle)
+            {
+                // 사운드
+                StartCoroutine(PlaySound("Walk"));
+                Debug.Log("wander");
+            }
         }
     }
 
@@ -180,7 +200,11 @@ public class Killer : MonoBehaviour
             }
             nma.SetDestination(transform.position);
             animator.SetBool("isWalk", false);
+            idle = true;
+            killderAudioSource.Stop();
+            killderAudioSource.clip = null;
             yield return new WaitForSecondsRealtime(3f);
+            idle = false;
 
             if (i == wanderPosition.Length - 1)
             {
@@ -229,5 +253,33 @@ public class Killer : MonoBehaviour
         if (obj.gameObject.CompareTag("BlockLine")) {
             Physics.IgnoreCollision(obj.collider, GetComponent<Collider>());
         }
+    }
+
+    // 사운드
+    IEnumerator PlaySound(string state)
+    {
+        if (state == "Walk")
+        {
+            if (killderAudioSource.clip != walkSound || !killderAudioSource.isPlaying)
+            {
+                Debug.Log("KillerWalk");
+                killderAudioSource.Stop();
+                killderAudioSource.clip = null;
+                killderAudioSource.clip = walkSound;
+                killderAudioSource.Play();
+            }
+        }
+        else if (state == "Run")
+        {
+            if (killderAudioSource.clip != runSound || !killderAudioSource.isPlaying)
+            {
+                killderAudioSource.Stop();
+                killderAudioSource.clip = null;
+                killderAudioSource.clip = runSound;
+                killderAudioSource.Play();
+            }
+        }
+
+        yield return new WaitForSeconds(1);
     }
 }
