@@ -32,6 +32,7 @@ public class Narration : MonoBehaviour
     public string getUSB; // USB 획득
     public string livingroomTV_1; // USB 획득 전 거실 TV
     public string livingroomTV_2; // USB 획득 후 거실 TV
+    public string usbInfo; // USB 내용
     public string whiteBoard; // 화이트보드
     public string doorLock; // 탈출문 도어락
     public string refrigerator; // 냉장고
@@ -65,6 +66,7 @@ public class Narration : MonoBehaviour
         getUSB = "금고 안에서 USB를 발견했다. TV에 연결해서 내용을 확인할 수 있을 거 같다.";
         livingroomTV_1 = "전원은 들어오지만 화면에 반응은 없다.";
         livingroomTV_2 = "USB를 연결할 수 있을 것 같다.\n연결을 원하시면 Enter를 눌러주십시오...";
+        usbInfo = "USB에는 진범의 살인 계획에 대한 정보가 들어있다.\n진범은 오늘 03월 25일에 마을을 떠날 예정인 거 같다.";
         whiteBoard = "피해자들의 사진인 것 같다. 모든 사진에는 X 표시가 되어있다. \n자세히 확인하고 싶으시면 Enter를 눌러주십시오...";
         doorLock= "비밀번호를 입력하면 탈출할 수 있을 거 같다.\n입력을 원하시면 Enter를 눌러주십시오...";
         refrigerator = "냉장고의 위 칸은 번호 자물쇠로 잠겨있다.\n자물쇠 해제를 원하시면 숫자 1번을,\n아래 칸을 살펴보길 원하시면 숫자 2번을 눌러주십시오...";

@@ -429,6 +429,9 @@ public class UIManager : Singleton<UIManager>
                     narrationText.text = narration.livingroomTV_2;
                 }
                 break;
+            case "UsbInfo":
+                narrationText.text = narration.usbInfo;
+                break;
             case "WhiteBoard":
                 narrationText.text = narration.whiteBoard;
                 break;
@@ -756,6 +759,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "TV":
                 TVSetting();
+                OpenNarration("UsbInfo");
                 break;
             case "DoorLock":
                 DoorLockSetting();
