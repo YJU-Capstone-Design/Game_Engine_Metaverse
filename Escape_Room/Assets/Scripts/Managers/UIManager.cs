@@ -101,6 +101,29 @@ public class UIManager : Singleton<UIManager>
         KeyLockSetting();
     }
 
+    private void OnEnable()
+    {
+        InGameSetting();
+
+        DirectionLockSetting();
+        ButtonLockSetting();
+        DialLockSetting();
+        TVSetting();
+        DoorLockSetting();
+        KeyLockSetting();
+
+        foreach(GameObject activeObj in activeObjects)
+        {
+            activeObj.SetActive(true);
+            activeObj.GetComponent<Collider>().enabled = true;
+        }
+
+        foreach(GameObject door in doors)
+        {
+            door.GetComponent<Animator>().SetBool("open", false);
+        }
+    }
+
     private void Update()
     {
         // 방향 자물쇠 입력 값이 4개 일 경우 정답 확인
