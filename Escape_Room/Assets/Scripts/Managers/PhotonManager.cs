@@ -119,6 +119,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             for(int i = 0; i < playerList.Count; i++)
             {
+                if (playerList[i] == null)
+                    continue;
+
                 Character_Controller playerLogic = playerList[i].GetComponent<Character_Controller>();  
 
                 if(playerLogic.playerLife > 0)

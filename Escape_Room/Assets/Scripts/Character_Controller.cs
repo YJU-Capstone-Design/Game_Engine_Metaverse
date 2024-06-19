@@ -442,4 +442,12 @@ public class Character_Controller : MonoBehaviourPunCallbacks
 
         yield return new WaitForSeconds(1);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Portal"))
+        {
+            uiManager.photonManager.BackToLobby();
+        }
+    }
 }
