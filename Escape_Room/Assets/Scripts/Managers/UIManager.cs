@@ -113,7 +113,7 @@ public class UIManager : Singleton<UIManager>
         DoorLockSetting();
         KeyLockSetting();
 
-        foreach(GameObject activeObj in activeObjects)
+        foreach (GameObject activeObj in activeObjects)
         {
             activeObj.SetActive(true);
             activeObj.GetComponent<Collider>().enabled = true;
@@ -205,19 +205,19 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[7].SetActive(true); // 방향 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "Direction");
+                    pv.RPC("UsingLock", RpcTarget.All, "Direction", true);
                 }
                 else if (narrationText.text == narration.buttonLock)
                 {
                     activeUIChildren[10].SetActive(true); // 버튼 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "Button");
+                    pv.RPC("UsingLock", RpcTarget.All, "Button", true);
                 }
                 else if (narrationText.text == narration.keyLock_2)
                 {
                     activeUIChildren[12].SetActive(true); // 열쇠 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "KeyLock");
+                    pv.RPC("UsingLock", RpcTarget.All, "KeyLock", true);
                 }
                 else if (narrationText.text == narration.deadBodyBag)
                 {
@@ -242,13 +242,13 @@ public class UIManager : Singleton<UIManager>
                     connetUSB = true;
                     activeUIChildren[16].SetActive(true); // TV/Remote UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "TV");
+                    pv.RPC("UsingLock", RpcTarget.All, "TV", true);
                 }
                 else if (narrationText.text == narration.doorLock)
                 {
                     activeUIChildren[17].SetActive(true); // DoorLock UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "DoorLock");
+                    pv.RPC("UsingLock", RpcTarget.All, "DoorLock", true);
                 }
                 else if (narrationText.text == narration.whiteBoard)
                 {
@@ -277,7 +277,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "Dial");
+                    pv.RPC("UsingLock", RpcTarget.All, "Dial", true);
 
                     // SFX Sound
                     audioManager.SFX(0);
@@ -876,29 +876,57 @@ public class UIManager : Singleton<UIManager>
     }
 
     [PunRPC]
-    void UsingLock(string name)
+    void UsingLock(string name, bool usingLock)
     {
-        switch (name)
+        if (usingLock)
         {
-            case "Direction":
-                activeObjects[0].layer = 0;
-                break;
-            case "Button":
-                activeObjects[1].layer = 0;
-                break;
-            case "Dial":
-                activeObjects[3].layer = 0;
-                break;
-            case "TV":
-                activeObjects[2].layer = 0;
-                break;
-            case "DoorLock":
-                activeObjects[4].layer = 0;
-                break;
-            case "KeyLock":
-                activeObjects[7].layer = 0;
-                break;
+            switch (name)
+            {
+                case "Direction":
+                    activeObjects[0].layer = 0;
+                    break;
+                case "Button":
+                    activeObjects[1].layer = 0;
+                    break;
+                case "Dial":
+                    activeObjects[3].layer = 0;
+                    break;
+                case "TV":
+                    activeObjects[2].layer = 0;
+                    break;
+                case "DoorLock":
+                    activeObjects[4].layer = 0;
+                    break;
+                case "KeyLock":
+                    activeObjects[7].layer = 0;
+                    break;
+            }
         }
+        else
+        {
+            switch (name)
+            {
+                case "Direction":
+                    activeObjects[0].layer = 6;
+                    break;
+                case "Button":
+                    activeObjects[1].layer = 6;
+                    break;
+                case "Dial":
+                    activeObjects[3].layer = 6;
+                    break;
+                case "TV":
+                    activeObjects[2].layer = 6;
+                    break;
+                case "DoorLock":
+                    activeObjects[4].layer = 6;
+                    break;
+                case "KeyLock":
+                    activeObjects[7].layer = 6;
+                    break;
+            }
+        }
+
     }
 
     // 화이트보드 ClueNote 버튼
@@ -967,11 +995,11 @@ public class UIManager : Singleton<UIManager>
             return;
 
         // 남은 횟수가 1회일 시, 다른 사람 UI 도 종료
-        if (photonManager.hintCount == 1)
-        {
-            narrationBox.SetActive(false);
-            activeUIChildren[0].SetActive(false);
-        }
+        //if (photonManager.hintCount == 1)
+        //{
+        //    narrationBox.SetActive(false);
+        //    activeUIChildren[0].SetActive(false);
+        //}
 
         // 힌트 사용 로직 필요
         if (photonManager.hintCount == 2)
@@ -1120,7 +1148,37 @@ public class UIManager : Singleton<UIManager>
     {
         foreach (GameObject obj in activeUIChildren)
         {
-            if (obj.activeInHierarchy) { CloseAcvtiveUI(obj); obj.SetActive(false); }
+            if (obj.activeInHierarchy) 
+            { 
+                CloseAcvtiveUI(obj); 
+                obj.SetActive(false); 
+
+                if(obj == activeUIChildren[7])
+                {
+                    pv.RPC("UsingLock", RpcTarget.All, "Direction", false);
+                }
+                else if (obj == activeUIChildren[10])
+                {
+                    pv.RPC("UsingLock", RpcTarget.All, "Button", false);
+                }
+                else if (obj == activeUIChildren[11])
+                {
+                    pv.RPC("UsingLock", RpcTarget.All, "Dial", false);
+                }
+                else if (obj == activeUIChildren[12])
+                {
+                    pv.RPC("UsingLock", RpcTarget.All, "KeyLock", false);
+                }
+                else if (obj == activeUIChildren[16])
+                {
+                    pv.RPC("UsingLock", RpcTarget.All, "TV", false);
+                }
+                else if (obj == activeUIChildren[17])
+                {
+                    pv.RPC("UsingLock", RpcTarget.All, "DoorLock", false);
+                }
+
+            }
 
             activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
         }
