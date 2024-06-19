@@ -25,7 +25,7 @@ public class GameManager : Singleton<GameManager>
         photonManager = FindObjectOfType<PhotonManager>();
         //InvokeRepeating("Player_Check", 5, 5);
 
-        killerSpawnTime = 899;
+        killerSpawnTime = 600; // 10min
     }
 
     void Update()
