@@ -205,19 +205,16 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[7].SetActive(true); // 방향 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "Direction", true);
                 }
                 else if (narrationText.text == narration.buttonLock)
                 {
                     activeUIChildren[10].SetActive(true); // 버튼 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "Button", true);
                 }
                 else if (narrationText.text == narration.keyLock_2)
                 {
                     activeUIChildren[12].SetActive(true); // 열쇠 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "KeyLock", true);
                 }
                 else if (narrationText.text == narration.deadBodyBag)
                 {
@@ -242,13 +239,11 @@ public class UIManager : Singleton<UIManager>
                     connetUSB = true;
                     activeUIChildren[16].SetActive(true); // TV/Remote UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "TV", true);
                 }
                 else if (narrationText.text == narration.doorLock)
                 {
                     activeUIChildren[17].SetActive(true); // DoorLock UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "DoorLock", true);
                 }
                 else if (narrationText.text == narration.whiteBoard)
                 {
@@ -259,7 +254,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "Button", true);
                 }
                 else
                 {
@@ -403,12 +397,15 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "DirectionLock":
                 narrationText.text = narration.directionLock;
+                pv.RPC("UsingLock", RpcTarget.All, "Direction", true);
                 break;
             case "ButtonLock":
                 narrationText.text = narration.buttonLock;
+                pv.RPC("UsingLock", RpcTarget.All, "Button", true);
                 break;
             case "DialLock":
                 narrationText.text = narration.dialLock;
+                pv.RPC("UsingLock", RpcTarget.All, "Dial", true);
                 break;
             case "KeyLock":
                 if (!getKey)
@@ -418,6 +415,7 @@ public class UIManager : Singleton<UIManager>
                 else if (getKey)
                 {
                     narrationText.text = narration.keyLock_2;
+                    pv.RPC("UsingLock", RpcTarget.All, "KeyLock", true);
                 }
                 break;
             case "GetKey":
@@ -446,6 +444,7 @@ public class UIManager : Singleton<UIManager>
                 else if (getUSB)
                 {
                     narrationText.text = narration.livingroomTV_2;
+                    pv.RPC("UsingLock", RpcTarget.All, "TV", true);
                 }
                 break;
             case "UsbInfo":
@@ -456,9 +455,11 @@ public class UIManager : Singleton<UIManager>
                 break;
             case "ExitDoor":
                 narrationText.text = narration.doorLock;
+                pv.RPC("UsingLock", RpcTarget.All, "DoorLock", true);
                 break;
             case "Refrigerator":
                 narrationText.text = narration.refrigerator;
+                pv.RPC("UsingLock", RpcTarget.All, "Dial", true);
                 break;
             case "Refrigerator_1":
                 narrationText.text = narration.refrigerator_1;
