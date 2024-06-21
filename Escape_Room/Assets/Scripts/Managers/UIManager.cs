@@ -309,6 +309,17 @@ public class UIManager : Singleton<UIManager>
     {
         playTime = 900; // 15min
 
+        // bool 값 초기화
+        getKey = false;
+        isCheckAnswer = false;
+        interacting = false;
+        checkDirectioin = false;
+        getUSB = false;
+        connetUSB = false;
+        tvPowerOn = false;
+        breakLock = false;
+        getSchoolsupplies = false;
+
         foreach (GameObject life in playerLife)
         {
             life.SetActive(true);
