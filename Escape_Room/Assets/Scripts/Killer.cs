@@ -69,7 +69,7 @@ public class Killer : MonoBehaviourPunCallbacks
             Killer_Find();
             Killer_Move();
 
-            pv.RPC("RPC_Move", RpcTarget.Others, transform.position, transform.rotation); 
+            pv.RPC("RPC_Move", RpcTarget.All, transform.position, transform.rotation); 
         }
         Killer_Attack();
     }
