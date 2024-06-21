@@ -692,6 +692,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             UIManager.Instance.CloseAllUI();
             inGameCanvas.SetActive(false);
+
+            for (int i = 0; i < 5; i++)
+            {
+                UIManager.Instance.activeObjects[i].layer = 6;
+            }
+            UIManager.Instance.activeObjects[7].layer = 6;
         }
 
         foreach (GameObject UI in lobbyUIManager.activeUIBoxs)
