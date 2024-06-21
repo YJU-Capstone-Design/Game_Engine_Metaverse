@@ -50,6 +50,7 @@ public class Killer : MonoBehaviourPunCallbacks
 
         animator = GetComponent<Animator>();
         animator.SetBool("isWalk", false);
+        pv.RPC("RPC_anime", RpcTarget.All, "isWalk", false);
 
         nma = GetComponent<NavMeshAgent>();
         nma.speed = 3f;
@@ -174,6 +175,7 @@ public class Killer : MonoBehaviourPunCallbacks
                 nma.speed = 5f;
                 nma.SetDestination(target.transform.position);
                 animator.SetBool("isWalk", true);
+                pv.RPC("RPC_anime", RpcTarget.All, "isWalk", true);
             }
             else
             {
@@ -206,12 +208,14 @@ public class Killer : MonoBehaviourPunCallbacks
             Vector3 tfPos = new Vector3(wanderPosition[i].x, transform.position.y, wanderPosition[i].z);
             nma.SetDestination(tfPos);
             animator.SetBool("isWalk", true);
+            pv.RPC("RPC_anime", RpcTarget.All, "isWalk", true);
             while (Vector3.Distance(transform.position, tfPos) > 1.5f)
             {
                 yield return null;
             }
             nma.SetDestination(transform.position);
             animator.SetBool("isWalk", false);
+            pv.RPC("RPC_anime", RpcTarget.All, "isWalk", false);
             idle = true;
             killderAudioSource.Stop();
             killderAudioSource.clip = null;
@@ -243,7 +247,9 @@ public class Killer : MonoBehaviourPunCallbacks
                         isAtk = true;
                         nma.SetDestination(transform.position);
                         animator.SetTrigger("isAtk");
+                        pv.RPC("RPC_anime", RpcTarget.All, "isAtk", true);
                         animator.SetBool("isWalk", false);
+                        pv.RPC("RPC_anime", RpcTarget.All, "isWalk", false);
                         killderAudioSource.Stop();
                         killderAudioSource.clip = null;
                     }
@@ -303,5 +309,19 @@ public class Killer : MonoBehaviourPunCallbacks
         }
 
         yield return new WaitForSeconds(1);
+    }
+
+    [PunRPC]
+    void RPC_anime(string name, bool value)
+    {
+        if (name == "isWalk")
+        {
+            animator.SetBool("isWalk", value);
+        }
+
+        if (name == "isAtk")
+        {
+            animator.SetTrigger("isAtk");
+        }
     }
 }
