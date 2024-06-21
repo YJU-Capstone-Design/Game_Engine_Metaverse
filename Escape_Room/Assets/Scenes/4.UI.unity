@@ -80417,8 +80417,8 @@ MonoBehaviour:
   myPlayer: {fileID: 0}
   myParty: {fileID: 0}
   myPlayerName: {fileID: 0}
-  lobbyspawnPoint: {x: 0, y: -0.4, z: 0}
-  inGameSpawnPoint: {x: 100, y: -0.4, z: 0}
+  lobbyspawnPoint: {x: 0, y: 0, z: 0}
+  inGameSpawnPoint: {x: 100, y: 0, z: 0}
   playerList: []
   theme: 
   partyPeopleNum: 
