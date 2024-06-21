@@ -19,7 +19,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("# Active Objects")]
     [SerializeField] List<GameObject> doors;
-    [SerializeField] List<GameObject> activeObjects; // 사용 후 상호작용이 불가능하게 만들 오브젝트들 (ex. 자물쇠)
+    [SerializeField] public List<GameObject> activeObjects; // 사용 후 상호작용이 불가능하게 만들 오브젝트들 (ex. 자물쇠)
     [SerializeField] List<GameObject> hintObjects; // 힌트 사용 시 상호작용하는 오브젝트들
     [SerializeField] List<GameObject> hintButtons; // 힌트 버튼들
     bool getSchoolsupplies = false;
@@ -1174,7 +1174,7 @@ public class UIManager : Singleton<UIManager>
                     {
                         pv.RPC("UsingLock", RpcTarget.All, "Button", false);
                     }
-                    else if (narrationText.text == narration.refrigerator)
+                    else if (narrationText.text == narration.refrigerator || narrationText.text == narration.refrigerator_1 || narrationText.text == narration.refrigerator_2)
                     {
                         pv.RPC("UsingLock", RpcTarget.All, "Dial", false);
                     }
@@ -1200,7 +1200,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     pv.RPC("UsingLock", RpcTarget.All, "Button", false);
                 }
-                else if (obj == activeUIChildren[11])
+                else if (obj == activeUIChildren[11] || obj == activeUIChildren[19])
                 {
                     pv.RPC("UsingLock", RpcTarget.All, "Dial", false);
                 }
@@ -1228,12 +1228,6 @@ public class UIManager : Singleton<UIManager>
         interacting = false;
 
         narrationText.text = "";
-
-        //for (int i = 0; i < 5; i++)
-        //{
-        //    activeObjects[i].layer = 6;
-        //}
-        //activeObjects[7].layer = 6;
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
