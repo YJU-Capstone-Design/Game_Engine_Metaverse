@@ -53,6 +53,7 @@ public class UIManager : Singleton<UIManager>
     [Header("# Key Lock")]
     [SerializeField] TextMeshProUGUI fluidKeyText; // "28 + 유저 수" 값을 가지는 키
     bool getKey = false;
+    int playerCount = 0;
 
     [Header("# TV / Remote")]
     public List<string> tvInput;
@@ -192,6 +193,11 @@ public class UIManager : Singleton<UIManager>
                 audioManager.SFX(0);
                 Debug.Log("Setting Button");
             }
+
+            if(photonManager.playerList.Count > 0)
+            {
+                playerCount = photonManager.playerList.Count;
+            }
         }
 
         // narrationBox 가 활성화 되었을 때, Enter 키를 누르면 기능이 있을 경우엔 기능 작동, 아니면 narrationBox 비활성화
@@ -296,7 +302,7 @@ public class UIManager : Singleton<UIManager>
         photonManager.SetPlayerList();
 
         // fluidKeyText 설정
-        fluidKeyText.text = (28 + photonManager.playerList.Count).ToString();
+        fluidKeyText.text = (28 + playerCount).ToString();
     }
 
     public void InGameSetting()
