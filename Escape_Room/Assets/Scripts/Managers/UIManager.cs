@@ -1167,9 +1167,10 @@ public class UIManager : Singleton<UIManager>
                 CloseAcvtiveUI(obj); 
                 obj.SetActive(false); 
 
-                if(obj == activeUIChildren[7])
+                if(obj.name.Contains("Direction"))
                 {
                     pv.RPC("UsingLock", RpcTarget.All, "Direction", false);
+                    Debug.Log(obj.name);
                 }
                 else if (obj == activeUIChildren[10])
                 {
@@ -1201,11 +1202,11 @@ public class UIManager : Singleton<UIManager>
 
         narrationText.text = "";
 
-        for (int i = 0; i < 5; i++)
-        {
-            activeObjects[i].layer = 6;
-        }
-        activeObjects[7].layer = 6;
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    activeObjects[i].layer = 6;
+        //}
+        //activeObjects[7].layer = 6;
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)

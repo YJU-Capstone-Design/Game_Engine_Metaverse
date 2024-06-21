@@ -50,7 +50,7 @@ public class Killer : MonoBehaviourPunCallbacks
 
         animator = GetComponent<Animator>();
         animator.SetBool("isWalk", false);
-        pv.RPC("RPC_anime", RpcTarget.All, "isWalk", false);
+       // pv.RPC("RPC_anime", RpcTarget.All, "isWalk", false);
 
         nma = GetComponent<NavMeshAgent>();
         nma.speed = 3f;
