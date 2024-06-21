@@ -143,8 +143,6 @@ public class UIManager : Singleton<UIManager>
         // 켜져있는 오브젝트 꺼짐
         if (Input.GetKeyDown(KeyCode.Escape) && !isCheckAnswer)
         {
-            narrationText.text = "";
-
             // 화이트보드
             if (clueNote.activeInHierarchy)
             {
@@ -1163,13 +1161,40 @@ public class UIManager : Singleton<UIManager>
         foreach (GameObject obj in activeUIChildren)
         {
             if (obj.activeInHierarchy) 
-            { 
-                CloseAcvtiveUI(obj); 
-                obj.SetActive(false); 
-
-                if(obj == activeUIChildren[7])
+            {
+                if(obj.name.Contains("Narration"))
+                {
+                    Debug.Log("Narration");
+                    if (narrationText.text == narration.directionLock)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "Direction", false);
+                        Debug.Log("Dddd");
+                    }
+                    else if (narrationText.text == narration.buttonLock)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "Button", false);
+                    }
+                    else if (narrationText.text == narration.refrigerator)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "Dial", false);
+                    }
+                    else if (narrationText.text == narration.keyLock_2)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "KeyLock", false);
+                    }
+                    else if (narrationText.text == narration.livingroomTV_2)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "TV", false);
+                    }
+                    else if (narrationText.text == narration.doorLock)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "DoorLock", false);
+                    }
+                }
+                else if (obj.name.Contains("Direction"))
                 {
                     pv.RPC("UsingLock", RpcTarget.All, "Direction", false);
+                    Debug.Log("dsfsdfffefewfewf");
                 }
                 else if (obj == activeUIChildren[10])
                 {
@@ -1192,6 +1217,9 @@ public class UIManager : Singleton<UIManager>
                     pv.RPC("UsingLock", RpcTarget.All, "DoorLock", false);
                 }
 
+                CloseAcvtiveUI(obj);
+                obj.SetActive(false);
+
             }
 
             activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
@@ -1201,11 +1229,11 @@ public class UIManager : Singleton<UIManager>
 
         narrationText.text = "";
 
-        for (int i = 0; i < 5; i++)
-        {
-            activeObjects[i].layer = 6;
-        }
-        activeObjects[7].layer = 6;
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    activeObjects[i].layer = 6;
+        //}
+        //activeObjects[7].layer = 6;
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)
