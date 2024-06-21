@@ -68,8 +68,17 @@ public class Killer : MonoBehaviourPunCallbacks
         {
             Killer_Find();
             Killer_Move();
-            Killer_Attack();
+
+            pv.RPC("RPC_Move", RpcTarget.Others, transform.position, transform.rotation); 
         }
+        Killer_Attack();
+    }
+
+    [PunRPC]
+    void RPC_Move(Vector3 pos, Quaternion rot)
+    {
+        transform.position = pos;
+        transform.rotation = rot;
     }
 
     private void Killer_Find()
