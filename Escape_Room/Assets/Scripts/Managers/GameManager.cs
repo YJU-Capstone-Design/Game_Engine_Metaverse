@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,7 @@ public class GameManager : Singleton<GameManager>
 
         GameObject killer = Instantiate(killerPrefab, killerSpawnPoint.position, killerSpawnPoint.rotation);
         killer.GetComponent<Killer>().gameManager = this;
+        killer.GetComponent<PhotonView>().ViewID = 22222;
 
         InvokeRepeating("Player_Check", 5, 5);
     }
