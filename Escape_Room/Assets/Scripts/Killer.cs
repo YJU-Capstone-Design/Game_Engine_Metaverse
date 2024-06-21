@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -5,13 +6,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
-public class Killer : MonoBehaviour
+public class Killer : MonoBehaviourPunCallbacks
 {
     [Header("Component")]
     public GameManager gameManager;
     [SerializeField] private Animator animator;
     [SerializeField] private NavMeshAgent nma;
     [SerializeField] AudioSource killderAudioSource;
+    [SerializeField] PhotonView pv;
 
     [Header("Setting")]
     public GameObject weapon;
@@ -57,17 +59,17 @@ public class Killer : MonoBehaviour
 
         weapon = GetComponentInChildren<Weapon>().gameObject;
 
-        //wanderPosition[0] = new Vector3(95f, -0.5f, -18f);
-        //wanderPosition[1] = new Vector3(92.5f, -0.5f, 0f);
-        //wanderPosition[2] = new Vector3(77.5f, -0.5f, 0f);
-        //wanderPosition[3] = new Vector3(77.5f, -0.5f, 10f);
+        pv = GetComponent<PhotonView>();
     }
 
     private void Update()
     {
-        Killer_Find();
-        Killer_Move();
-        Killer_Attack();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Killer_Find();
+            Killer_Move();
+            Killer_Attack();
+        }
     }
 
     private void Killer_Find()
@@ -138,6 +140,7 @@ public class Killer : MonoBehaviour
         } else
         {
             target = null;
+            isWander = false;
         }
 
         if (target != null)
@@ -145,6 +148,7 @@ public class Killer : MonoBehaviour
             if (target.GetComponentInChildren<Player_Body>() == null)
             {
                 target = null;
+                isWander = false;
             }
         }
     }
