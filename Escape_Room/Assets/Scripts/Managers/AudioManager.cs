@@ -48,7 +48,7 @@ public class AudioManager : Singleton<AudioManager>
             sfxAudio.volume = volume;
         }
 
-        playerAudio.volume = volume;
-        killerAudio.volume = volume;
+        //playerAudio.volume = volume;
+        //killerAudio.volume = volume;
     }
 }

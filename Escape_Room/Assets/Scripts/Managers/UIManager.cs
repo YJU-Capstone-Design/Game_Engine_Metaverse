@@ -738,17 +738,8 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
-        switch (name)
-        {
-            case "Direction":
-            case "Button":
-            case "Dial":
-            case "TV":
-            case "Key":
-                // SFX Sound
-                audioManager.SFX(5);
-                break;
-        }
+        // SFX Sound
+        audioManager.SFX(5);
 
         yield return new WaitForSeconds(1);
 
@@ -1007,13 +998,6 @@ public class UIManager : Singleton<UIManager>
     {
         if (photonManager.hintCount <= 0)
             return;
-
-        // 남은 횟수가 1회일 시, 다른 사람 UI 도 종료
-        //if (photonManager.hintCount == 1)
-        //{
-        //    narrationBox.SetActive(false);
-        //    activeUIChildren[0].SetActive(false);
-        //}
 
         // 힌트 사용 로직 필요
         if (photonManager.hintCount == 2)
