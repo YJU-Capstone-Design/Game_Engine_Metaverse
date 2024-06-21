@@ -259,6 +259,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
                     narrationBox.SetActive(false);
+                    pv.RPC("UsingLock", RpcTarget.All, "Button", true);
                 }
                 else
                 {
@@ -277,7 +278,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[11].SetActive(true); // 번호 자물쇠 UI 활성화
                     narrationBox.SetActive(false);
-                    pv.RPC("UsingLock", RpcTarget.All, "Dial", true);
+                    pv.RPC("UsingLock", RpcTarget.All, "Button", true);
 
                     // SFX Sound
                     audioManager.SFX(0);
@@ -287,6 +288,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     activeUIChildren[19].SetActive(true); // 냉장고 UI 활성화
                     narrationBox.SetActive(false);
+                    pv.RPC("UsingLock", RpcTarget.All, "Button", true);
 
                     // SFX Sound
                     audioManager.SFX(0);
@@ -308,6 +310,17 @@ public class UIManager : Singleton<UIManager>
     public void InGameSetting()
     {
         playTime = 900; // 15min
+
+        // bool 값 초기화
+        getKey = false;
+        isCheckAnswer = false;
+        interacting = false;
+        checkDirectioin = false;
+        getUSB = false;
+        connetUSB = false;
+        tvPowerOn = false;
+        breakLock = false;
+        getSchoolsupplies = false;
 
         foreach (GameObject life in playerLife)
         {
