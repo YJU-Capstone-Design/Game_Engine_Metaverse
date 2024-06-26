@@ -19,7 +19,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("# Active Objects")]
     [SerializeField] List<GameObject> doors;
-    [SerializeField] List<GameObject> activeObjects; // 사용 후 상호작용이 불가능하게 만들 오브젝트들 (ex. 자물쇠)
+    [SerializeField] public List<GameObject> activeObjects; // 사용 후 상호작용이 불가능하게 만들 오브젝트들 (ex. 자물쇠)
     [SerializeField] List<GameObject> hintObjects; // 힌트 사용 시 상호작용하는 오브젝트들
     [SerializeField] List<GameObject> hintButtons; // 힌트 버튼들
     bool getSchoolsupplies = false;
@@ -53,6 +53,7 @@ public class UIManager : Singleton<UIManager>
     [Header("# Key Lock")]
     [SerializeField] TextMeshProUGUI fluidKeyText; // "28 + 유저 수" 값을 가지는 키
     bool getKey = false;
+    public int playerCount = 0;
 
     [Header("# TV / Remote")]
     public List<string> tvInput;
@@ -143,8 +144,6 @@ public class UIManager : Singleton<UIManager>
         // 켜져있는 오브젝트 꺼짐
         if (Input.GetKeyDown(KeyCode.Escape) && !isCheckAnswer)
         {
-            narrationText.text = "";
-
             // 화이트보드
             if (clueNote.activeInHierarchy)
             {
@@ -290,15 +289,16 @@ public class UIManager : Singleton<UIManager>
                 }
             }
         }
-    }
 
-    private void Start()
-    {
+        if (photonManager.playerList.Count > 0)
+        {
+            playerCount = photonManager.playerList.Count;
+        }
+
         // Player List 정리
         photonManager.SetPlayerList();
-
         // fluidKeyText 설정
-        fluidKeyText.text = (28 + photonManager.playerList.Count).ToString();
+        fluidKeyText.text = (28 + playerCount).ToString();
     }
 
     public void InGameSetting()
@@ -738,17 +738,8 @@ public class UIManager : Singleton<UIManager>
 
         isCheckAnswer = true;
 
-        switch (name)
-        {
-            case "Direction":
-            case "Button":
-            case "Dial":
-            case "TV":
-            case "Key":
-                // SFX Sound
-                audioManager.SFX(5);
-                break;
-        }
+        // SFX Sound
+        audioManager.SFX(5);
 
         yield return new WaitForSeconds(1);
 
@@ -1008,13 +999,6 @@ public class UIManager : Singleton<UIManager>
         if (photonManager.hintCount <= 0)
             return;
 
-        // 남은 횟수가 1회일 시, 다른 사람 UI 도 종료
-        //if (photonManager.hintCount == 1)
-        //{
-        //    narrationBox.SetActive(false);
-        //    activeUIChildren[0].SetActive(false);
-        //}
-
         // 힌트 사용 로직 필요
         if (photonManager.hintCount == 2)
         {
@@ -1163,19 +1147,46 @@ public class UIManager : Singleton<UIManager>
         foreach (GameObject obj in activeUIChildren)
         {
             if (obj.activeInHierarchy) 
-            { 
-                CloseAcvtiveUI(obj); 
-                obj.SetActive(false); 
-
-                if(obj == activeUIChildren[7])
+            {
+                if(obj.name.Contains("Narration"))
+                {
+                    Debug.Log("Narration");
+                    if (narrationText.text == narration.directionLock)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "Direction", false);
+                        Debug.Log("Dddd");
+                    }
+                    else if (narrationText.text == narration.buttonLock)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "Button", false);
+                    }
+                    else if (narrationText.text == narration.refrigerator || narrationText.text == narration.refrigerator_1 || narrationText.text == narration.refrigerator_2)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "Dial", false);
+                    }
+                    else if (narrationText.text == narration.keyLock_2)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "KeyLock", false);
+                    }
+                    else if (narrationText.text == narration.livingroomTV_2)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "TV", false);
+                    }
+                    else if (narrationText.text == narration.doorLock)
+                    {
+                        pv.RPC("UsingLock", RpcTarget.All, "DoorLock", false);
+                    }
+                }
+                else if (obj.name.Contains("Direction"))
                 {
                     pv.RPC("UsingLock", RpcTarget.All, "Direction", false);
+                    Debug.Log("dsfsdfffefewfewf");
                 }
                 else if (obj == activeUIChildren[10])
                 {
                     pv.RPC("UsingLock", RpcTarget.All, "Button", false);
                 }
-                else if (obj == activeUIChildren[11])
+                else if (obj == activeUIChildren[11] || obj == activeUIChildren[19])
                 {
                     pv.RPC("UsingLock", RpcTarget.All, "Dial", false);
                 }
@@ -1192,6 +1203,9 @@ public class UIManager : Singleton<UIManager>
                     pv.RPC("UsingLock", RpcTarget.All, "DoorLock", false);
                 }
 
+                CloseAcvtiveUI(obj);
+                obj.SetActive(false);
+
             }
 
             activeUIChildren[5].transform.GetChild(1).GetComponent<Button>().enabled = true; // 지갑 버튼 기능 활성화
@@ -1200,12 +1214,6 @@ public class UIManager : Singleton<UIManager>
         interacting = false;
 
         narrationText.text = "";
-
-        for (int i = 0; i < 5; i++)
-        {
-            activeObjects[i].layer = 6;
-        }
-        activeObjects[7].layer = 6;
     }
 
     IEnumerator SmoothCoroutine(RectTransform target, Vector2 currentMin, Vector2 currentMax, Vector2 nextMin, Vector2 nextMax, float time)

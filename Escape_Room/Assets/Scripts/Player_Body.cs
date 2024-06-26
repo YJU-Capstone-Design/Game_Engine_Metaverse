@@ -56,8 +56,8 @@ public class Player_Body : MonoBehaviour
                 if(pv.IsMine) 
                 {
                     pv.RPC("LoseLife", RpcTarget.All);
+                    UIManager.Instance.playerLife[parent.playerLife].SetActive(false);
                 }
-                UIManager.Instance.playerLife[parent.playerLife].SetActive(false);
                 Debug.Log("Player Life = " + parent.playerLife);
             }
         }

@@ -93,6 +93,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
             else
             {
                 UIManager.Instance.playTime = 0;
+                BackToLobby();
             }
 
             UIManager.Instance.pv.RPC("Timer", RpcTarget.AllBuffered, UIManager.Instance.playTime);
@@ -310,7 +311,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     // 게임 시작 함수
     private void JoinGame()
     {
-        // 테스트용 
         masterName = userIDInput.text;
         theme = "복현동";
         pv = GetComponent<PhotonView>();
@@ -400,6 +400,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         Debug.Log("Left party Button");
     }
 
+    // 게임 시작 버튼
     public void GameStartButton()
     {
         roomName = myPlayer.ViewID.ToString(); // 새로 만들 Room 이름 설정
@@ -424,7 +425,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
     }
 
     [PunRPC]
-    // 게임 시작 버튼
+    // 게임 시작 함수
     public void GameStart(string roomName, string bossName, int roomNumber)
     {
         roomNums.Add(roomNumber);
@@ -692,6 +693,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks // 제공해주는 다양한 Call
         {
             UIManager.Instance.CloseAllUI();
             inGameCanvas.SetActive(false);
+
+            for (int i = 0; i < 5; i++)
+            {
+                UIManager.Instance.activeObjects[i].layer = 6;
+            }
+            UIManager.Instance.activeObjects[7].layer = 6;
         }
 
         foreach (GameObject UI in lobbyUIManager.activeUIBoxs)
