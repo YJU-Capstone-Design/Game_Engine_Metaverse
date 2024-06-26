@@ -75,6 +75,7 @@ MonoBehaviour:
   - LoseLife
   - Killer_RPC
   - RPC_Move
+  - RPC_anime
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
